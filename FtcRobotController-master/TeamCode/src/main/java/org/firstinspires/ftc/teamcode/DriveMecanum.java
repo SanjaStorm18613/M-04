@@ -44,7 +44,9 @@ public class DriveMecanum {
         accTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         accTime.startTime();
 
-        setStickerXYZ(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        x = gamepad1.left_stick_x;
+        y = gamepad1.left_stick_y;
+        turn = gamepad1.right_stick_x;
         setSlowFactor(gamepad1.right_trigger);
     }
 
@@ -84,11 +86,7 @@ public class DriveMecanum {
             m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }*/
-    public void setStickerXYZ(double gy, double gx, double gz){
-        x = gx;
-        y = gy;
-        turn = gz;
-    }
+
     public void setSlowFactor(double slowFactor){
         this.slowFactor = 1 - slowFactor / 1.5;
     }
