@@ -29,7 +29,7 @@ public class Braco extends Constants.Braco {
 
     }
 
-    public void periodic(){
+    public void periodic() extends Bandeja{
 
         if(bracoButtonUp) {
             stage = (stage + 1) % 3;
@@ -41,11 +41,9 @@ public class Braco extends Constants.Braco {
 
         targetPos = stages[stage] + adjust/100 * Constants.Braco.adjust;
 
-
-
     }
 
-    public void Esticar(double gTargetPosUp){
+    /*public void Esticar(double gTargetPosUp){
         gTargetPosUp = targetPos;
         targetPos = stage++;
     }
@@ -53,6 +51,6 @@ public class Braco extends Constants.Braco {
     public void Retrair(double gTargetPosDown){
         gTargetPosDown = targetPos;
         targetPos = stage--;
-    }
+    }*/
 
 }

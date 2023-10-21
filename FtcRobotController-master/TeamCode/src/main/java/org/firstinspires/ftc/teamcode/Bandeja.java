@@ -37,6 +37,9 @@ public class Bandeja {
         if(triggerPitch > 0.1){
             servoPitch.setPosition(triggerPitch);
         }
+        else{
+            servoPitch.setPosition(0);
+        }
 
         if(buttonRollLeft){
             servoRoll.setPosition(-0.5);

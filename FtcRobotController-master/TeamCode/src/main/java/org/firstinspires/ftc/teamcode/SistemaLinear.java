@@ -55,16 +55,6 @@ public class SistemaLinear {
             armMotor.setPower(0);
         }
 
-        if(buttonGanchoUp){
-            if(armEncoder > 30) {
-                armMotor.setPower(-0.75);
-            }
-            else{
-                armMotor.setPower(0);
-            }
-            servoGancho.setPosition(.6);
-        }
-
         if(buttonDown){
             if (armEncoder > 30) {
                 armMotor.setPower(-0.75);

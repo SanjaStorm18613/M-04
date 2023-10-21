@@ -22,13 +22,13 @@ public class LancaDrone {
         buttonLauncher = opMode.gamepad1.a;
 
         servoPitchDrone = opMode.hardwareMap.get(Servo.class, "DronePitch");
-        servoPitchDrone.setDirection((Servo.Direction.FORWARD));
+        servoPitchDrone.setDirection(Servo.Direction.FORWARD);
         pitchTrigger = opMode.gamepad1.left_trigger;
     }
 
     public void periodic(){
         if(buttonLauncher){
-            servoDrone.setPosition(.6);
+            servoDrone.setPosition(1);
         }
 
         if(pitchTrigger > .1){
