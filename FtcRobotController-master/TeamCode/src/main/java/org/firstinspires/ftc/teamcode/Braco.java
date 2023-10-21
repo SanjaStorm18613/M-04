@@ -12,12 +12,8 @@ public class Braco extends Constants.Braco {
     private boolean bracoButtonUp, bracoButtonDown;
     private double triggerPitchUp, triggerPitchDown;
 
-    private final double[] stages = {
-                                     Constants.Braco.stage0,
-                                     Constants.Braco.stage1,
-                                     Constants.Braco.stage2,
-                                     Constants.Braco.stage3
-                                    };
+    private final double[] stages = { Constants.Braco.stage0, Constants.Braco.stage1,
+                                     Constants.Braco.stage2, Constants.Braco.stage3 };
 
     private int stage = 0;
     private double targetPos, adjust = 0;
