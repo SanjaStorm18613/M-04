@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Constants.Braco.stage1;
+
+import static java.lang.Double.max;
+import static java.lang.Double.min;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -8,9 +13,13 @@ public class Bandeja {
 
 
     private Servo servoPitch, servoRoll, servoBandeja;
-    private boolean buttonBandeja, buttonRollLeft, buttonRollRight;
+    private boolean buttonBandeja, buttonBandejaLeft, buttonBandejaRight, buttonRollLeft, buttonRollRight, buttonPitch, auto_pitch;
     private LinearOpMode opMode;
-    private float triggerPitch;
+    private double triggerPitch;
+    private final double[] pitchStages = {Constants.PitchBandeja.pitchStage1, Constants.PitchBandeja.pitchStage2},
+                            drop = {0,1,2};
+    private double stage = 0;
+    private int adjust = 0, count_drop = 0;
 
     public Bandeja(LinearOpMode opMode){
 
@@ -34,7 +43,10 @@ public class Bandeja {
 
     public void periodic(){
 
-        if(triggerPitch > 0.1){
+        if(buttonPitch){
+        }
+
+        if(triggerPitch > .1){
             servoPitch.setPosition(triggerPitch);
         }
         else{
@@ -42,21 +54,25 @@ public class Bandeja {
         }
 
         if(buttonRollLeft){
-            servoRoll.setPosition(-0.5);
+            servoRoll.setPosition(-.5*(++cont % 2));
         }
         else if(buttonRollRight){
             servoRoll.setPosition(.5);
         }
-        else{
-            servoRoll.setPosition(0);
-        }
 
         if(buttonBandeja){
-            servoBandeja.setPosition(1);
-        }
-        else{
-            servoBandeja.setPosition(0);
+            servoBandeja.setPosition(Math.signum(servoPitch.getPosition())*drop[++count_drop % 2]);
         }
 
+
+        // linha para garantir que o piloto não solte os pixels por engano;
+        // supondo que o valor -1 destrave o pixel da esquerda
+        // e que o valor 1 destrave o pixel da direita
+        // e que 0 mantenha os dois pixels travados
+        if(buttonBandejaLeft){
+            if(servoRoll.getPosition() >= -0.55 && servoRoll.getPosition() <= -0.45) {
+                servoBandeja.setPosition(-1);
+            }
+        }
     }
 }

@@ -18,4 +18,11 @@ public class Constants {
                                    lower_speed = .9,
                                    adjust = .25;
      }
+
+     public static class PitchBandeja{
+
+        public static final double pitchStage1 = 0.0,
+                                   pitchStage2 = 3.0,
+                                   adjustPitch = .3;
+     }
 }

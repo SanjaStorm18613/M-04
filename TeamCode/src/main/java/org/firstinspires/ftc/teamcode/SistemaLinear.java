@@ -21,6 +21,7 @@ public class SistemaLinear {
     private Servo servoGancho, servoPitchBraco;
     private boolean bumperUp, bumperDown, buttonDown, buttonGanchoUp, bumperPitchBracoL;
 
+    private int pos = 0;
 
     public SistemaLinear(LinearOpMode opMode){
 
@@ -29,8 +30,10 @@ public class SistemaLinear {
         armMotor = opMode.hardwareMap.get(DcMotor.class, "MotorBraco");
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        servoGancho = opMode.hardwareMap.get(Servo.class, "GanchoServo");
+        servoGancho = opMode.hardwareMap.get(Servo.class, "ServoGANCHO");
         servoGancho.setDirection(Servo.Direction.FORWARD);
 
         servoPitchBraco = opMode.hardwareMap.get(Servo.class, "ServoPitchBraco");
@@ -45,28 +48,24 @@ public class SistemaLinear {
     }
 
     public void periodic(){
-        if(bumperDown && armEncoder > 30) {
-            armMotor.setPower(-0.75);
-        }
-        else if(bumperUp && armEncoder < 150) {
-            armMotor.setPower(0.75);
-        }
-        else {
-            armMotor.setPower(0);
-        }
 
-        if(buttonDown){
-            if (armEncoder > 30) {
-                armMotor.setPower(-0.75);
-            }
-            else {
-                armMotor.setPower(0);
-            }
+        //Retrair o sistema
+        if(bumperDown && armMotor.getCurrentPosition() > 30) {
+            armMotor.setTargetPosition(30);
         }
-
-        if(bumperPitchBracoL){
-            servoPitchBraco.setPosition(1);
+        //Esticar o sistema
+        else if(bumperUp && armMotor.getCurrentPosition() < 150) {
+            armMotor.setTargetPosition(pos++);
+        } else if(buttonDown && armMotor.getCurrentPosition() > 30){
+            armMotor.setTargetPosition(pos--);
         }
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(0.8);
     }
+
+    /*public void setArmEncoder(double power){
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(1);
+    }*/
 
 }
