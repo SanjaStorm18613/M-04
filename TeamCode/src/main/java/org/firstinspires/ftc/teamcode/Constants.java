@@ -25,4 +25,9 @@ public class Constants {
                                    pitchStage2 = 3.0,
                                    adjustPitch = .3;
      }
+
+     public static class DriveMecanum{
+        public static final double acceleration = 1,
+                                          speed = 1;
+     }
 }

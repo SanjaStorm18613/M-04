@@ -29,20 +29,41 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
-
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
+/*
+ * This OpMode illustrates the concept of driving a path based on encoder counts.
+ * The code is structured as a LinearOpMode
+ *
+ * The code REQUIRES that you DO have encoders on the wheels,
+ *   otherwise you would use: RobotAutoDriveByTime;
+ *
+ *  This code ALSO requires that the drive Motors have been configured such that a positive
+ *  power command moves them forward, and causes the encoders to count UP.
+ *
+ *   The desired path in this example is:
+ *   - Drive forward for 48 inches
+ *   - Spin right for 12 Inches
+ *   - Drive Backward for 24 inches
+ *   - Stop and close the claw.
+ *
+ *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
+ *  that performs the actual movement.
+ *  This method assumes that each movement is relative to the last stopping place.
+ *  There are other ways to perform encoder based moves, but this method is probably the simplest.
+ *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
+ */
 
-
-@TeleOp(name="TeleopM04", group="Linear OpMode")
-
-public class TeleopM04 extends LinearOpMode {
+@Autonomous(name="AutoM04", group="Robot")
+@Disabled
+public class AutoM04 extends LinearOpMode {
 
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
@@ -51,9 +72,7 @@ public class TeleopM04 extends LinearOpMode {
     Bandeja bandeja;
     Braco braco;
 
-    private boolean aBlock = false, aBlockDown = false;
-
-    public TeleopM04() {
+    public AutoM04() {
         driveMecanum = new DriveMecanum(this);
         sistemaLinear = new SistemaLinear(this);
         lancaDrone = new LancaDrone(this);
@@ -64,50 +83,8 @@ public class TeleopM04 extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        while (opModeIsActive()) {
 
-        //public static Controller pilot, copilot;
-        while(opModeIsActive()) {
-            //LancaDrone
-            lancaDrone.lancarDrone(gamepad1.a);
-
-            //Coletor
-            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10.0);
-
-            if(gamepad1.dpad_up && !aBlock) {
-                braco.BracoUp();
-            } else if(gamepad1.dpad_down && !aBlockDown) {
-                braco.BracoDown();
-            }
-            aBlock = gamepad1.dpad_up;
-            aBlockDown = gamepad1.dpad_down;
-
-            //logica de girar ao pontuar
-            if(gamepad1.a) {
-                sistemaLinear.retrairSistemaTotal();
-                bandeja.rollBandeja(0);
-            }
-
-            //SistemaLinear
-            sistemaLinear.esticarSistema(gamepad1.right_bumper);
-            sistemaLinear.retrairSistema(gamepad1.left_bumper);
-
-
-             if (gamepad1.right_bumper){
-                sistemaLinear.retrairSistemaTotal();
-            }
-
-            bandeja.pitchBandeja(60, (Math.floor(gamepad2.right_trigger * 100) / 100));
-            if(gamepad2.left_bumper){
-                bandeja.destravarBandeja();
-            } else if (gamepad2.right_bumper){
-                bandeja.destravarBandejaTotal();
-            }
-
-            if(gamepad2.dpad_right){
-                bandeja.rollBandeja(1);
-            } else if (gamepad2.dpad_left){
-                bandeja.rollBandeja(-1);
-            }
         }
     }
 }

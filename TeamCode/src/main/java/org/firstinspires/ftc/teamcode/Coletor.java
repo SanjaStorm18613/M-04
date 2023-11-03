@@ -12,20 +12,16 @@ public class Coletor {
     private float collectorTrigger;
 
     public Coletor(LinearOpMode opMode){
-
         this.opMode = opMode;
 
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
-
-        collectorTrigger = opMode.gamepad1.right_trigger;
     }
 
     public void periodic(){
-        if(collectorTrigger > .1){
-            motorCollector.setPower(1);
-        }
-        else{
-            motorCollector.setPower(0);
-        }
+
+    }
+
+    public void collect(double col){
+        motorCollector.setPower(col);
     }
 }

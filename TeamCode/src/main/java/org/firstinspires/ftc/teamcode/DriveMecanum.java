@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.sun.tools.javac.util.Constants;
 
 public class DriveMecanum {
 
@@ -17,6 +14,7 @@ public class DriveMecanum {
     private DcMotor FR, FL, BR, BL;
     private LinearOpMode opMode;
     private ElapsedTime accTime;
+
     private double acc = 0, x = 0, y = 0, turn = 0, slowFactor = 0;
 
     public DriveMecanum(LinearOpMode opMode){
@@ -55,7 +53,7 @@ public class DriveMecanum {
 
         //setDownEncoderServo(true);
 
-        double vel = slowFactor * Constants.DTMecanum.SPEED * acc;
+        double vel = slowFactor * Constants.DriveMecanum.speed * acc;
 
         FL.setPower(((y+x) + turn) * vel);
         FR.setPower(((y-x) - turn) * vel);
@@ -71,7 +69,7 @@ public class DriveMecanum {
             return;
         }
 
-        acc = Math.min(1, accTime.time() / Constants.DTMecanum.ACCELERATION);
+        acc = Math.min(1, accTime.time() / Constants.DriveMecanum.acceleration);
         acc = Math.round(acc * 1000.0) / 1000.0;
     }
 

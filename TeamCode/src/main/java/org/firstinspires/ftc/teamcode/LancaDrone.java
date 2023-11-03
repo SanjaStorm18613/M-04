@@ -19,20 +19,14 @@ public class LancaDrone {
 
         servoDrone = opMode.hardwareMap.get(Servo.class, "Drone");
         servoDrone.setDirection(Servo.Direction.FORWARD);
-        buttonLauncher = opMode.gamepad1.a;
-
-        servoPitchDrone = opMode.hardwareMap.get(Servo.class, "DronePitch");
-        servoPitchDrone.setDirection(Servo.Direction.FORWARD);
-        pitchTrigger = opMode.gamepad1.left_trigger;
     }
 
-    public void periodic(){
-        if(buttonLauncher){
-            servoDrone.setPosition(1);
-        }
+    public void telemetry(){
 
-        if(pitchTrigger > .1){
-            servoPitchDrone.setPosition(pitchTrigger);
-        }
     }
+
+    public void lancarDrone(boolean solta){
+        servoDrone.setPosition(solta ? 1 : 0);
+    }
+
 }
