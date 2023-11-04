@@ -35,7 +35,7 @@ public class DriveMecanum {
 
         DcMotor[] motors = {FL, FR, BR, BL};
 
-        for(DcMotor m : motors){
+        for (DcMotor m : motors){
             m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
@@ -63,7 +63,7 @@ public class DriveMecanum {
 
     private void updateAcceleration(boolean release){
 
-        if(release){
+        if (release){
             acc = 0;
             accTime.reset();
             return;
@@ -73,13 +73,13 @@ public class DriveMecanum {
         acc = Math.round(acc * 1000.0) / 1000.0;
     }
 
-    /*public void setDownEncoderServo(boolean act){
+    public void setDownEncoderServo(boolean act){
         servoE.setPosition(act ? 0 : 1);
         servoD.setPosition(act ? 0 : 1);
     }
 
-    public void resetEnc(){
-        for(DcMotor m : motors){
+    /*public void resetEnc(){
+        for (DcMotor m : motors){
             m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }

@@ -9,10 +9,7 @@ public class Constants {
     }
 
     public static class Braco{
-        public static final double stage0 = 0.0,
-                                   stage1 = 1.8,
-                                   stage2 = 3.5,
-                                   stage3 = 4.1,
+        public static final double stage0 = 0.0, stage1 = 1.8, stage2 = 3.5, stage3 = 4.1,
 
                                    up_speed = 1,
                                    lower_speed = .9,

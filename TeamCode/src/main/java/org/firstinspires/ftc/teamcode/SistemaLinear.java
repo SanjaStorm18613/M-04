@@ -4,12 +4,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class SistemaLinear {
     private DcMotor armMotor;
+
     private LinearOpMode opMode;
+
     private Servo servoPitchBraco;
+
     private boolean bumperUp, bumperDown, buttonDown;
+
+    private TouchSensor limit;
 
     private int pos = 0;
 
@@ -26,6 +32,8 @@ public class SistemaLinear {
         servoPitchBraco = opMode.hardwareMap.get(Servo.class, "ServoPitchBraco");
         servoPitchBraco.setDirection(Servo.Direction.FORWARD);
 
+        limit = opMode.hardwareMap.get(TouchSensor.class, "ArmLimit");
+
     }
 
     public void periodic(){
@@ -33,25 +41,31 @@ public class SistemaLinear {
         armMotor.setPower(0.8);
     }
 
-    //Criando funções para esticar e retrair o sistema, para chama-las no periodic(), sem a necessidade da criação de if's, else's, etc.
+    /**Uso de uma limit para detectar o nível do braço**/
+    public void resetEnc(){
+        if (!limit.isPressed()){
+            armMotor.setPower(0.2);
+        } else {
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+    }
+    /**Criando funções para esticar e retrair o sistema, para chama-las no periodic(), sem a necessidade da criação de if's, else's, etc.*/
     public void retrairSistema(boolean Down){
 
-        if(armMotor.getCurrentPosition() > 30){
+        if (!limit.isPressed()){
             pos -= (Down ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
         }
-
     }
 
     public void retrairSistemaTotal(){
-        if(armMotor.getCurrentPosition() > 30){
+        if (!limit.isPressed()){
             armMotor.setTargetPosition(30);
         }
-
     }
 
     public void esticarSistema(boolean Up){
-        if(armMotor.getCurrentPosition() < 150){
+        if (armMotor.getCurrentPosition() < 150){
             pos += (Up ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
         } else {

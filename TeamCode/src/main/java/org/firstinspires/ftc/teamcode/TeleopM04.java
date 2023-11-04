@@ -51,15 +51,16 @@ public class TeleopM04 extends LinearOpMode {
     Bandeja bandeja;
     Braco braco;
 
-    private boolean aBlock = false, aBlockDown = false;
+    private boolean armBlockUp = false, armBlockDown = false, bandejaBlock = false, bandejaBlockTotal = false, bandejaBlockRight = false,
+                    bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, sistemaLinearBlockDown = false;
 
     public TeleopM04() {
-        driveMecanum = new DriveMecanum(this);
+        driveMecanum  = new DriveMecanum(this);
         sistemaLinear = new SistemaLinear(this);
-        lancaDrone = new LancaDrone(this);
-        coletor = new Coletor(this);
-        bandeja = new Bandeja(this);
-        braco = new Braco(this);
+        lancaDrone    = new LancaDrone(this);
+        coletor       = new Coletor(this);
+        bandeja       = new Bandeja(this);
+        braco         = new Braco(this);
     }
 
     @Override
@@ -67,22 +68,25 @@ public class TeleopM04 extends LinearOpMode {
 
         //public static Controller pilot, copilot;
         while(opModeIsActive()) {
-            //LancaDrone
+            //DroneLauncher
             lancaDrone.lancarDrone(gamepad1.a);
 
-            //Coletor
-            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10.0);
+            //Collector
+            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
 
-            if(gamepad1.dpad_up && !aBlock) {
+            //Arm
+            if (gamepad1.dpad_up && !armBlockUp) {
                 braco.BracoUp();
-            } else if(gamepad1.dpad_down && !aBlockDown) {
+            } else if (gamepad1.dpad_down && !armBlockDown) {
                 braco.BracoDown();
             }
-            aBlock = gamepad1.dpad_up;
-            aBlockDown = gamepad1.dpad_down;
+            armBlockUp = gamepad1.dpad_up;
+            armBlockDown = gamepad1.dpad_down;
 
-            //logica de girar ao pontuar
-            if(gamepad1.a) {
+
+            //ao retrair o sistema, o roll volta para a posição inicial
+
+            if (gamepad1.a) {
                 sistemaLinear.retrairSistemaTotal();
                 bandeja.rollBandeja(0);
             }
@@ -92,22 +96,50 @@ public class TeleopM04 extends LinearOpMode {
             sistemaLinear.retrairSistema(gamepad1.left_bumper);
 
 
-             if (gamepad1.right_bumper){
+            if (gamepad1.b && !sistemaLinearBlockDown){
                 sistemaLinear.retrairSistemaTotal();
             }
+            sistemaLinearBlockDown = gamepad1.b;
 
-            bandeja.pitchBandeja(60, (Math.floor(gamepad2.right_trigger * 100) / 100));
-            if(gamepad2.left_bumper){
-                bandeja.destravarBandeja();
-            } else if (gamepad2.right_bumper){
-                bandeja.destravarBandejaTotal();
-            }
+            //Bandeja
+            bandeja.pitchBandeja(braco.getTargetPos(), (Math.floor(gamepad2.right_trigger * 100) / 100));
 
-            if(gamepad2.dpad_right){
+            /** logica de girar e pontuar o pixel desejado -> ao pressionar o botão (a por exemplo), o sistema de entrega entende
+            // que o pixel desejado para pontuar seja o da direita. com isso, o roll gira para a direita e destrava o pixel da direita,
+            // lógica valida para o pixel da direita também (apertando o b, por exemplo):                                                          */
+
+
+            if (gamepad2.a && !bandejaBlockRight){
                 bandeja.rollBandeja(1);
-            } else if (gamepad2.dpad_left){
+                bandeja.destravarBandeja();
+
+            } else if (gamepad2.b && !bandejaBlockLeft){
+                bandeja.rollBandeja(-1);
+                bandeja.destravarBandeja();
+
+            }
+            bandejaBlockRight = gamepad2.a;
+            bandejaBlockLeft  = gamepad2.b;
+
+            /** lógica de roll e destravar a partir de 2 botões diferentes, primeiro o piloto aperta o botão de roll, depois o de destravar  */
+
+            if (gamepad2.left_bumper && !bandejaBlock){
+                bandeja.destravarBandeja();
+            } else if (gamepad2.right_bumper && !bandejaBlockTotal){
+                bandeja.destravarBandejaTotal();
+                bandeja.rollBandeja(1);
+            }
+            bandejaBlock      = gamepad2.left_bumper;
+            bandejaBlockTotal = gamepad2.right_bumper;
+
+            if (gamepad2.dpad_right && !rollBandejaRightBlock){
+                bandeja.rollBandeja(1);
+            } else if (gamepad2.dpad_left && !rollBandejaLeftBlock){
                 bandeja.rollBandeja(-1);
             }
+            rollBandejaRightBlock = gamepad2.dpad_right;
+            rollBandejaLeftBlock  = gamepad2.dpad_left;
+
         }
     }
 }

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.ControlSystem;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Coletor {
+public class Coletor{
 
     private DcMotor motorCollector;
     private LinearOpMode opMode;

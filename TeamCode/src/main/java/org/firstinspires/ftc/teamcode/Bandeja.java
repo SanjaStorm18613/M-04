@@ -47,7 +47,7 @@ public class Bandeja {
     }
 
     public void destravarBandeja(){
-            servoBandeja.setPosition(Math.signum(servoPitch.getPosition())*drop[++count_drop % 2]);
+        servoBandeja.setPosition(Math.signum(servoPitch.getPosition())*drop[++count_drop % 2]);
     }
 
     public void destravarBandejaTotal(){
@@ -55,6 +55,6 @@ public class Bandeja {
     }
 
     public void pitchBandeja(double alpha, double adjust){
-            servoPitch.setPosition(.67 - alpha/180 + adjust/180);
+        servoPitch.setPosition(.67 - alpha/180 + adjust/180);
     }
 }
