@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class SistemaLinear {
     private DcMotor armMotor;
 
@@ -16,6 +18,8 @@ public class SistemaLinear {
     private boolean bumperUp, bumperDown, buttonDown;
 
     private TouchSensor limit;
+
+    Telemetry systemTelemetry;
 
     private int pos = 0;
 
@@ -33,6 +37,10 @@ public class SistemaLinear {
         servoPitchBraco.setDirection(Servo.Direction.FORWARD);
 
         limit = opMode.hardwareMap.get(TouchSensor.class, "ArmLimit");
+
+        systemTelemetry = opMode.telemetry;
+        systemTelemetry.addData("pos", pos);
+        systemTelemetry.update();
 
     }
 

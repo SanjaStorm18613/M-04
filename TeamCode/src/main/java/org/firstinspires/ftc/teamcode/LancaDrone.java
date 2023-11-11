@@ -7,10 +7,14 @@ import android.accounts.AbstractAccountAuthenticator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class LancaDrone {
 
     private Servo servoDrone, servoPitchDrone;
     private LinearOpMode opMode;
+
+    Telemetry droneTelemetry;
     private boolean buttonLauncher;
     private float pitchTrigger;
 
@@ -19,14 +23,19 @@ public class LancaDrone {
 
         servoDrone = opMode.hardwareMap.get(Servo.class, "Drone");
         servoDrone.setDirection(Servo.Direction.FORWARD);
+
+        droneTelemetry = opMode.telemetry;
+        droneTelemetry.addData("Drone", servoDrone.getPosition());
+        droneTelemetry.update();
     }
 
     public void telemetry(){
 
     }
 
-    public void lancarDrone(boolean solta){
-        servoDrone.setPosition(solta ? 1 : 0);
+    public void lancarDrone(){
+
+        servoDrone.setPosition(.7);
     }
 
 }

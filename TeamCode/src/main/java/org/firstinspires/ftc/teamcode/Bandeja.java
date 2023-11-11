@@ -9,13 +9,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Bandeja {
 
 
     private Servo servoPitch, servoRoll, servoBandeja;
-    private boolean buttonBandeja, buttonBandeja2, buttonBandejaLeft, buttonBandejaRight, buttonRollLeft, buttonRollRight, buttonPitch, auto_pitch;
     private LinearOpMode opMode;
     private double triggerPitch, stage = 0;
+
+    Telemetry bandejaTelemetry;
     private final double[] pitchStages = {Constants.PitchBandeja.pitchStage1, Constants.PitchBandeja.pitchStage2},
                             drop = {0,1,2};
     private int adjust = 0, count_drop = 0, cont = 0;
@@ -34,6 +37,9 @@ public class Bandeja {
         servoBandeja = opMode.hardwareMap.get(Servo.class, "ServoBandeja");
         servoBandeja.setDirection(Servo.Direction.FORWARD);
 
+        bandejaTelemetry = opMode.telemetry;
+        bandejaTelemetry.addData("Bandeja", servoBandeja.getPosition());
+        bandejaTelemetry.update();
     }
 
     public void periodic(){
@@ -47,7 +53,7 @@ public class Bandeja {
     }
 
     public void destravarBandeja(){
-        servoBandeja.setPosition(Math.signum(servoPitch.getPosition())*drop[++count_drop % 2]);
+        servoBandeja.setPosition(Math.signum(servoRoll.getPosition())*drop[++count_drop % 2]);
     }
 
     public void destravarBandejaTotal(){

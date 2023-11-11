@@ -38,21 +38,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 @TeleOp(name="TeleopM04", group="Linear OpMode")
 
 public class TeleopM04 extends LinearOpMode {
-
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
     LancaDrone lancaDrone;
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
+    
 
     private boolean armBlockUp = false, armBlockDown = false, bandejaBlock = false, bandejaBlockTotal = false, bandejaBlockRight = false,
-                    bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, sistemaLinearBlockDown = false;
+                    bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, sistemaLinearBlockDown = false,
+                    droneBlock = false;
 
     public TeleopM04() {
         driveMecanum  = new DriveMecanum(this);
@@ -66,10 +68,17 @@ public class TeleopM04 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        //public static Controller pilot, copilot;
         while(opModeIsActive()) {
+
+            telemetry.addData("Inicializando TeleOp" , "");
+            telemetry.log();
             //DroneLauncher
-            lancaDrone.lancarDrone(gamepad1.a);
+            if(gamepad2.a && !droneBlock){
+                lancaDrone.lancarDrone();
+            }
+            droneBlock = gamepad2.a;
+
+
 
             //Collector
             coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
@@ -104,11 +113,6 @@ public class TeleopM04 extends LinearOpMode {
             //Bandeja
             bandeja.pitchBandeja(braco.getTargetPos(), (Math.floor(gamepad2.right_trigger * 100) / 100));
 
-            /** logica de girar e pontuar o pixel desejado -> ao pressionar o botão (a por exemplo), o sistema de entrega entende
-            // que o pixel desejado para pontuar seja o da direita. com isso, o roll gira para a direita e destrava o pixel da direita,
-            // lógica valida para o pixel da direita também (apertando o b, por exemplo):                                                          */
-
-
             if (gamepad2.a && !bandejaBlockRight){
                 bandeja.rollBandeja(1);
                 bandeja.destravarBandeja();
@@ -120,8 +124,6 @@ public class TeleopM04 extends LinearOpMode {
             }
             bandejaBlockRight = gamepad2.a;
             bandejaBlockLeft  = gamepad2.b;
-
-            /** lógica de roll e destravar a partir de 2 botões diferentes, primeiro o piloto aperta o botão de roll, depois o de destravar  */
 
             if (gamepad2.left_bumper && !bandejaBlock){
                 bandeja.destravarBandeja();

@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
  * The code is structured as a LinearOpMode
@@ -73,6 +75,7 @@ public class AutoM04 extends LinearOpMode {
     Braco braco;
 
     public AutoM04() {
+        Telemetry.log("Inicializando auto");
         driveMecanum = new DriveMecanum(this);
         sistemaLinear = new SistemaLinear(this);
         lancaDrone = new LancaDrone(this);
