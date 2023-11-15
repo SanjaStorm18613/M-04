@@ -21,7 +21,7 @@ public class Coletor{
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
 
         collectorTelemetry = opMode.telemetry;
-        collectorTelemetry.addData("Coletor", "collect");
+        collectorTelemetry.addData("Coletor", " ");
         collectorTelemetry.update();
     }
 
@@ -31,5 +31,7 @@ public class Coletor{
 
     public void collect(double col){
         motorCollector.setPower(col);
+        collectorTelemetry.addData("Coletor", col);
+        collectorTelemetry.update();
     }
 }

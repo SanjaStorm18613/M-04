@@ -36,7 +36,6 @@ public class Braco {
 
     }
 
-
     public void periodic(double adjust) {
 
         targetPos = stages[stage] + adjust * Constants.Braco.adjust;
@@ -45,7 +44,7 @@ public class Braco {
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBraco.setPower(0.8);
 
-        armTelemetry.addData("braço", targetPos);
+        armTelemetry.addData("Braco", targetPos);
         armTelemetry.update();
     }
 
@@ -55,15 +54,19 @@ public class Braco {
 
     public void BracoUp(){
             stage = min((stage + 1), 3);
+            armTelemetry.addData("Braco_UP", stage);
+            armTelemetry.update();
     }
     public void BracoDown(){
             stage = max((stage - 1), 0);
+            armTelemetry.addData("Braco_DOWN", stage);
+            armTelemetry.update();
     }
 
-    public void testBraço(boolean a, boolean b, int c) {
+    public void testBraco(boolean a, boolean b, int c) {
         if(a) {
             BracoUp();
-            armTelemetry.log();
+            armTelemetry.addData("Braco_UP", stage);
         }
     }
 }

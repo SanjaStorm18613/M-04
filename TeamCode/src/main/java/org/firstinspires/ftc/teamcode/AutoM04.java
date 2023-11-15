@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.openftc.easyopencv.OpenCvCamera;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -75,7 +76,7 @@ public class AutoM04 extends LinearOpMode {
     Braco braco;
 
     public AutoM04() {
-        Telemetry.log("Inicializando auto");
+        telemetry.addData("Inicializando auto", " ");
         driveMecanum = new DriveMecanum(this);
         sistemaLinear = new SistemaLinear(this);
         lancaDrone = new LancaDrone(this);
@@ -84,10 +85,15 @@ public class AutoM04 extends LinearOpMode {
         braco = new Braco(this);
     }
 
+    OpenCvCamera openCvCamera;
+
     @Override
     public void runOpMode() {
         while (opModeIsActive()) {
 
+            driveMecanum.moveForwardAuto(1);
+            
         }
     }
+
 }

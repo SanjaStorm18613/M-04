@@ -13,8 +13,7 @@ public class LancaDrone {
 
     private Servo servoDrone, servoPitchDrone;
     private LinearOpMode opMode;
-
-    Telemetry droneTelemetry;
+    private Telemetry droneTelemetry;
     private boolean buttonLauncher;
     private float pitchTrigger;
 
@@ -34,7 +33,6 @@ public class LancaDrone {
     }
 
     public void lancarDrone(){
-
         servoDrone.setPosition(.7);
     }
 

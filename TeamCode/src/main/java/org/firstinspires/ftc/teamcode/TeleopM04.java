@@ -71,8 +71,8 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             telemetry.addData("Inicializando TeleOp" , "");
-            telemetry.log();
-            //DroneLauncher
+            // telemetry.log();
+            // DroneLauncher
             if(gamepad2.a && !droneBlock){
                 lancaDrone.lancarDrone();
             }
@@ -92,9 +92,7 @@ public class TeleopM04 extends LinearOpMode {
             armBlockUp = gamepad1.dpad_up;
             armBlockDown = gamepad1.dpad_down;
 
-
-            //ao retrair o sistema, o roll volta para a posição inicial
-
+            //Roll da bandeja sincronizado com o sistema linear (ao retrair totalmente, o roll volta para a posição inicial)
             if (gamepad1.a) {
                 sistemaLinear.retrairSistemaTotal();
                 bandeja.rollBandeja(0);
