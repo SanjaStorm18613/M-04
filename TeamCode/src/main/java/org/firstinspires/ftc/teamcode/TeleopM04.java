@@ -70,7 +70,7 @@ public class TeleopM04 extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            telemetry.addData("Inicializando TeleOp" , "");
+            telemetry.addData("TeleOP" , "Inicializando");
             // telemetry.log();
             // DroneLauncher
             if(gamepad2.a && !droneBlock){

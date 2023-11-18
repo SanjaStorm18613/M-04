@@ -71,7 +71,7 @@ public class AutoM04test extends LinearOpMode {
 
     private int leftPos, rightPos;
 
-    public AutoM04test() {
+    public AutoM04test() throws InterruptedException {
 
         telemetry.addData("Inicializando auto", "  ");
         driveMecanum = new DriveMecanum(this);
