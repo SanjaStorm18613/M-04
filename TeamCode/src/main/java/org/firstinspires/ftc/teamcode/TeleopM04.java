@@ -79,7 +79,6 @@ public class TeleopM04 extends LinearOpMode {
             droneBlock = gamepad2.a;
 
 
-
             //Collector
             coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
 

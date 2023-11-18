@@ -119,4 +119,17 @@ public class DriveMecanum {
         BR.setPower(power);
     }
 
+    public void turnLeft(int powerFL, int powerBL){
+        FL.setPower(powerFL);
+        FR.setPower(powerBL);
+        BL.setPower(powerBL);
+        BR.setPower(powerFL);
+    }
+    public void turnRight(int powerFL, int powerBL){
+        FL.setPower(powerFL);
+        FR.setPower(powerBL);
+        BL.setPower(powerBL);
+        BR.setPower(powerFL);
+    }
+
 }

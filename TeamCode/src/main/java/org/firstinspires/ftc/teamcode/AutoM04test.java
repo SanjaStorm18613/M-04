@@ -33,10 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.openftc.easyopencv.OpenCvCamera;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -64,44 +61,65 @@ import org.openftc.easyopencv.OpenCvCamera;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AutoM04", group="Robot")
+@Autonomous(name="AutoM04test", group="Robot")
 @Disabled
-public class AutoM04 extends LinearOpMode {
+public class AutoM04test extends LinearOpMode {
 
     DriveMecanum driveMecanum;
-    SistemaLinear sistemaLinear;
-    LancaDrone lancaDrone;
-    Coletor coletor;
-    Bandeja bandeja;
-    Braco braco;
 
-    public AutoM04() {
+    private DcMotor rightMotor, leftMotor;
 
-        telemetry.addData("Inicializando auto", " ");
+    private int leftPos, rightPos;
+
+    public AutoM04test() {
+
+        telemetry.addData("Inicializando auto", "  ");
         driveMecanum = new DriveMecanum(this);
-        sistemaLinear = new SistemaLinear(this);
-        lancaDrone = new LancaDrone(this);
-        coletor = new Coletor(this);
-        bandeja = new Bandeja(this);
-        braco = new Braco(this);
+
+        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
+        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor");
+
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        rightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        leftPos = 0;
+        rightPos = 0;
+
+        waitForStart();
+
+        drive(5000,5000, .6);
+        drive(5000,-5000,.6);
 
     }
-
-    OpenCvCamera openCvCamera;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        while (opModeIsActive()) {
+    public void runOpMode() {
+        while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
 
-            driveMecanum.moveForwardAuto(1);
-            Thread.sleep(1000);
-            driveMecanum.turnLeft(1, -1);
-            Thread.sleep(500);
-            driveMecanum.moveForwardAuto(1);
-            Thread.sleep(1000);
-            driveMecanum.turnRight(-1, 1);
-            Thread.sleep(500);
+            idle();
+
         }
     }
+
+    public void drive(int leftTarget, int rightTarget, double speed) throws InterruptedException {
+
+        leftPos += leftTarget;
+        rightPos += rightTarget;
+
+        leftMotor.setTargetPosition(leftPos);
+        rightMotor.setTargetPosition(rightPos);
+
+        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftMotor.setPower(speed);
+        rightMotor.setPower(speed);
+        Thread.sleep(1000);
+
+    }
+
+
 
 }

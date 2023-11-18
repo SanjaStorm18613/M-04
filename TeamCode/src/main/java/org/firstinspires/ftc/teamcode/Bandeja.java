@@ -61,6 +61,6 @@ public class Bandeja {
     }
 
     public void pitchBandeja(double alpha, double adjust){
-        servoPitch.setPosition(.67 - alpha/180 + adjust/180);
+        servoPitch.setPosition(.33 - alpha/180 + adjust/180);
     }
 }
