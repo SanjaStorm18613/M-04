@@ -71,7 +71,7 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             telemetry.addData("TeleOP" , "Inicializando");
-            // telemetry.log();
+
             // DroneLauncher
             if(gamepad2.a && !droneBlock){
                 lancaDrone.lancarDrone();

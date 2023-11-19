@@ -19,44 +19,37 @@ import java.util.Set;
 public class DriveMecanum {
 
     private Servo servoE, servoD;
-    private DcMotor FR, FL, BR, BL;
+    private DcMotor FR, FL, BR, BL, Odom_L;
+    private DcMotor[] motors;
     private LinearOpMode opMode;
     private ElapsedTime accTime;
-
-    // private Gyroscope gyroscope;
     private double acc = 0, x = 0, y = 0, turn = 0, slowFactor = 0;
 
-    public DriveMecanum(LinearOpMode opMode){
+    public DriveMecanum(LinearOpMode opMode) {
 
         this.opMode = opMode;
 
-        /*gyroscope = new Gyroscope() {
-            @Override
-            public Set<Axis> getAngularVelocityAxes() {
-                return null;
-            }
 
-            @Override
-            public AngularVelocity getAngularVelocity(AngleUnit unit) {
-                return null;
-            }
-        };*/
 
         FR = opMode.hardwareMap.get(DcMotor.class, "FD");
         FL = opMode.hardwareMap.get(DcMotor.class, "FE");
         BR = opMode.hardwareMap.get(DcMotor.class, "BD");
         BL = opMode.hardwareMap.get(DcMotor.class, "BL");
 
+        Odom_L = opMode.hardwareMap.get(DcMotor.class, "LeftOdometry");
+
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
         BL.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        Odom_L.setDirection(DcMotorSimple.Direction.FORWARD);
+
         resetEnc();
 
-        DcMotor[] motors = {FL, FR, BR, BL};
+        motors = new DcMotor[]{FL, FR, BR, BL};
 
-        for (DcMotor m : motors){
+        for (DcMotor m : motors) {
             m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
@@ -69,7 +62,7 @@ public class DriveMecanum {
         setSlowFactor(gamepad1.right_trigger);
     }
 
-    public void periodic(){
+    public void periodic() {
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
@@ -77,15 +70,15 @@ public class DriveMecanum {
 
         double vel = slowFactor * Constants.DriveMecanum.speed * acc;
 
-        FL.setPower(((y+x) + turn) * vel);
-        FR.setPower(((y-x) - turn) * vel);
-        BL.setPower(((y-x) + turn) * vel);
-        BR.setPower(((y+x) - turn) * vel);
+        FL.setPower(((y + x) + turn) * vel);
+        FR.setPower(((y - x) - turn) * vel);
+        BL.setPower(((y - x) + turn) * vel);
+        BR.setPower(((y + x) - turn) * vel);
     }
 
-    private void updateAcceleration(boolean release){
+    private void updateAcceleration(boolean release) {
 
-        if (release){
+        if (release) {
             acc = 0;
             accTime.reset();
             return;
@@ -95,41 +88,58 @@ public class DriveMecanum {
         acc = Math.round(acc * 1000.0) / 1000.0;
     }
 
-    public void setDownEncoderServo(boolean act){
+    public void setDownEncoderServo(boolean act) {
         servoE.setPosition(act ? 0 : 1);
         servoD.setPosition(act ? 0 : 1);
     }
 
-    public void resetEnc(){
-        DcMotor[] motors = {FL, FR, BR, BL};
-        for (DcMotor m : motors){
+    public void resetEnc() {
+        for (DcMotor m : motors) {
             m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
-    public void setSlowFactor(double slowFactor){
+    public void setSlowFactor(double slowFactor) {
         this.slowFactor = 1 - slowFactor / 1.5;
     }
 
-    public void moveForwardAuto(int power){
-        FL.setPower(power);
-        FR.setPower(power);
-        BL.setPower(power);
-        BR.setPower(power);
+    public void moveForwardAuto(double power, int target, int odomTarget) {
+
+        Odom_L.setTargetPosition(odomTarget);
+
+        while (Odom_L.getCurrentPosition() < target) {
+            for (DcMotor m : motors) {
+                m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                m.setTargetPosition(target);
+                m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                m.setPower(power);
+            }
+        }
     }
 
-    public void turnLeft(int powerFL, int powerBL){
-        FL.setPower(powerFL);
-        FR.setPower(powerBL);
-        BL.setPower(powerBL);
-        BR.setPower(powerFL);
+    public void turnAuto(double powerFL, double powerBL, int turnTarget, int odomTurnTarget) {
+
+        Odom_L.setTargetPosition(odomTurnTarget);
+
+        while (Odom_L.getCurrentPosition() < turnTarget) {
+            for (DcMotor m : motors) {
+                m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                m.setTargetPosition(turnTarget);
+                m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            FL.setPower(powerFL);
+            FR.setPower(powerBL);
+            BL.setPower(powerBL);
+            BR.setPower(powerFL);
+        }
     }
-    public void turnRight(int powerFL, int powerBL){
-        FL.setPower(powerFL);
-        FR.setPower(powerBL);
-        BL.setPower(powerBL);
-        BR.setPower(powerFL);
+
+    public void stopAuto(double power) {
+        for (DcMotor m : motors) {
+            m.setPower(power);
+        }
     }
+
 
 }

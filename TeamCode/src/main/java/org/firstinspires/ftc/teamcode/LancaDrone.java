@@ -24,11 +24,14 @@ public class LancaDrone {
         servoDrone.setDirection(Servo.Direction.FORWARD);
 
         droneTelemetry = opMode.telemetry;
-        droneTelemetry.addData("Drone", servoDrone.getPosition());
-        droneTelemetry.update();
+
     }
 
-    public void telemetry(){
+    public void periodic(){
+
+        lancarDrone();
+        droneTelemetry.addData("Drone", servoDrone.getPosition());
+        droneTelemetry.update();
 
     }
 

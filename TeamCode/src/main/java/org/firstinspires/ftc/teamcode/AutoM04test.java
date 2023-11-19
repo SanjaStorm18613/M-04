@@ -34,6 +34,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import java.util.Timer;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -67,11 +70,13 @@ public class AutoM04test extends LinearOpMode {
 
     DriveMecanum driveMecanum;
 
+    ElapsedTime t = new ElapsedTime();
+
     private DcMotor rightMotor, leftMotor;
 
     private int leftPos, rightPos;
 
-    public AutoM04test() throws InterruptedException {
+    public AutoM04test(){
 
         telemetry.addData("Inicializando auto", "  ");
         driveMecanum = new DriveMecanum(this);
@@ -88,6 +93,7 @@ public class AutoM04test extends LinearOpMode {
         rightPos = 0;
 
         waitForStart();
+        t.startTime();
 
         drive(5000,5000, .6);
         drive(5000,-5000,.6);
@@ -98,12 +104,15 @@ public class AutoM04test extends LinearOpMode {
     public void runOpMode() {
         while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
 
+
+
             idle();
+
 
         }
     }
 
-    public void drive(int leftTarget, int rightTarget, double speed) throws InterruptedException {
+    public void drive(int leftTarget, int rightTarget, double speed) {
 
         leftPos += leftTarget;
         rightPos += rightTarget;
@@ -116,10 +125,8 @@ public class AutoM04test extends LinearOpMode {
 
         leftMotor.setPower(speed);
         rightMotor.setPower(speed);
-        Thread.sleep(1000);
+
 
     }
-
-
 
 }

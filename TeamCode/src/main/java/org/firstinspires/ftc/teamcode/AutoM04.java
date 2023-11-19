@@ -29,10 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -64,7 +68,7 @@ import org.openftc.easyopencv.OpenCvCamera;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="AutoM04", group="Robot")
+@Autonomous(name = "AutoM04", group = "Robot")
 @Disabled
 public class AutoM04 extends LinearOpMode {
 
@@ -74,6 +78,8 @@ public class AutoM04 extends LinearOpMode {
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
+    private BNO055IMU imu;
+    private double kP = 1;
 
     public AutoM04() {
 
@@ -85,23 +91,38 @@ public class AutoM04 extends LinearOpMode {
         bandeja = new Bandeja(this);
         braco = new Braco(this);
 
-    }
+        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu2");
 
-    OpenCvCamera openCvCamera;
+
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
+
         while (opModeIsActive()) {
 
-            driveMecanum.moveForwardAuto(1);
-            Thread.sleep(1000);
-            driveMecanum.turnLeft(1, -1);
-            Thread.sleep(500);
-            driveMecanum.moveForwardAuto(1);
-            Thread.sleep(1000);
-            driveMecanum.turnRight(-1, 1);
-            Thread.sleep(500);
+
+            driveMecanum.moveForwardAuto(.5, 3000, 3000);
+            driveMecanum.resetEnc();
+
+            driveMecanum.turnAuto(-0.3, 0.3, 100, 100);
+            driveMecanum.resetEnc();
+
+            driveMecanum.moveForwardAuto(.5, 3000, 3000);
+            driveMecanum.resetEnc();
+
+            driveMecanum.turnAuto(-0.3, 0.3, 100, 100);
+            driveMecanum.resetEnc();
+
+            driveMecanum.moveForwardAuto(.5, 3000, 3000);
+            driveMecanum.resetEnc();
+
+            driveMecanum.turnAuto(-0.3, 0.3, 100, 100);
+            driveMecanum.resetEnc();
+
+            driveMecanum.moveForwardAuto(-0.3, 3000, 3000);
+            driveMecanum.resetEnc();
         }
     }
-
+}
 }
