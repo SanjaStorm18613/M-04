@@ -14,8 +14,6 @@ public class LancaDrone {
     private Servo servoDrone, servoPitchDrone;
     private LinearOpMode opMode;
     private Telemetry droneTelemetry;
-    private boolean buttonLauncher;
-    private float pitchTrigger;
 
     public LancaDrone(LinearOpMode opMode){
         this.opMode = opMode;

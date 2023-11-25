@@ -79,8 +79,6 @@ public class AutoM04 extends LinearOpMode {
     Bandeja bandeja;
     Braco braco;
     private BNO055IMU imu;
-    private double kP = 1;
-
     public AutoM04() {
 
         telemetry.addData("Inicializando auto", " ");
@@ -97,32 +95,13 @@ public class AutoM04 extends LinearOpMode {
     }
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode(){
 
         while (opModeIsActive()) {
 
+            driveMecanum.moveForwardAuto(1, 3000, 3000);
 
-            driveMecanum.moveForwardAuto(.5, 3000, 3000);
-            driveMecanum.resetEnc();
-
-            driveMecanum.turnAuto(-0.3, 0.3, 100, 100);
-            driveMecanum.resetEnc();
-
-            driveMecanum.moveForwardAuto(.5, 3000, 3000);
-            driveMecanum.resetEnc();
-
-            driveMecanum.turnAuto(-0.3, 0.3, 100, 100);
-            driveMecanum.resetEnc();
-
-            driveMecanum.moveForwardAuto(.5, 3000, 3000);
-            driveMecanum.resetEnc();
-
-            driveMecanum.turnAuto(-0.3, 0.3, 100, 100);
-            driveMecanum.resetEnc();
-
-            driveMecanum.moveForwardAuto(-0.3, 3000, 3000);
-            driveMecanum.resetEnc();
+            sleep(1000);
         }
     }
-}
 }

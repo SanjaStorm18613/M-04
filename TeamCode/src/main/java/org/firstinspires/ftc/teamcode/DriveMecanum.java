@@ -31,9 +31,9 @@ public class DriveMecanum {
 
 
 
-        FR = opMode.hardwareMap.get(DcMotor.class, "FD");
-        FL = opMode.hardwareMap.get(DcMotor.class, "FE");
-        BR = opMode.hardwareMap.get(DcMotor.class, "BD");
+        FR = opMode.hardwareMap.get(DcMotor.class, "FR");
+        FL = opMode.hardwareMap.get(DcMotor.class, "FL");
+        BR = opMode.hardwareMap.get(DcMotor.class, "BR");
         BL = opMode.hardwareMap.get(DcMotor.class, "BL");
 
         Odom_L = opMode.hardwareMap.get(DcMotor.class, "LeftOdometry");
@@ -135,7 +135,7 @@ public class DriveMecanum {
         }
     }
 
-    public void stopAuto(double power) {
+    public void runAuto(double power) {
         for (DcMotor m : motors) {
             m.setPower(power);
         }
