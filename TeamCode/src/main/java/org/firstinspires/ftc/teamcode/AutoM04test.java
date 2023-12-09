@@ -65,68 +65,57 @@ import java.util.Timer;
  */
 
 @Autonomous(name="AutoM04test", group="Robot")
-@Disabled
+//@Disabled
+
 public class AutoM04test extends LinearOpMode {
-
-    DriveMecanum driveMecanum;
-
-    ElapsedTime t = new ElapsedTime();
+    DriveMecanum driveMecanum, Odom_L;
 
     private DcMotor rightMotor, leftMotor;
 
     private int leftPos, rightPos;
 
+    private double distance;
+
     public AutoM04test(){
 
         telemetry.addData("Inicializando auto", "  ");
         driveMecanum = new DriveMecanum(this);
-
-        leftMotor = hardwareMap.get(DcMotor.class, "leftMotor");
-        rightMotor = hardwareMap.get(DcMotor.class, "rightMotor");
-
-        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        rightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        leftPos = 0;
-        rightPos = 0;
-
-        waitForStart();
-        t.startTime();
-
-        drive(5000,5000, .6);
-        drive(5000,-5000,.6);
+        Odom_L = new DriveMecanum(this);
+        driveMecanum.resetEnc();
 
     }
 
     @Override
     public void runOpMode() {
-        while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
-
-
+        while (opModeIsActive()) {
 
             idle();
 
+            if (Odom_L.getCurrentPosition() >= 0){
 
+                driveMecanum.moveForwardAuto(1, 3800, 3800);
+                telemetry.addData("Odometry pos", Odom_L.getCurrentPosition());
+                telemetry.update();
+
+            } else if (Odom_L.getCurrentPosition() >= 3800){
+
+                driveMecanum.resetEnc();
+
+                driveMecanum.turn(.7, -0.7, -1000, 1000);
+
+            } else if (Odom_L.getCurrentPosition() >= 2800){
+
+                driveMecanum.resetEnc();
+
+                driveMecanum.moveForwardAuto(.7, 2000, 2000);
+
+            } else if (Odom_L.getCurrentPosition() >= 4800){
+
+                driveMecanum.resetEnc();
+
+                driveMecanum.turn(.7, -0.7, -1000, 1000);
+
+            }
         }
     }
-
-    public void drive(int leftTarget, int rightTarget, double speed) {
-
-        leftPos += leftTarget;
-        rightPos += rightTarget;
-
-        leftMotor.setTargetPosition(leftPos);
-        rightMotor.setTargetPosition(rightPos);
-
-        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        leftMotor.setPower(speed);
-        rightMotor.setPower(speed);
-
-
-    }
-
 }

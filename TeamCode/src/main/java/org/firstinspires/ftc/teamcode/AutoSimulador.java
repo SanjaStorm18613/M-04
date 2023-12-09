@@ -32,6 +32,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(.5);
 
             telemetry.addData("Encoder BackRight", backRightDrive.getCurrentPosition());
+            telemetry.update();
 
             sleep(5000);
 
@@ -41,6 +42,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(0.5);
 
             telemetry.addData("Encoder FrontRight", frontRightDrive.getCurrentPosition());
+            telemetry.update();
 
             sleep(3000);
 
@@ -50,6 +52,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(.8);
 
             telemetry.addData("Encoder RightBack", backRightDrive.getCurrentPosition());
+            telemetry.update();
 
             sleep(4000);
 
@@ -59,6 +62,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(0);
 
             telemetry.addData("Encoder RightBack", backRightDrive.getCurrentPosition());
+            telemetry.update();
 
             sleep(1000);
 
@@ -68,7 +72,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(1);
 
             telemetry.addData("Encoder RightBack", backRightDrive.getCurrentPosition());
-
+            telemetry.update();
 
             sleep(800);
 
@@ -78,6 +82,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(0);
 
             telemetry.addData("Encoder RightBack", backRightDrive.getCurrentPosition());
+            telemetry.update();
 
             sleep(600);
 
@@ -87,7 +92,7 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(.7);
 
             telemetry.addData("Encoder RightBack", backRightDrive.getCurrentPosition());
-
+            telemetry.update();
 
             sleep(450);
 
@@ -97,13 +102,11 @@ public class AutoSimulador extends LinearOpMode {
             frontLeftDrive.setPower(0);
 
             telemetry.addData("Encoder RightBack", backRightDrive.getCurrentPosition());
+            telemetry.update();
 
             sleep(500);
 
-
         }
-
     }
-
 }
 

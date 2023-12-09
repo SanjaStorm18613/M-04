@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AccelerationSensor;
@@ -24,11 +25,11 @@ public class DriveMecanum {
     private LinearOpMode opMode;
     private ElapsedTime accTime;
     private double acc = 0, x = 0, y = 0, turn = 0, slowFactor = 0;
+    private int target = 0;
 
     public DriveMecanum(LinearOpMode opMode) {
 
         this.opMode = opMode;
-
 
 
         FR = opMode.hardwareMap.get(DcMotor.class, "FR");
@@ -74,6 +75,14 @@ public class DriveMecanum {
         FR.setPower(((y - x) - turn) * vel);
         BL.setPower(((y - x) + turn) * vel);
         BR.setPower(((y + x) - turn) * vel);
+
+        telemetry.addData("X", gamepad1.left_stick_x);
+        telemetry.update();
+        telemetry.addData("Y", gamepad1.left_stick_y);
+        telemetry.update();
+        telemetry.addData("Velocidade", vel);
+        telemetry.update();
+        telemetry.addData("Turn", turn);
     }
 
     private void updateAcceleration(boolean release) {
@@ -101,7 +110,9 @@ public class DriveMecanum {
     }
 
     public void setSlowFactor(double slowFactor) {
+
         this.slowFactor = 1 - slowFactor / 1.5;
+
     }
 
     public void moveForwardAuto(double power, int target, int odomTarget) {
@@ -109,37 +120,64 @@ public class DriveMecanum {
         Odom_L.setTargetPosition(odomTarget);
 
         while (Odom_L.getCurrentPosition() < target) {
+
             for (DcMotor m : motors) {
-                m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
                 m.setTargetPosition(target);
-                m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                runToPosition();
+
                 m.setPower(power);
+
             }
         }
     }
 
-    public void turnAuto(double powerFL, double powerBL, int turnTarget, int odomTurnTarget) {
 
-        Odom_L.setTargetPosition(odomTurnTarget);
+    public void runAuto(double power, int target) {
 
-        while (Odom_L.getCurrentPosition() < turnTarget) {
-            for (DcMotor m : motors) {
-                m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                m.setTargetPosition(turnTarget);
-                m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            }
-            FL.setPower(powerFL);
-            FR.setPower(powerBL);
-            BL.setPower(powerBL);
-            BR.setPower(powerFL);
-        }
-    }
+        this.target = target;
 
-    public void runAuto(double power) {
         for (DcMotor m : motors) {
+
+            m.setTargetPosition(target);
             m.setPower(power);
+
         }
     }
 
+    public void runToPosition(){
 
+        for(DcMotor m : motors){
+
+            m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        }
+
+    }
+
+
+    public void turn(double powerF, double powerTurn, int targetTurn, int target){
+
+        resetEnc();
+
+        FR.setTargetPosition(targetTurn);
+        BL.setTargetPosition(targetTurn);
+        BR.setTargetPosition(target);
+        FL.setTargetPosition(target);
+
+        Odom_L.setTargetPosition(targetTurn);
+
+        runToPosition();
+
+        FR.setPower(powerTurn);
+        BL.setPower(powerTurn);
+        FL.setPower(powerF);
+        BR.setPower(powerF);
+
+        Odom_L.setPower(powerF);
+
+    }
 }
+
+
+

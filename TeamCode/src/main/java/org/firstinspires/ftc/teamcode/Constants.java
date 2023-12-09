@@ -25,6 +25,6 @@ public class Constants {
 
      public static class DriveMecanum{
         public static final double acceleration = 1,
-                                          speed = 1;
+                                          speed = .7;
      }
 }

@@ -71,6 +71,7 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             telemetry.addData("TeleOP" , "Inicializando");
+            telemetry.update();
 
             // DroneLauncher
             if(gamepad2.a && !droneBlock){
@@ -80,7 +81,8 @@ public class TeleopM04 extends LinearOpMode {
 
 
             //Collector
-            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
+            //coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
+            //coletor.repelir(Math.floor(gamepad1.left_trigger * 10) / 10);
 
             //Arm
             if (gamepad1.dpad_up && !armBlockUp) {
@@ -138,6 +140,9 @@ public class TeleopM04 extends LinearOpMode {
             }
             rollBandejaRightBlock = gamepad2.dpad_right;
             rollBandejaLeftBlock  = gamepad2.dpad_left;
+
+            //Tracao
+            if(gamepad1.left_stick_x > .1 && gamepad1.left_stick_y > .1 && gamepad1.right_stick_x > .1){driveMecanum.periodic();}
 
         }
     }

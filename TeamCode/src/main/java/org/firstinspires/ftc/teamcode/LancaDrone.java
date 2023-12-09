@@ -28,7 +28,7 @@ public class LancaDrone {
     public void periodic(){
 
         lancarDrone();
-        droneTelemetry.addData("Drone", servoDrone.getPosition());
+        droneTelemetry.addData("ServoDrone", servoDrone.getPosition());
         droneTelemetry.update();
 
     }

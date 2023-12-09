@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -19,7 +21,6 @@ public class SistemaLinear {
 
     private TouchSensor limit;
 
-    Telemetry systemTelemetry;
 
     private int pos = 0;
 
@@ -38,15 +39,16 @@ public class SistemaLinear {
 
         limit = opMode.hardwareMap.get(TouchSensor.class, "ArmLimit");
 
-        systemTelemetry = opMode.telemetry;
-        systemTelemetry.addData("pos", pos);
-        systemTelemetry.update();
+
+
 
     }
 
     public void periodic(){
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(0.8);
+        telemetry.addData("pos", pos);
+        telemetry.update();
     }
 
     /**Uso de uma limit para detectar o nível do braço**/
@@ -59,7 +61,6 @@ public class SistemaLinear {
     }
     /**Criando funções para esticar e retrair o sistema, para chama-las no periodic(), sem a necessidade da criação de if's, else's, etc.*/
     public void retrairSistema(boolean Down){
-
         if (!limit.isPressed()){
             pos -= (Down ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);

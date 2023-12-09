@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ControlSystem;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,33 +14,34 @@ public class Coletor{
     private DcMotor motorCollector;
     private LinearOpMode opMode;
 
-    Telemetry collectorTelemetry;
     private float collectorTrigger;
 
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
 
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
-
-        collectorTelemetry = opMode.telemetry;
-        collectorTelemetry.addData("Coletor", " ");
-        collectorTelemetry.update();
     }
 
     public void periodic(){
+
+        telemetry.addData("Coletor", " ");
+        telemetry.update();
+
+
+
 
     }
 
     public void collect(double col){
         motorCollector.setPower(col);
-        collectorTelemetry.addData("Coletor", motorCollector.getCurrentPosition());
-        collectorTelemetry.update();
+        telemetry.addData("Coletor", motorCollector.getCurrentPosition());
+        telemetry.update();
 
     }
 
     public void repelir(double rep){
         motorCollector.setPower(rep);
-        collectorTelemetry.addData("Repelir pixel: ", motorCollector.getCurrentPosition());
+        telemetry.addData("Repelir pixel: ", motorCollector.getCurrentPosition());
 
     }
 }

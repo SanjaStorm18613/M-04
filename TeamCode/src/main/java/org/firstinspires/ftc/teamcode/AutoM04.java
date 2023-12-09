@@ -101,7 +101,6 @@ public class AutoM04 extends LinearOpMode {
 
             driveMecanum.moveForwardAuto(1, 3000, 3000);
 
-            sleep(1000);
         }
     }
 }
