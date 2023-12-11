@@ -17,10 +17,10 @@ public class AutoSimulador extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeft");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRight");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRight");
 
         waitForStart();
 

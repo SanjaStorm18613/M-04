@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -68,19 +69,16 @@ import java.util.Timer;
 //@Disabled
 
 public class AutoM04test extends LinearOpMode {
-    DriveMecanum driveMecanum, Odom_L;
-
-    private DcMotor rightMotor, leftMotor;
-
-    private int leftPos, rightPos;
-
-    private double distance;
+    DriveMecanum driveMecanum, servoE, servoD;
+    int endP;
 
     public AutoM04test(){
 
         telemetry.addData("Inicializando auto", "  ");
         driveMecanum = new DriveMecanum(this);
-        Odom_L = new DriveMecanum(this);
+        endP = 0;
+
+
         driveMecanum.resetEnc();
 
     }
@@ -91,30 +89,77 @@ public class AutoM04test extends LinearOpMode {
 
             idle();
 
-            if (Odom_L.getCurrentPosition() >= 0){
+            telemetry.addData("DriveMecanum Run", driveMecanum.BL.getCurrentPosition());
+            driveMecanum.moveForwardAuto(.7, 8001);
+            if (driveMecanum.BL.getCurrentPosition() >= 8000 && endP == 0){
 
-                driveMecanum.moveForwardAuto(1, 3800, 3800);
-                telemetry.addData("Odometry pos", Odom_L.getCurrentPosition());
-                telemetry.update();
+                driveMecanum.resetEnc();
+                endP++;
 
-            } else if (Odom_L.getCurrentPosition() >= 3800){
+            }
+            if (endP == 1) {
+
+                driveMecanum.turn(.7, 2871);
+            }
+            if (driveMecanum.BL.getCurrentPosition() > 2870 && endP == 1){
 
                 driveMecanum.resetEnc();
 
-                driveMecanum.turn(.7, -0.7, -1000, 1000);
+                endP++;
 
-            } else if (Odom_L.getCurrentPosition() >= 2800){
+            }
 
+            if (endP == 2){
+
+                driveMecanum.moveForwardAuto(1, 12000);
+
+            }
+
+            if(driveMecanum.BL.getCurrentPosition() > 12000 && endP == 2){
+
+                endP++;
                 driveMecanum.resetEnc();
 
-                driveMecanum.moveForwardAuto(.7, 2000, 2000);
+            }
 
-            } else if (Odom_L.getCurrentPosition() >= 4800){
+            if(endP == 3){
 
+                driveMecanum.right(.7, 4501);
+            }
+
+            if(driveMecanum.BL.getCurrentPosition() < -4500 && endP == 3){
+                endP++;
+                driveMecanum.resetEnc();
+            }
+
+            if(endP == 4){
+
+                driveMecanum.moveForwardAuto(.7, 2567);
+
+            }
+
+            if(driveMecanum.BL.getCurrentPosition() > 2566 && endP == 4){
+
+                endP++;
                 driveMecanum.resetEnc();
 
-                driveMecanum.turn(.7, -0.7, -1000, 1000);
+            }
 
+            if(endP == 5){
+
+                driveMecanum.moveForwardAuto(-0.7, -101);
+
+            }
+
+            if(driveMecanum.BL.getCurrentPosition() <= 100 && endP == 5){
+
+                endP++;
+                driveMecanum.resetEnc();
+            }
+
+            if(endP == 6){
+
+                driveMecanum.right(.7, 3256);
             }
         }
     }
