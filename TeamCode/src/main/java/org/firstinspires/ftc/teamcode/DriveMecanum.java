@@ -69,7 +69,7 @@ public class DriveMecanum {
         setSlowFactor(gamepad1.right_trigger);
     }
 
-    public void periodic() {
+    public void periodic(){
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
@@ -83,12 +83,10 @@ public class DriveMecanum {
         BR.setPower(((y + x) - turn) * vel);
 
         telemetry.addData("X", gamepad1.left_stick_x);
-        telemetry.update();
         telemetry.addData("Y", gamepad1.left_stick_y);
-        telemetry.update();
         telemetry.addData("Velocidade", vel);
-        telemetry.update();
         telemetry.addData("Turn", turn);
+        telemetry.update();
     }
 
     private void updateAcceleration(boolean release) {
@@ -176,6 +174,15 @@ public class DriveMecanum {
         FR.setPower(-power);
 
     }
+
+    public DcMotor getBL(){
+        return this.BL;
+    }
+    public DcMotor setBL(DcMotor BL){
+        this.BL = BL;
+        return BL;
+    }
+
 }
 
 

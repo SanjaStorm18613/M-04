@@ -70,17 +70,15 @@ import java.util.Timer;
 
 public class AutoM04test extends LinearOpMode {
     DriveMecanum driveMecanum, servoE, servoD;
-    int endP;
+    int step;
 
     public AutoM04test(){
 
-        telemetry.addData("Inicializando auto", "  ");
+        telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
-        endP = 0;
-
+        step = 0;
 
         driveMecanum.resetEnc();
-
     }
 
     @Override
@@ -89,78 +87,79 @@ public class AutoM04test extends LinearOpMode {
 
             idle();
 
-            telemetry.addData("DriveMecanum Run", driveMecanum.BL.getCurrentPosition());
-            driveMecanum.moveForwardAuto(.7, 8001);
-            if (driveMecanum.BL.getCurrentPosition() >= 8000 && endP == 0){
+            telemetry.addData("DriveMecanumRun", driveMecanum.getBL().getCurrentPosition());
+            telemetry.update();
 
-                driveMecanum.resetEnc();
-                endP++;
+            driveMecanum.moveForwardAuto(.7, 3801);
 
+            if(driveMecanum.getBL().getCurrentPosition() >= 3800 && step == 0){
+                resetEnc_step();
             }
-            if (endP == 1) {
+            if(step == 1) {
 
                 driveMecanum.turn(.7, 2871);
-            }
-            if (driveMecanum.BL.getCurrentPosition() > 2870 && endP == 1){
-
-                driveMecanum.resetEnc();
-
-                endP++;
 
             }
+            if(driveMecanum.getBL().getCurrentPosition() > ConstantsAuto.Drive.degree90 && step == 1){
+                resetEnc_step();
+            }
+            if (step == 2){
 
-            if (endP == 2){
-
-                driveMecanum.moveForwardAuto(1, 12000);
+                driveMecanum.moveForwardAuto(.8, 11001);
 
             }
+            if(driveMecanum.getBL().getCurrentPosition() > 11000 && step == 2){
+                resetEnc_step();
+            }
+            if(step == 3){
 
-            if(driveMecanum.BL.getCurrentPosition() > 12000 && endP == 2){
+                driveMecanum.right(.7, 3301);
+            }
+            if(driveMecanum.getBL().getCurrentPosition() < -3300 && step == 3){
+                resetEnc_step();
+            }
+            if(step == 4){
 
-                endP++;
-                driveMecanum.resetEnc();
+                driveMecanum.moveForwardAuto(-0.7, -11001);
 
             }
-
-            if(endP == 3){
-
-                driveMecanum.right(.7, 4501);
+            if(driveMecanum.getBL().getCurrentPosition() < -11000 && step == 4){
+                resetEnc_step();
             }
+            if(step == 5){
 
-            if(driveMecanum.BL.getCurrentPosition() < -4500 && endP == 3){
-                endP++;
-                driveMecanum.resetEnc();
-            }
-
-            if(endP == 4){
-
-                driveMecanum.moveForwardAuto(.7, 2567);
+                driveMecanum.moveForwardAuto(-0.7, -2871);
 
             }
+            if(driveMecanum.getBL().getCurrentPosition() < -2870 && step == 5){
+                resetEnc_step();
+            }
+            if(step == 6){
 
-            if(driveMecanum.BL.getCurrentPosition() > 2566 && endP == 4){
-
-                endP++;
-                driveMecanum.resetEnc();
+                driveMecanum.moveForwardAuto(.8, 6001);
 
             }
-
-            if(endP == 5){
-
-                driveMecanum.moveForwardAuto(-0.7, -101);
+            if(driveMecanum.getBL().getCurrentPosition() > 6000 && step == 6){
+                resetEnc_step();
 
             }
+            if(step == 7){
 
-            if(driveMecanum.BL.getCurrentPosition() <= 100 && endP == 5){
+                driveMecanum.turn(.8, 5742);
 
-                endP++;
-                driveMecanum.resetEnc();
             }
+            if(driveMecanum.getBL().getCurrentPosition() > 5741 && step == 7){
+                resetEnc_step();
+            }
+            if(step == 8){
 
-            if(endP == 6){
+                driveMecanum.moveForwardAuto(.5, -7000);
 
-                driveMecanum.right(.7, 3256);
             }
         }
+    }
+    public void resetEnc_step(){
+        driveMecanum.resetEnc();
+        step++;
     }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import android.accounts.AbstractAccountAuthenticator;
 
@@ -13,7 +14,6 @@ public class LancaDrone {
 
     private Servo servoDrone, servoPitchDrone;
     private LinearOpMode opMode;
-    private Telemetry droneTelemetry;
 
     public LancaDrone(LinearOpMode opMode){
         this.opMode = opMode;
@@ -21,15 +21,14 @@ public class LancaDrone {
         servoDrone = opMode.hardwareMap.get(Servo.class, "Drone");
         servoDrone.setDirection(Servo.Direction.FORWARD);
 
-        droneTelemetry = opMode.telemetry;
 
     }
 
     public void periodic(){
 
         lancarDrone();
-        droneTelemetry.addData("ServoDrone", servoDrone.getPosition());
-        droneTelemetry.update();
+        telemetry.addData("ServoDrone", servoDrone.getPosition());
+        telemetry.update();
 
     }
 

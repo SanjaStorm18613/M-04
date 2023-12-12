@@ -26,10 +26,6 @@ public class Coletor{
 
         telemetry.addData("Coletor", " ");
         telemetry.update();
-
-
-
-
     }
 
     public void collect(double col){
@@ -42,6 +38,7 @@ public class Coletor{
     public void repelir(double rep){
         motorCollector.setPower(rep);
         telemetry.addData("Repelir pixel: ", motorCollector.getCurrentPosition());
+        telemetry.update();
 
     }
 }

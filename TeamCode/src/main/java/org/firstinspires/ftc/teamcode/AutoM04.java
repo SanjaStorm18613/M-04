@@ -99,7 +99,7 @@ public class AutoM04 extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            driveMecanum.moveForwardAuto(1, 3000, 3000);
+            driveMecanum.moveForwardAuto(1, 3000);
 
         }
     }
