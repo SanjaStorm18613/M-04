@@ -21,14 +21,14 @@ public class DriveMecanum {
 
     private Servo servoE, servoD;
     private Servo[] servos;
-    private DcMotor FR, FL, BR, BL;
+    private DcMotor FR, FL, BR, BL, eRight;
     private DcMotor[] motors;
     private LinearOpMode opMode;
     private ElapsedTime accTime;
     private double acc = 0, x = 0, y = 0, turn = 0, slowFactor = 0;
     private int target = 0;
 
-    public DriveMecanum(LinearOpMode opMode) {
+    public DriveMecanum(LinearOpMode opMode, SistemaLinear sistemaLinear) {
 
         this.opMode = opMode;
 
@@ -82,8 +82,8 @@ public class DriveMecanum {
         BL.setPower(((y - x) + turn) * vel);
         BR.setPower(((y + x) - turn) * vel);
 
-        telemetry.addData("X", gamepad1.left_stick_x);
-        telemetry.addData("Y", gamepad1.left_stick_y);
+        telemetry.addData("X", x);
+        telemetry.addData("Y", y);
         telemetry.addData("Velocidade", vel);
         telemetry.addData("Turn", turn);
         telemetry.update();

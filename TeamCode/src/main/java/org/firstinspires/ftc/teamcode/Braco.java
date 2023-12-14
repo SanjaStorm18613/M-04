@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -29,6 +31,9 @@ public class Braco {
         this.opMode = opMode;
 
         motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
+
+        motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         motorBraco.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBraco.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -40,33 +45,48 @@ public class Braco {
 
         targetPos = stages[stage] + adjust * Constants.Braco.adjust;
 
-        motorBraco.setTargetPosition((int)(targetPos));
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorBraco.setTargetPosition((int)(targetPos));
         motorBraco.setPower(0.8);
 
-        armTelemetry.addData("Braco", targetPos);
-        armTelemetry.update();
+        telemetry.addData("Braco", targetPos);
+        telemetry.update();
     }
 
     public double getTargetPos() {
         return targetPos;
     }
 
-    public void BracoUp(){
+    /*public void BracoUp(){
             stage = min((stage + 1), 3);
-            armTelemetry.addData("Braco_UP", stage);
-            armTelemetry.update();
+            motorBraco.setPower(stage);
     }
-    public void BracoDown(){
+    public void BracoDown(double power){
             stage = max((stage - 1), 0);
-            armTelemetry.addData("Braco_DOWN", stage);
-            armTelemetry.update();
-    }
+            motorBraco.setPower(power);
+    }*/
 
-    public void testBraco(boolean a, boolean b, int c) {
-        if(a) {
-            BracoUp();
-            armTelemetry.addData("Braco_UP", stage);
+    public void PitchBraco(double power, int target){
+
+        if(motorBraco.getCurrentPosition() >= Constants.Braco.stage0 && motorBraco.getCurrentPosition() <= Constants.Braco.stage1) {
+
+            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBraco.setTargetPosition(target);
+            motorBraco.setPower(power);
+
+            telemetry.addData("MotorBraço", motorBraco.getCurrentPosition());
+            telemetry.update();
+
+        }
+
+        else if(motorBraco.getCurrentPosition() < Constants.Braco.stage0 || motorBraco.getCurrentPosition() > Constants.Braco.stage1){
+
+            motorBraco.setPower(0);
+            telemetry.addData("MotorBraço", motorBraco.getCurrentPosition());
+            telemetry.update();
+
         }
     }
+
 }

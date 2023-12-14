@@ -39,6 +39,8 @@ public class Coletor{
         motorCollector.setPower(rep);
         telemetry.addData("Repelir pixel: ", motorCollector.getCurrentPosition());
         telemetry.update();
-
+    }
+    public void repelirAuto(double power){
+        motorCollector.setPower(-power);
     }
 }

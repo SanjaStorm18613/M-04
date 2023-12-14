@@ -57,7 +57,7 @@ public class TeleopM04 extends LinearOpMode {
                     droneBlock = false;
 
     public TeleopM04() {
-        driveMecanum  = new DriveMecanum(this);
+        driveMecanum  = new DriveMecanum(this, sistemaLinear);
         sistemaLinear = new SistemaLinear(this);
         lancaDrone    = new LancaDrone(this);
         coletor       = new Coletor(this);
@@ -71,29 +71,33 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             telemetry.addData("TeleOP" , "Inicializando");
-            telemetry.update();
 
             // DroneLauncher
             if(gamepad2.a && !droneBlock){
                 lancaDrone.lancarDrone();
             }
             droneBlock = gamepad2.a;
-
+            telemetry.addData("Drone", lancaDrone.getServoDrone().getPosition());
 
             //Collector
-            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
-            coletor.repelir(Math.floor(gamepad1.left_trigger * 10) / 10);
+            coletor.collect(Math.floor(gamepad1.left_trigger * 10) / 10);
+            coletor.repelir(Math.floor(gamepad1.right_trigger * 10) / 10);
 
             //Arm
-            if (gamepad1.dpad_up && !armBlockUp) {
+            /*if (gamepad1.dpad_up && !armBlockUp) {
                 braco.BracoUp();
             } else if (gamepad1.dpad_down && !armBlockDown) {
-                braco.BracoDown();
-            }
+                braco.BracoDown(.5);
+            }*/
+
+            if(gamepad1.right_trigger > .1){ braco.PitchBraco(.5, Constants.Braco.stage1); }
+
+            if(gamepad1.left_trigger > .1){ braco.PitchBraco(.5, Constants.Braco.stage0); }
+
+
             armBlockUp = gamepad1.dpad_up;
             armBlockDown = gamepad1.dpad_down;
 
-            //Roll da bandeja sincronizado com o sistema linear (ao retrair totalmente, o roll volta para a posição inicial)
             if (gamepad1.a) {
                 sistemaLinear.retrairSistemaTotal();
                 bandeja.rollBandeja(0);
@@ -102,7 +106,6 @@ public class TeleopM04 extends LinearOpMode {
             //SistemaLinear
             sistemaLinear.esticarSistema(gamepad1.right_bumper);
             sistemaLinear.retrairSistema(gamepad1.left_bumper);
-
 
             if (gamepad1.b && !sistemaLinearBlockDown){
                 sistemaLinear.retrairSistemaTotal();
@@ -119,7 +122,6 @@ public class TeleopM04 extends LinearOpMode {
             } else if (gamepad2.b && !bandejaBlockLeft){
                 bandeja.rollBandeja(-1);
                 bandeja.destravarBandeja();
-
             }
             bandejaBlockRight = gamepad2.a;
             bandejaBlockLeft  = gamepad2.b;
@@ -145,6 +147,7 @@ public class TeleopM04 extends LinearOpMode {
             if(gamepad1.left_stick_x > .1 && gamepad1.left_stick_y > .1 && gamepad1.right_stick_x > .1){
                 driveMecanum.periodic();
             }
+            telemetry.update();
 
         }
     }

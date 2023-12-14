@@ -82,14 +82,14 @@ public class AutoM04 extends LinearOpMode {
     public AutoM04() {
 
         telemetry.addData("Inicializando auto", " ");
-        driveMecanum = new DriveMecanum(this);
+        driveMecanum = new DriveMecanum(this, sistemaLinear);
         sistemaLinear = new SistemaLinear(this);
         lancaDrone = new LancaDrone(this);
         coletor = new Coletor(this);
         bandeja = new Bandeja(this);
         braco = new Braco(this);
 
-        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu2");
+        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu1");
 
 
     }
@@ -99,7 +99,7 @@ public class AutoM04 extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            driveMecanum.moveForwardAuto(1, 3000);
+            driveMecanum.moveForwardAuto(1, 3801);
 
         }
     }

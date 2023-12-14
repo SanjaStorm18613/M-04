@@ -39,13 +39,11 @@ public class SistemaLinear {
 
         limit = opMode.hardwareMap.get(TouchSensor.class, "ArmLimit");
 
-
-
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
     public void periodic(){
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(0.8);
         telemetry.addData("pos", pos);
         telemetry.update();
@@ -69,7 +67,7 @@ public class SistemaLinear {
 
     public void retrairSistemaTotal(){
         if (!limit.isPressed()){
-            armMotor.setTargetPosition(30);
+            armMotor.setTargetPosition(1000);
         }
     }
 

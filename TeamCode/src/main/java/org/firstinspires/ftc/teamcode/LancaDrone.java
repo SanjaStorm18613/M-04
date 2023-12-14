@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class LancaDrone {
 
-    private Servo servoDrone, servoPitchDrone;
+    private Servo servoDrone;
     private LinearOpMode opMode;
 
     public LancaDrone(LinearOpMode opMode){
@@ -36,4 +36,12 @@ public class LancaDrone {
         servoDrone.setPosition(.7);
     }
 
+    public Servo getServoDrone(){
+        return this.servoDrone;
+    }
+    public Servo setServoDrone(Servo servoDrone){
+        this.servoDrone = servoDrone;
+        return servoDrone;
+
+    }
 }

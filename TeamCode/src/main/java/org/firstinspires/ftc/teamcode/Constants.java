@@ -9,11 +9,11 @@ public class Constants {
     }
 
     public static class Braco{
-        public static final double stage0 = 0.0, stage1 = 1.8, stage2 = 3.5, stage3 = 4.1,
-
+        public static final double stagee0 = 0.0,  stage2 = 3.5, stage3 = 4.1,
                                    up_speed = 1,
                                    lower_speed = .9,
                                    adjust = .25;
+        public static final int stage1 = 2000, stage0 = 0;
      }
 
      public static class PitchBandeja{
