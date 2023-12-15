@@ -76,19 +76,19 @@ public class AutoM04test extends LinearOpMode {
     Coletor coletor;
     int step;
 
-    public AutoM04test(){
 
+
+    @Override
+    public void runOpMode() {
         telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
-        driveMecanum = new DriveMecanum(this, sistemaLinear);
+        driveMecanum = new DriveMecanum(this);
         sistemaLinear = new SistemaLinear(this);
         coletor = new Coletor(this);
         step = 0;
 
         driveMecanum.resetEnc();
-    }
 
-    @Override
-    public void runOpMode() {
+        waitForStart();
         while (opModeIsActive()) {
 
             idle();
@@ -96,35 +96,35 @@ public class AutoM04test extends LinearOpMode {
             telemetry.addData("DriveMecanumRun", driveMecanum.getBL().getCurrentPosition());
             telemetry.update();
 
-            driveMecanum.moveForwardAuto(.7, 3801);
+            driveMecanum.moveForwardAuto(.5, 3801);
 
             if (driveMecanum.getBL().getCurrentPosition() >= 3800 && step == 0){ resetEnc_step(); }
 
-            if (step == 1){ driveMecanum.turn(.7, 2871); }
+            if (step == 1){ driveMecanum.turn(.5, 2871); }
 
             if (driveMecanum.getBL().getCurrentPosition() > ConstantsAuto.Drive.degree90 && step == 1){ resetEnc_step(); }
 
-            if (step == 2){ driveMecanum.moveForwardAuto(.8, 11001); }
+            if (step == 2){ driveMecanum.moveForwardAuto(.6, 11001); }
 
             if (driveMecanum.getBL().getCurrentPosition() > 11000 && step == 2) { resetEnc_step(); }
 
-            if (step == 3){ driveMecanum.right(.7, 3301); }
+            if (step == 3){ driveMecanum.right(.5, 3301); }
 
             if (driveMecanum.getBL().getCurrentPosition() < -3300 && step == 3){ resetEnc_step(); }
 
-            if (step == 4){ driveMecanum.moveForwardAuto(-0.7, -11001); }
+            if (step == 4){ driveMecanum.moveForwardAuto(-0.5, -11001); }
 
             if (driveMecanum.getBL().getCurrentPosition() < -11000 && step == 4){ resetEnc_step(); }
 
-            if (step == 5){ driveMecanum.turn(-0.7, -2871); }
+            if (step == 5){ driveMecanum.turn(-0.5, -2871); }
 
             if (driveMecanum.getBL().getCurrentPosition() < -ConstantsAuto.Drive.degree90 && step == 5){ resetEnc_step(); }
 
-            if (step == 6){ driveMecanum.moveForwardAuto(.8, 6001); }
+            if (step == 6){ driveMecanum.moveForwardAuto(.5, 6001); }
 
             if (driveMecanum.getBL().getCurrentPosition() > 6000 && step == 6){ resetEnc_step(); }
 
-            if (step == 7){ driveMecanum.turn(.8, 5742); }
+            if (step == 7){ driveMecanum.turn(.5, 5742); }
 
             if (driveMecanum.getBL().getCurrentPosition() > 5741 && step == 7){ resetEnc_step(); }
 

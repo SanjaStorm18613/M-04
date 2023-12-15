@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,7 +22,7 @@ public class Braco {
     Telemetry armTelemetry;
 
     private int stage = 0;
-    private double targetPos, adjust = 0;
+    private double targetPos, adjust = 0, kP;
 
     private double[] resp = {0, 1, 2, 3, 4, 5, 6, 6, 7, 7};
 
@@ -38,6 +38,7 @@ public class Braco {
         motorBraco.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         armTelemetry = opMode.telemetry;
+        kP = .5;
 
     }
 
@@ -67,15 +68,24 @@ public class Braco {
             motorBraco.setPower(power);
     }*/
 
-    public void PitchBraco(double power, int target){
+    public void PitchBraco(int target){
 
-        if(motorBraco.getCurrentPosition() >= Constants.Braco.stage0 && motorBraco.getCurrentPosition() <= Constants.Braco.stage1) {
+        double encoderPosition = motorBraco.getCurrentPosition();
+        double setPoint = Constants.Braco.stage1;
+        double reference = Constants.Braco.stage0;
+
+        double error = setPoint - encoderPosition;
+        double outputPower = (kP * error) / 10000;
+
+
+        if(encoderPosition >= reference && encoderPosition <= setPoint) {
 
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setTargetPosition(target);
-            motorBraco.setPower(power);
+            motorBraco.setPower(outputPower);
 
-            telemetry.addData("MotorBraço", motorBraco.getCurrentPosition());
+            telemetry.addData("MotorBraço", encoderPosition);
+            telemetry.addData("outputPower", outputPower);
             telemetry.update();
 
         }
@@ -87,6 +97,10 @@ public class Braco {
             telemetry.update();
 
         }
+    }
+
+    private void resetEncoder(){
+        motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 }
