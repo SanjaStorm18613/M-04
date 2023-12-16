@@ -55,40 +55,46 @@ public class TeleopM04 extends LinearOpMode {
         driveMecanum  = new DriveMecanum(this);
         //sistemaLinear = new SistemaLinear(this);
         //lancaDrone    = new LancaDrone(this);
-        //coletor       = new Coletor(this);
+        coletor       = new Coletor(this);
         //bandeja       = new Bandeja(this);
         //braco         = new Braco(this);
 
         waitForStart();
+        telemetry.addData("TeleOP" , "Inicializando");
 
         while(opModeIsActive()) {
 
-            telemetry.addData("TeleOP" , "Inicializando");
 
             // DroneLauncher
             /*if(gamepad2.a && !droneBlock){
                 lancaDrone.lancarDrone();
             }
             droneBlock = gamepad2.a;
-            telemetry.addData("Drone", lancaDrone.getServoDrone().getPosition());
+            telemetry.addData("Drone", lancaDrone.getServoDrone().getPosition());*/
 
             //Collector
-            coletor.collect(Math.floor(gamepad1.left_trigger * 10) / 10);
-            //coletor.repelir(Math.floor(gamepad1.right_trigger * 10) / 10);
+            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
+            //coletor.repelir(Math.floor(gamepad1.left_trigger * 10) / 10);
 
-            //Arm
-            /*if (gamepad1.dpad_up && !armBlockUp) {
+            /*//Arm
+            if (gamepad1.dpad_up && !armBlockUp) {
                 braco.BracoUp();
             } else if (gamepad1.dpad_down && !armBlockDown) {
                 braco.BracoDown(.5);
-            }
+            }*/
 
-            if(gamepad1.a){ braco.PitchBraco(Constants.Braco.stage1); }
-
+            /*if(gamepad1.a){ braco.PitchBraco(Constants.Braco.stage1); }
             if(gamepad1.b){ braco.PitchBraco(Constants.Braco.stage0); }
 
 
-            armBlockUp = gamepad1.dpad_up;
+            telemetry.addData("motor", braco.getMotorBraco().getCurrentPosition());
+            telemetry.addData("rightTrigger", gamepad1.right_trigger);
+            telemetry.addData("leftTrigger", gamepad1.left_trigger);
+            telemetry.addData("target", braco.target);
+            telemetry.update();
+
+
+           /* armBlockUp = gamepad1.dpad_up;
             armBlockDown = gamepad1.dpad_down;
 
             if (gamepad1.a) {
@@ -137,9 +143,8 @@ public class TeleopM04 extends LinearOpMode {
             rollBandejaLeftBlock  = gamepad2.dpad_left;
 */
             //Tração
-            if(gamepad1.left_stick_x > .1 && gamepad1.left_stick_y > .1 && gamepad1.right_stick_x > .1){
-                driveMecanum.periodic();
-            }
+            driveMecanum.periodic(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x);
+
             //telemetry.update();
 
         }

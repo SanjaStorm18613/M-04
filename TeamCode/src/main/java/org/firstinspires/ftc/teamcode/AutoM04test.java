@@ -82,8 +82,8 @@ public class AutoM04test extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
-        sistemaLinear = new SistemaLinear(this);
-        coletor = new Coletor(this);
+        //sistemaLinear = new SistemaLinear(this);
+        //coletor = new Coletor(this);
         step = 0;
 
         driveMecanum.resetEnc();
@@ -130,7 +130,7 @@ public class AutoM04test extends LinearOpMode {
 
             if (step == 8){ driveMecanum.moveForwardAuto(.5, -7000); }
 
-            //coletor.repelirAuto(.5);
+            //coletor.repelirAuto(.5);*/
 
 
         }

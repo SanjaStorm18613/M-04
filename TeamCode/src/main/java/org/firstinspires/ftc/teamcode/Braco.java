@@ -19,10 +19,9 @@ public class Braco {
     private final double[] stages = { Constants.Braco.stage0, Constants.Braco.stage1,
                                       Constants.Braco.stage2, Constants.Braco.stage3 };
 
-    Telemetry armTelemetry;
-
     private int stage = 0;
     private double targetPos, adjust = 0, kP;
+    public float target;
 
     private double[] resp = {0, 1, 2, 3, 4, 5, 6, 6, 7, 7};
 
@@ -30,14 +29,13 @@ public class Braco {
 
         this.opMode = opMode;
 
-        motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
+        //motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
 
         motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorBraco.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBraco.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        armTelemetry = opMode.telemetry;
         kP = .5;
 
     }
@@ -51,8 +49,6 @@ public class Braco {
         motorBraco.setTargetPosition((int)(targetPos));
         motorBraco.setPower(0.8);
 
-        telemetry.addData("Braco", targetPos);
-        telemetry.update();
     }
 
     public double getTargetPos() {
@@ -70,37 +66,51 @@ public class Braco {
 
     public void PitchBraco(int target){
 
+        this.target = target;
+        //float lastTarget = target;
+        //resetEncoder();
         double encoderPosition = motorBraco.getCurrentPosition();
-        double setPoint = Constants.Braco.stage1;
         double reference = Constants.Braco.stage0;
+        double setPoint = Constants.Braco.stage1;
 
         double error = setPoint - encoderPosition;
-        double outputPower = (kP * error) / 10000;
+        double outputPower = (kP * error) / 1000;
+
+        //trava para controle e posição do motor
+        // Criar variável para armazenar o valor que vai ser passado para a função setTargetPosition
+        // Essa variável recebe o valor que vem dos triggers, mas só muda se o valor do trigger for maior que essa variável atual
+        // variavel começa com valor 0 e vai aumentando se o valor do trigger é maior que ela própria
+        //  Variável reseta (= 0) quando trigger for 0 (piloto soltou botão)
 
 
         if(encoderPosition >= reference && encoderPosition <= setPoint) {
 
-            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setTargetPosition(target);
+            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(outputPower);
 
-            telemetry.addData("MotorBraço", encoderPosition);
-            telemetry.addData("outputPower", outputPower);
-            telemetry.update();
-
+        }
+        if(encoderPosition < 0){
+            resetEncoder();
         }
 
-        else if(motorBraco.getCurrentPosition() < Constants.Braco.stage0 || motorBraco.getCurrentPosition() > Constants.Braco.stage1){
-
-            motorBraco.setPower(0);
-            telemetry.addData("MotorBraço", motorBraco.getCurrentPosition());
-            telemetry.update();
-
-        }
+        /*else if(motorBraco.getCurrentPosition() < Constants.Braco.stage0 || motorBraco.getCurrentPosition() > Constants.Braco.stage1){
+            motorBraco.setTargetPosition(target);
+            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBraco.setPower(.1);
+        }*/
     }
 
-    private void resetEncoder(){
+    public void resetEncoder(){
         motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public DcMotor setMotorBraco(DcMotor motorBraco){
+        this.motorBraco = motorBraco;
+        return motorBraco;
+    }
+    public DcMotor getMotorBraco(){
+        return this.motorBraco;
     }
 
 }

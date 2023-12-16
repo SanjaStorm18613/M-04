@@ -20,8 +20,6 @@ import java.util.Set;
 
 public class DriveMecanum {
 
-    private Servo servoE, servoD;
-    private Servo[] servos;
     private DcMotor FR, FL, BR, BL;
     private DcMotor[] motors;
     private LinearOpMode opMode;
@@ -46,8 +44,6 @@ public class DriveMecanum {
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //servoD = opMode.hardwareMap.get(Servo.class, "RightOdometry");
-        //servoE = opMode.hardwareMap.get(Servo.class, "LeftOdometry");
 
         /*imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -57,13 +53,8 @@ public class DriveMecanum {
 
 
         motors = new DcMotor[]{FL, FR, BR, BL};
-        //servos = new Servo[]{servoD, servoE};
 
         resetEnc();
-
-        /*for (Servo s : servos) {
-            s.setDirection(Servo.Direction.FORWARD);
-        }*/
 
         for (DcMotor m : motors) {
             m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -80,32 +71,31 @@ public class DriveMecanum {
 
 
 
-    }
-
-    public void periodic() {
         x = opMode.gamepad1.left_stick_x;
         y = opMode.gamepad1.left_stick_y;
         turn = opMode.gamepad1.right_stick_x;
         setSlowFactor(opMode.gamepad1.right_trigger);
 
+    }
+
+    public void periodic(double x, double y, double turn) {
 
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
-        //setDownEncoderServo(true);
 
         double vel = slowFactor * Constants.DriveMecanum.speed * acc;
 
-        FL.setPower(((y + x) + turn) * vel);
-        FR.setPower(((y - x) - turn) * vel);
-        BL.setPower(((y - x) + turn) * vel);
-        BR.setPower(((y + x) - turn) * vel);
+        FL.setPower(((y - x) - turn) * vel);
+        FR.setPower(((y + x) + turn) * vel);
+        BL.setPower(((y + x) - turn) * vel);
+        BR.setPower(((y - x) + turn) * vel);
 
-        telemetry.addData("X", x);
+        /*telemetry.addData("X", x);
         telemetry.addData("Y", y);
         telemetry.addData("Velocidade", vel);
         telemetry.addData("Turn", turn);
-        telemetry.update();
+        telemetry.update();*/
     }
 
      public void updateAcceleration(boolean release) {
@@ -120,11 +110,6 @@ public class DriveMecanum {
         acc = Math.round(acc * 1000.0) / 1000.0;
     }
 
-    /*public void setDownEncoderServo(boolean act) {
-        servoE.setPosition(act ? 0 : 1);
-        servoD.setPosition(act ? 0 : 1);
-    }*/
-
     public void resetEnc() {
         for (DcMotor m : motors) {
             m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -137,7 +122,6 @@ public class DriveMecanum {
     }
 
     public void moveForwardAuto(double power, int target) {
-
         //power = PIDControl(referenceAngle, imu.getAngularOrientation().firstAngle);
         for (DcMotor m : motors) {
 
