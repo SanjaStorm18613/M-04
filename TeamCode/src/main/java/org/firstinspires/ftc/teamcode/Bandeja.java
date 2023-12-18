@@ -13,14 +13,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Bandeja {
 
-
     private Servo servoPitch, servoRoll, servoBandeja;
     private LinearOpMode opMode;
     private double triggerPitch, stage = 0;
 
     Telemetry bandejaTelemetry;
     private final double[] pitchStages = {Constants.PitchBandeja.pitchStage1, Constants.PitchBandeja.pitchStage2},
-                            drop = {0,1,2};
+                                  drop = {0,1,2};
     private int adjust = 0, count_drop = 0, cont = 0;
 
     public Bandeja(LinearOpMode opMode){
@@ -42,9 +41,7 @@ public class Bandeja {
         bandejaTelemetry.update();
     }
 
-    public void periodic(){
-
-    }
+    public void periodic(){ }
 
     public void rollBandeja(int signum){
         servoRoll.setPosition(signum*.5*(++cont % 2));
@@ -57,7 +54,17 @@ public class Bandeja {
     }
 
     public void destravarBandejaTotal(){
-            servoBandeja.setPosition(.5);
+        int step = 0;
+
+        if(step == 0){ servoBandeja.setPosition(.8); }
+
+        if(step == 0 && servoBandeja.getPosition() >= .8){ step++; }
+
+        if(step == 1){ servoBandeja.setPosition(0); }
+
+        if(step == 1 && servoBandeja.getPosition() >= 0){ step--; }
+
+        if(step == 0){ destravarBandejaTotal(); }
     }
 
     public void pitchBandeja(double alpha, double adjust){

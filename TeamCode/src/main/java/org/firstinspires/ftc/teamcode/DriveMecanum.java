@@ -26,7 +26,7 @@ public class DriveMecanum {
     private ElapsedTime accTime;
 
     //private BNO055IMU imu;
-    public double acc = 0, x = 0, y = 0, turn = 0, slowFactor = 0, kP, kI, kD, referenceAngle, integralSum, lastError;
+    public double acc = 0, x, y = 0, turn = 0, slowFactor = 0, kP, kI, kD, referenceAngle, integralSum, lastError;
     private int target = 0;
 
     public DriveMecanum(LinearOpMode opMode) {
@@ -79,10 +79,9 @@ public class DriveMecanum {
     }
 
     public void periodic(double x, double y, double turn) {
-
+        this.x = x;
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
-
 
         double vel = slowFactor * Constants.DriveMecanum.speed * acc;
 
@@ -107,7 +106,7 @@ public class DriveMecanum {
         }
 
         acc = Math.min(1, accTime.time() / Constants.DriveMecanum.acceleration);
-        acc = Math.round(acc * 1000.0) / 1000.0;
+        acc = Math.round(acc * 1000.) / 1000.;
     }
 
     public void resetEnc() {
@@ -124,11 +123,9 @@ public class DriveMecanum {
     public void moveForwardAuto(double power, int target) {
         //power = PIDControl(referenceAngle, imu.getAngularOrientation().firstAngle);
         for (DcMotor m : motors) {
-
             m.setTargetPosition(target);
             runToPosition();
             m.setPower(power);
-
         }
     }
 
@@ -139,7 +136,6 @@ public class DriveMecanum {
         }
 
     }
-
 
     public void turn(double powerF, int target) {
 
@@ -186,7 +182,6 @@ public class DriveMecanum {
         double output = (error * kP) + (derivative * kD) + (integralSum * kI);
         return output;
 
-
     }
 
     public double angleWrap(double radians){
@@ -205,6 +200,11 @@ public class DriveMecanum {
         return BL;
     }
 
+    public double getX(){return this.x;}
+    public double setX(double x){
+        this.x = x;
+        return x;
+    }
 }
 
 

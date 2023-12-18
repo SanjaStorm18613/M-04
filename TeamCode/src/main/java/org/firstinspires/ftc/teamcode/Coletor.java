@@ -11,13 +11,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Coletor{
-
     private DcMotor motorCollector;
     private LinearOpMode opMode;
-
-    private double power;
-
-    private float collectorTrigger;
 
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
@@ -25,19 +20,18 @@ public class Coletor{
         motorCollector.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    public void periodic(){
-
-        //telemetry.addData("Coletor", " ");
-        //telemetry.update();
-    }
+    public void periodic(){}
 
     public void collect(double power){
-        this.power = power;
         motorCollector.setPower(power);
-        //telemetry.addData("Coletor", motorCollector.getCurrentPosition());
-        //telemetry.update();
     }
-    public void repelirAuto(double power){
+
+    public void repelir(double power){
         motorCollector.setPower(-power);
+
     }
+    /*public void repelir(double power){
+        this.power = power;
+        motorCollector.setPower(-power);
+    }*/
 }

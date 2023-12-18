@@ -15,8 +15,6 @@ public class SistemaLinear {
 
     private LinearOpMode opMode;
 
-    private Servo servoPitchBraco;
-
     private boolean bumperUp, bumperDown, buttonDown;
 
     private TouchSensor limit;
@@ -34,8 +32,6 @@ public class SistemaLinear {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        servoPitchBraco = opMode.hardwareMap.get(Servo.class, "ServoPitchBraco");
-        servoPitchBraco.setDirection(Servo.Direction.FORWARD);
 
         limit = opMode.hardwareMap.get(TouchSensor.class, "ArmLimit");
 
@@ -62,19 +58,27 @@ public class SistemaLinear {
         if (!limit.isPressed()){
             pos -= (Down ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(.6);
         }
     }
 
-    public void retrairSistemaTotal(){
+    public void retrairSistemaTotal(double power, int target){
         if (!limit.isPressed()){
-            armMotor.setTargetPosition(1000);
+            armMotor.setTargetPosition(target);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(power);
         }
     }
 
     public void esticarSistema(boolean Up){
-        if (armMotor.getCurrentPosition() < 150){
+
+        if (armMotor.getCurrentPosition() < 1500){
             pos += (Up ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(.6);
+
         } else {
             armMotor.setPower(0);
         }

@@ -11,29 +11,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class LancaDrone {
-
     private Servo servoDrone;
     private LinearOpMode opMode;
+
+    private double position;
 
     public LancaDrone(LinearOpMode opMode){
         this.opMode = opMode;
 
         servoDrone = opMode.hardwareMap.get(Servo.class, "Drone");
         servoDrone.setDirection(Servo.Direction.FORWARD);
-
-
     }
 
     public void periodic(){
-
-        lancarDrone();
-        telemetry.addData("ServoDrone", servoDrone.getPosition());
-        telemetry.update();
-
     }
-
     public void lancarDrone(){
-        servoDrone.setPosition(.7);
+        this.position = position;
+
+
+        servoDrone.setPosition(1);
     }
 
     public Servo getServoDrone(){
@@ -42,6 +38,5 @@ public class LancaDrone {
     public Servo setServoDrone(Servo servoDrone){
         this.servoDrone = servoDrone;
         return servoDrone;
-
     }
 }

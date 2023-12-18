@@ -8,8 +8,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class Braco {
 
@@ -20,8 +24,10 @@ public class Braco {
                                       Constants.Braco.stage2, Constants.Braco.stage3 };
 
     private int stage = 0;
-    private double targetPos, adjust = 0, kP;
+    private double targetPos, adjust = 0, kP, encoder, error, outputPower, reference, setPoint, errorSum;
     public float target;
+
+    private ElapsedTime timer;
 
     private double[] resp = {0, 1, 2, 3, 4, 5, 6, 6, 7, 7};
 
@@ -29,12 +35,19 @@ public class Braco {
 
         this.opMode = opMode;
 
-        //motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
+        motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
 
         motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorBraco.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBraco.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        /*timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        errorSum = 0;
+
+        timer.startTime();
+
+        double timeP = timer.time(TimeUnit.MILLISECONDS);*/
 
         kP = .5;
 
@@ -46,7 +59,7 @@ public class Braco {
 
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorBraco.setTargetPosition((int)(targetPos));
+        motorBraco.setTargetPosition((int)targetPos);
         motorBraco.setPower(0.8);
 
     }
@@ -64,17 +77,18 @@ public class Braco {
             motorBraco.setPower(power);
     }*/
 
-    public void PitchBraco(int target){
+    public void PitchBraco(int target, double power){
 
         this.target = target;
         //float lastTarget = target;
         //resetEncoder();
-        double encoderPosition = motorBraco.getCurrentPosition();
-        double reference = Constants.Braco.stage0;
-        double setPoint = Constants.Braco.stage1;
 
-        double error = setPoint - encoderPosition;
-        double outputPower = (kP * error) / 1000;
+        encoder = motorBraco.getCurrentPosition();
+        reference = Constants.Braco.stage0;
+        setPoint = Constants.Braco.stage1;
+
+        //error = setPoint - encoder;
+        //outputPower = (kP * error) / 1000;
 
         //trava para controle e posição do motor
         // Criar variável para armazenar o valor que vai ser passado para a função setTargetPosition
@@ -83,14 +97,14 @@ public class Braco {
         //  Variável reseta (= 0) quando trigger for 0 (piloto soltou botão)
 
 
-        if(encoderPosition >= reference && encoderPosition <= setPoint) {
+        if(reference <= encoder && encoder <= setPoint) {
 
             motorBraco.setTargetPosition(target);
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBraco.setPower(outputPower);
+            motorBraco.setPower(power);
 
         }
-        if(encoderPosition < 0){
+        if(encoder < 0){
             resetEncoder();
         }
 

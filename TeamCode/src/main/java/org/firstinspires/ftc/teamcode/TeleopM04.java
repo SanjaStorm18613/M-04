@@ -54,37 +54,39 @@ public class TeleopM04 extends LinearOpMode {
 
         driveMecanum  = new DriveMecanum(this);
         //sistemaLinear = new SistemaLinear(this);
-        //lancaDrone    = new LancaDrone(this);
-        coletor       = new Coletor(this);
+        lancaDrone    = new LancaDrone(this);
+        //coletor       = new Coletor(this);
         //bandeja       = new Bandeja(this);
-        //braco         = new Braco(this);
+        braco         = new Braco(this);
+
+        telemetry.addData("TeleOP" , "Inicializando");
 
         waitForStart();
-        telemetry.addData("TeleOP" , "Inicializando");
 
         while(opModeIsActive()) {
 
-
             // DroneLauncher
-            /*if(gamepad2.a && !droneBlock){
-                lancaDrone.lancarDrone();
+            if(gamepad1.y){
+            lancaDrone.lancarDrone();
             }
-            droneBlock = gamepad2.a;
-            telemetry.addData("Drone", lancaDrone.getServoDrone().getPosition());*/
+
+
+            //droneBlock = gamepad1.a;
+            //telemetry.addData("Drone", lancaDrone.getServoDrone().getPosition());
 
             //Collector
-            coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
+            //coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10);
             //coletor.repelir(Math.floor(gamepad1.left_trigger * 10) / 10);
 
-            /*//Arm
-            if (gamepad1.dpad_up && !armBlockUp) {
-                braco.BracoUp();
-            } else if (gamepad1.dpad_down && !armBlockDown) {
-                braco.BracoDown(.5);
-            }*/
+            //Arm
+            //if (gamepad1.dpad_up && !armBlockUp) {
+              //  braco.BracoUp();
+            //} else if (gamepad1.dpad_down && !armBlockDown) {
+              //  braco.BracoDown(.5);
+            //}
 
-            /*if(gamepad1.a){ braco.PitchBraco(Constants.Braco.stage1); }
-            if(gamepad1.b){ braco.PitchBraco(Constants.Braco.stage0); }
+            if(gamepad1.left_trigger > .1){ braco.PitchBraco(Constants.Braco.stage1, gamepad1.left_trigger); }
+            if(gamepad1.right_trigger > .1){ braco.PitchBraco(Constants.Braco.stage0, gamepad1.right_trigger); }
 
 
             telemetry.addData("motor", braco.getMotorBraco().getCurrentPosition());
@@ -93,8 +95,8 @@ public class TeleopM04 extends LinearOpMode {
             telemetry.addData("target", braco.target);
             telemetry.update();
 
-
-           /* armBlockUp = gamepad1.dpad_up;
+/*
+            armBlockUp = gamepad1.dpad_up;
             armBlockDown = gamepad1.dpad_down;
 
             if (gamepad1.a) {
@@ -107,12 +109,12 @@ public class TeleopM04 extends LinearOpMode {
             sistemaLinear.retrairSistema(gamepad1.left_bumper);
 
             if (gamepad1.b && !sistemaLinearBlockDown){
-                sistemaLinear.retrairSistemaTotal();
+                sistemaLinear.retrairSistemaTotal(.6, Constants.SistemaLinear.stage0);
             }
             sistemaLinearBlockDown = gamepad1.b;
 
             //Bandeja
-            bandeja.pitchBandeja(braco.getTargetPos(), (Math.floor(gamepad2.right_trigger * 100) / 100));
+            bandeja.pitchBandeja(braco.getMotorBraco().getCurrentPosition(), (Math.floor(gamepad2.right_trigger * 100) / 100));
 
             if (gamepad2.a && !bandejaBlockRight){
                 bandeja.rollBandeja(1);
@@ -141,11 +143,20 @@ public class TeleopM04 extends LinearOpMode {
             }
             rollBandejaRightBlock = gamepad2.dpad_right;
             rollBandejaLeftBlock  = gamepad2.dpad_left;
-*/
-            //Tração
-            driveMecanum.periodic(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x);
+            */
 
-            //telemetry.update();
+
+            /*f(gamepad1.a){
+                bandeja.destravarBandejaTotal();
+            }*/
+
+            //Tração
+            driveMecanum.periodic(Math.floor(gamepad1.left_stick_x * 10) / 10,
+                                  Math.floor(gamepad1.left_stick_y * 10) / 10,
+                                Math.floor(gamepad1.right_stick_x * 10) / 10);
+
+            telemetry.addData("X", driveMecanum.getX());
+            telemetry.update();
 
         }
     }
