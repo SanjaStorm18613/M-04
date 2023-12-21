@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class TeleopM04 extends LinearOpMode {
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
-    LancaDrone lancaDrone;
+    Lancador lancador;
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
@@ -53,8 +53,8 @@ public class TeleopM04 extends LinearOpMode {
     public void runOpMode() {
 
         driveMecanum  = new DriveMecanum(this);
-        //sistemaLinear = new SistemaLinear(this);
-        lancaDrone    = new LancaDrone(this);
+        sistemaLinear = new SistemaLinear(this);
+        lancador    = new Lancador(this);
         //coletor       = new Coletor(this);
         //bandeja       = new Bandeja(this);
         braco         = new Braco(this);
@@ -67,16 +67,13 @@ public class TeleopM04 extends LinearOpMode {
 
             // DroneLauncher
             if(gamepad1.y){
-                lancaDrone.lancarDrone();
+                lancador.lancarDrone();
             }
-
-
-            //droneBlock = gamepad1.a;
-            //telemetry.addData("Drone", lancaDrone.getServoDrone().getPosition());
+            //telemetry.addData("Drone", lancador.getServoDrone().getPosition());
 
             //Collector
             //coletor.collect(Math.floor(gamepad1.right_trigger * 10) / 10.);
-            //coletor.repelir(Math.floor(gamepad1.left_trigger * 10) / 10.);
+            //coletor.repel(Math.floor(gamepad1.left_trigger * 10) / 10.);
 
             //Arm
             //if (gamepad1.dpad_up && !armBlockUp) {
@@ -87,14 +84,14 @@ public class TeleopM04 extends LinearOpMode {
 
             //if(gamepad1.left_trigger > .1){ braco.PitchBraco(Constants.Braco.stage1, gamepad1.left_trigger); }
             //if(gamepad1.right_trigger > .1){ braco.PitchBraco(Constants.Braco.stage0, gamepad1.right_trigger); }
-            if(gamepad1.right_trigger > .1) { braco.pitch(Math.floor(gamepad1.right_trigger * 10) / 10); }
-            if(gamepad1.left_trigger > .1) { braco.pitchV(Math.floor(gamepad1.left_trigger * 10) / 10); }
+            braco.pitch((int) gamepad1.right_trigger * 100, (int) gamepad1.left_trigger * 100);
+
+
+
 
             //telemetry.addData("motor", braco.getMotorBraco().getCurrentPosition());
-            telemetry.addData("rightTrigger", gamepad1.right_trigger);
-            telemetry.addData("leftTrigger", gamepad1.left_trigger);
-            //telemetry.addData("target", braco.target);
-            telemetry.update();
+            //telemetry.addData("rightTrigger", gamepad1.right_trigger);
+            //telemetry.addData("leftTrigger", gamepad1.left_trigger);
 
 /*
             armBlockUp = gamepad1.dpad_up;
@@ -104,16 +101,15 @@ public class TeleopM04 extends LinearOpMode {
                 sistemaLinear.retrairSistemaTotal();
                 bandeja.rollBandeja(0);
             }
-
+*/
             //SistemaLinear
-            sistemaLinear.esticarSistema(gamepad1.right_bumper);
-            sistemaLinear.retrairSistema(gamepad1.left_bumper);
+            sistemaLinear.movimentarSistema(gamepad1.right_bumper, gamepad1.left_bumper);
 
-            if (gamepad1.b && !sistemaLinearBlockDown){
-                sistemaLinear.retrairSistemaTotal(.6, Constants.SistemaLinear.stage0);
-            }
-            sistemaLinearBlockDown = gamepad1.b;
-
+            //if (gamepad1.b && !sistemaLinearBlockDown){
+                //sistemaLinear.retrairSistemaTotal(.6, Constants.SistemaLinear.stage0);
+            //}
+            //sistemaLinearBlockDown = gamepad1.b;
+/*
             //Bandeja
             bandeja.pitchBandeja(braco.getMotorBraco().getCurrentPosition(), (Math.floor(gamepad2.right_trigger * 100) / 100));
 
@@ -156,6 +152,7 @@ public class TeleopM04 extends LinearOpMode {
             }*/
 
             //if(gamepad1.a){bandeja.pitchBandeja();}
+            //if(gamepad1.x){bandeja.bandejaV();}
 
             //telemetry.addData("bandeja", bandeja.getServoBandeja());
 

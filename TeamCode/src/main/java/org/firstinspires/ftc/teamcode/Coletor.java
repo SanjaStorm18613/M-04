@@ -25,13 +25,6 @@ public class Coletor{
     public void collect(double power){
         motorCollector.setPower(power);
     }
+    public void repel(double power){ motorCollector.setPower(-power); }
 
-    public void repelir(double power){
-        motorCollector.setPower(-power);
-
-    }
-    /*public void repelir(double power){
-        this.power = power;
-        motorCollector.setPower(-power);
-    }*/
 }

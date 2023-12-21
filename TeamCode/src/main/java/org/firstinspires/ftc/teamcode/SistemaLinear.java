@@ -17,7 +17,7 @@ public class SistemaLinear {
 
     private boolean bumperUp, bumperDown, buttonDown;
 
-    private TouchSensor limit;
+    //private TouchSensor limit;
 
 
     private int pos = 0;
@@ -27,15 +27,11 @@ public class SistemaLinear {
         this.opMode = opMode;
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "MotorBraco");
-        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-        limit = opMode.hardwareMap.get(TouchSensor.class, "ArmLimit");
-
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
@@ -46,41 +42,51 @@ public class SistemaLinear {
     }
 
     /**Uso de uma limit para detectar o nível do braço**/
-    public void resetEnc(){
+    /*public void resetEnc(){
         if (!limit.isPressed()){
             armMotor.setPower(0.2);
         } else {
             armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
-    /**Criando funções para esticar e retrair o sistema, para chama-las no periodic(), sem a necessidade da criação de if's, else's, etc.*/
-    public void retrairSistema(boolean Down){
-        if (!limit.isPressed()){
-            pos -= (Down ? 1 : 0) * 10;
-            armMotor.setTargetPosition(pos);
+    /**Criando funções para esticar e retrair o sistema, para chama-las no periodic(), sem a necessidade da criação de if's, else's, etc.
+
+
+    public void retrairSistemaTotal(double power, int target){
+        if (armMotor.getCurrentPosition() > 100){
+            armMotor.setTargetPosition(target);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armMotor.setPower(.6);
         }
-    }
-
-    public void retrairSistemaTotal(double power, int target){
-        if (!limit.isPressed()){
-            armMotor.setTargetPosition(target);
+    }*/
+    /*public void retrairSistema(boolean Down){
+            pos -= (Down ? 1 : 0) * 10;
+            armMotor.setTargetPosition(pos);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(power);
-        }
+            armMotor.setPower((Down ? 1 : 0) * .6);
     }
 
     public void esticarSistema(boolean Up){
 
-        if (armMotor.getCurrentPosition() < 1500){
             pos += (Up ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(.6);
+            armMotor.setPower((Up ? 1 : 0) * .6);
 
-        } else {
-            armMotor.setPower(0);
-        }
+            opMode.telemetry.addData("motor", armMotor.getCurrentPosition());
+            opMode.telemetry.update();
+    }*/
+    public void movimentarSistema(boolean Up, boolean Down){
+
+        pos += (Up ? 1 : 0) * 10;
+        pos -= (Down ? 1 : 0) * 10;
+        pos  = Math.max(pos,0);
+        armMotor.setTargetPosition(pos);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower((Up || Down ? 1 : 0) * .6);
+
+        opMode.telemetry.addData("motor", armMotor.getCurrentPosition());
+        opMode.telemetry.update();
     }
+
 }

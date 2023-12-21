@@ -29,18 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.openftc.easyopencv.OpenCvCamera;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -74,7 +65,7 @@ public class AutoM04 extends LinearOpMode {
 
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
-    LancaDrone lancaDrone;
+    Lancador lancaDrone;
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
@@ -84,7 +75,7 @@ public class AutoM04 extends LinearOpMode {
         telemetry.addData("Inicializando auto", " ");
         driveMecanum = new DriveMecanum(this);
         sistemaLinear = new SistemaLinear(this);
-        lancaDrone = new LancaDrone(this);
+        lancaDrone = new Lancador(this);
         coletor = new Coletor(this);
         bandeja = new Bandeja(this);
         braco = new Braco(this);

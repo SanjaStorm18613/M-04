@@ -76,4 +76,7 @@ public class Bandeja {
     public void pitchBandeja(){
         servoPitch.setPosition(1);
     }
+    public void bandejaV(){
+        servoPitch.setPosition(.5);
+    }
 }

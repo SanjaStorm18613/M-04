@@ -13,7 +13,7 @@ public class Constants {
                                    up_speed = 1,
                                    lower_speed = .9,
                                    adjust = .25;
-        public static final int stage1 = 2500, stage0 = 0;
+        public static final int stage1 = 200, stage0 = 0;
      }
 
      public static class PitchBandeja{

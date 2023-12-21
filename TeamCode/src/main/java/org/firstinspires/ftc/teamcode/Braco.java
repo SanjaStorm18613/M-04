@@ -26,7 +26,7 @@ public class Braco {
 
     private int stage = 0;
     private double targetPos, adjust = 0, kP, encoder, error, outputPower, reference, setPoint, errorSum;
-    public float target;
+    public int target, pos;
 
     private ElapsedTime timer;
 
@@ -72,25 +72,25 @@ public class Braco {
 
     /*public void BracoUp(){
             stage = min((stage + 1), 3);
-            motorBraco.setPower(stage);
+            motorBraco.setPower(.6);
     }
     public void BracoDown(double power){
             stage = max((stage - 1), 0);
-            motorBraco.setPower(power);
-    }*/
+            motorBraco.setPower(.6);
+    }
 
-    public void PitchBraco(int target, double power) {
+    public void PitchBraco(double targetPos, double power) {
 
-        this.target = target;
+        //this.target = target;
         //float lastTarget = target;
         //resetEncoder();
 
         encoder = motorBraco.getCurrentPosition();
         reference = Constants.Braco.stage0;
-        setPoint = 1000;
+        setPoint = Constants.Braco.stage1;
 
-        //error = setPoint - encoder;
-        //outputPower = (kP * error) / 1000;
+        error = setPoint - encoder;
+        outputPower = (kP * error) / 1000;
 
         //trava para controle e posição do motor
         // Criar variável para armazenar o valor que vai ser passado para a função setTargetPosition
@@ -101,7 +101,7 @@ public class Braco {
 
         if (reference <= encoder && encoder <= setPoint) {
 
-            motorBraco.setTargetPosition(target);
+            motorBraco.setTargetPosition((int)setPoint);
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(outputPower);
 
@@ -112,7 +112,7 @@ public class Braco {
 
 
         else if(motorBraco.getCurrentPosition() < Constants.Braco.stage0 || motorBraco.getCurrentPosition() > Constants.Braco.stage1){
-            motorBraco.setTargetPosition(target);
+            motorBraco.setTargetPosition((int)targetPos);
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(.1);
         }
@@ -128,18 +128,25 @@ public class Braco {
     }
     public DcMotor getMotorBraco(){
         return this.motorBraco;
-    }
+    }*/
 
-    public void pitch(double power){
-        motorBraco.setTargetPosition(200);
+    public void pitch(int up, int down){
+        pos += up/100 * 10;
+        pos -= down/100 * 10;
+
+        pos  = Math.max(pos, 0);
+
+        motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(power);
-
-    }
-    public void pitchV(double power){
-        motorBraco.setTargetPosition(-200);
-        motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(power);
+        motorBraco.setPower(Math.max(up/100,down/100) * 1);
+        opMode.telemetry.addData("",up);
+        opMode.telemetry.addData("erffeg",pos);
+        opMode.telemetry.update();
     }
 
+    public int getTarget(){ return this.target; }
+    public int setTarget(int target){
+        this.target = target;
+        return target;
+    }
 }

@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AccelerationSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Axis;
 
+import java.util.Base64;
 import java.util.Set;
 
 public class DriveMecanum {
@@ -100,7 +102,7 @@ public class DriveMecanum {
      public void updateAcceleration(boolean release) {
 
         if (release) {
-            acc = 0;
+            //acc = 0;
             accTime.reset();
             return;
         }
@@ -137,21 +139,21 @@ public class DriveMecanum {
 
     }
 
-    public void turn(double powerF, int target) {
+    public void turn(double power, int target) {
 
         resetEnc();
 
         FR.setTargetPosition(-target);
-        BL.setTargetPosition(-target);
-        BR.setTargetPosition(target);
+        BR.setTargetPosition(-target);
         FL.setTargetPosition(target);
+        BL.setTargetPosition(target);
 
         runToPosition();
 
-        FR.setPower(-powerF);
-        BL.setPower(-powerF);
-        FL.setPower(powerF);
-        BR.setPower(powerF);
+        FR.setPower(-power);
+        BL.setPower(-power);
+        FL.setPower(power);
+        BR.setPower(power);
 
     }
 
