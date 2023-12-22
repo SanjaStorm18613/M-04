@@ -18,21 +18,21 @@ public class Bandeja {
     private double triggerPitch, stage = 0;
 
     private final double[] pitchStages = {Constants.PitchBandeja.pitchStage1, Constants.PitchBandeja.pitchStage2},
-                                  drop = {0,1,2};
-    private int adjust = 0, count_drop = 0, cont = 0;
+                                  drop = {.1, 0, .5};
+    private int adjust = 0, count_drop = -1, cont = 1;
 
     public Bandeja(LinearOpMode opMode){
 
         this.opMode = opMode;
 
         servoPitch = opMode.hardwareMap.get(Servo.class, "PitchServo");
-        servoPitch.setDirection(Servo.Direction.FORWARD);
+        servoPitch.setDirection(Servo.Direction.REVERSE);
 
-        /*servoRoll = opMode.hardwareMap.get(Servo.class, "RollServo");
-        servoRoll.setDirection(Servo.Direction.FORWARD);*/
+        servoRoll = opMode.hardwareMap.get(Servo.class, "RollServo");
+        servoRoll.setDirection(Servo.Direction.FORWARD);
 
-        /*servoBandeja = opMode.hardwareMap.get(Servo.class, "ServoBandeja");
-        servoBandeja.setDirection(Servo.Direction.FORWARD);*/
+        servoBandeja = opMode.hardwareMap.get(Servo.class, "ServoBandeja");
+        servoBandeja.setDirection(Servo.Direction.FORWARD);
 
         /*bandejaTelemetry = opMode.telemetry;
         bandejaTelemetry.addData("Bandeja", servoBandeja.getPosition());
@@ -41,23 +41,25 @@ public class Bandeja {
 
     public void periodic(){ }
 
-    /*public void rollBandeja(int signum){
-        servoRoll.setPosition(signum*.5*(++cont % 2));
+    public void rollBandeja(int signum){
+        cont = (cont + 2) % 4;
+        servoRoll.setPosition(signum*(cont-1));
 
         //servoRoll.setPosition(++cont % 2);
     }
 
     public void destravarBandeja(){
-        servoBandeja.setPosition(Math.signum(servoRoll.getPosition())*drop[++count_drop % 2]);
+        count_drop += Math.min(cont,2);
+        servoBandeja.setPosition(drop[count_drop % 3]);
+        opMode.telemetry.addData("X", count_drop % 3);
+        opMode.telemetry.update();
     }
 
-    public void travarBandejaTotal(){
-        int step = 0;
-
-        servoBandeja.setPosition(1);
+    public void travarBandeja(){
+        servoBandeja.setPosition(0);
     }
     public void destravarBandejaTotal(){
-        servoBandeja.setPosition(-1);
+        servoBandeja.setPosition(0.5);
     }
 
     //public void pitchBandeja(double alpha, double adjust){
@@ -77,6 +79,8 @@ public class Bandeja {
         servoPitch.setPosition(1);
     }
     public void bandejaV(){
-        servoPitch.setPosition(.5);
+        servoPitch.setPosition(0);
     }
+
+
 }

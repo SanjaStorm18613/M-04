@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class Braco {
 
     private DcMotor motorBraco;
-    private Servo servoPitch;
+    private Servo servoTrava, servoBlock;
     private LinearOpMode opMode;
     private final double[] stages = { Constants.Braco.stage0, Constants.Braco.stage1,
                                       Constants.Braco.stage2, Constants.Braco.stage3 };
@@ -44,14 +44,15 @@ public class Braco {
         motorBraco.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBraco.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        /*timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        errorSum = 0;
+        servoTrava = opMode.hardwareMap.get(Servo.class, "servoTrava");
+        servoTrava.setDirection(Servo.Direction.FORWARD);
 
+        servoBlock = opMode.hardwareMap.get(Servo.class, "servoBlock");
+        servoBlock.setDirection(Servo.Direction.REVERSE);
+
+
+        timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         timer.startTime();
-
-        double timeP = timer.time(TimeUnit.MILLISECONDS);*/
-
-        kP = .5;
 
     }
 
@@ -139,14 +140,13 @@ public class Braco {
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBraco.setPower(Math.max(up/100,down/100) * 1);
-        opMode.telemetry.addData("",up);
-        opMode.telemetry.addData("erffeg",pos);
-        opMode.telemetry.update();
     }
 
-    public int getTarget(){ return this.target; }
-    public int setTarget(int target){
-        this.target = target;
-        return target;
+    public void block(double block){
+        servoBlock.setPosition(block);
+    }
+
+    public void travaPos(double pos){
+        servoTrava.setPosition(pos);
     }
 }

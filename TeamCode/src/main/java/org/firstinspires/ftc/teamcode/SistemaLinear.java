@@ -84,9 +84,6 @@ public class SistemaLinear {
         armMotor.setTargetPosition(pos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower((Up || Down ? 1 : 0) * .6);
-
-        opMode.telemetry.addData("motor", armMotor.getCurrentPosition());
-        opMode.telemetry.update();
     }
 
 }
