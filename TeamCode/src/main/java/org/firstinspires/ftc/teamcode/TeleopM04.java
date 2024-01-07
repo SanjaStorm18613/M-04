@@ -153,8 +153,12 @@ public class TeleopM04 extends LinearOpMode {
                 bandeja.travarBandeja();
             }
 
-            if(gamepad1.dpad_up){bandeja.pitchBandeja();}
-            if(gamepad1.dpad_down){bandeja.bandejaV();}
+            if(gamepad1.dpad_up){
+                bandeja.pitchBandeja();
+            }
+            if(gamepad1.dpad_down){
+                bandeja.bandejaV();
+            }
 
             if(gamepad1.dpad_left && rollBandejaLeftBlock){
                 bandeja.rollBandeja(1);

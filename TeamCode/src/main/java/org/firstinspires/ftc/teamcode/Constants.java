@@ -33,4 +33,15 @@ public class Constants {
         public static final int stage0 = 0;
 
      }
+
+     public static class Pipeline{
+         public static final double[][] AUTO_COLOR_LOW = {{50, 50, 30},  {90, 70, 70}}
+                 ,AUTO_COLOR_UP =  {{80, 180, 360}, {100, 180, 360}};
+
+         public static final double[] TELE_COLOR_LOW = {75, 40, 40}
+                 ,TELE_COLOR_UP = {130, 230, 360};
+
+         public static final int TOLERANCE_AREA = 1000;
+
+    }
 }

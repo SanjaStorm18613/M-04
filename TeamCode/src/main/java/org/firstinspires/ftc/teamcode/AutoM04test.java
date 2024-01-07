@@ -77,10 +77,20 @@ public class AutoM04test extends LinearOpMode {
     int step;
 
 
-
     @Override
     public void runOpMode() {
-        telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
+
+        VisionControl camera = new VisionControl(this);
+
+        camera.initDetectionElement();
+
+        waitForStart();
+
+        while (!isStarted() && !isStopRequested()) {
+
+        }
+
+        /*telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
 
         //sistemaLinear = new SistemaLinear(this);
@@ -135,7 +145,7 @@ public class AutoM04test extends LinearOpMode {
             //coletor.repelirAuto(.5);*/
 
         }
-    }
+
 
     public void resetEnc_step(){
         driveMecanum.resetEnc();
