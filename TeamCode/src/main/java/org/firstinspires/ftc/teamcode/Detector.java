@@ -147,7 +147,7 @@ public class Detector extends OpenCvPipeline {
     }
 
     public enum ElementLoc {
-        LEFT, CENTER, RIGHT, NOT_FOUND;
+        LEFT, CENTER, RIGHT, NOT_FOUND
     }
 
 }
