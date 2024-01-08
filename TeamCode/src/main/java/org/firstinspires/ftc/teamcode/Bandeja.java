@@ -59,7 +59,7 @@ public class Bandeja {
         servoBandeja.setPosition(0);
     }
     public void destravarBandejaTotal(){
-        servoBandeja.setPosition(0.5);
+        servoBandeja.setPosition(.8);
     }
 
     //public void pitchBandeja(double alpha, double adjust){
@@ -71,8 +71,7 @@ public class Bandeja {
     }
     public Servo setServoBandeja(Servo servoBandeja){
         this.servoBandeja = servoBandeja;
-        return  servoBandeja;
-
+        return servoBandeja;
     }
 
     public void pitchBandeja(){

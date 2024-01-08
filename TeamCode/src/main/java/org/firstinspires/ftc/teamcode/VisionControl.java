@@ -14,6 +14,8 @@ public class VisionControl {
     private OpenCvWebcam webcam;
     private LinearOpMode opMode;
 
+    private Detector pipeline;
+
     public VisionControl(LinearOpMode opMode) {
 
         int cameraMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
@@ -23,7 +25,7 @@ public class VisionControl {
                         (WebcamName.class,  "Webcam 1"), cameraMonitorViewId);
 
         initDetectionElement();
-        SquareLocationDetectorOpenCV pipeline = new SquareLocationDetectorOpenCV();
+        pipeline = new Detector();
         setPipeline(pipeline);
     }
 

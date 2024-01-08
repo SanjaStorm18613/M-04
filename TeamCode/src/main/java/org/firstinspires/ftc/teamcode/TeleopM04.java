@@ -85,7 +85,8 @@ public class TeleopM04 extends LinearOpMode {
             //if(gamepad1.left_trigger > .1){ braco.PitchBraco(Constants.Braco.stage1, gamepad1.left_trigger); }
             //if(gamepad1.right_trigger > .1){ braco.PitchBraco(Constants.Braco.stage0, gamepad1.right_trigger); }
 
-            braco.pitch((int) gamepad1.right_trigger * 100, (int) gamepad1.left_trigger * 100);
+            braco.pitch((int) gamepad1.right_trigger * 100,
+                      (int) gamepad1.left_trigger * 100);
 
             /*braco.block(gamepad1.dpad_right ? .5 : 0);
 

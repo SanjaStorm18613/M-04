@@ -14,6 +14,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
+import java.util.jar.JarEntry;
 
 public class OpenCV {
     private final Mat processFrame;
@@ -38,7 +39,7 @@ public class OpenCV {
 
         mat = new Mat();
         box = new Point[4];
-        midPoint = new Point(0,0);
+        midPoint = new Point(0, 0);
         contours = new ArrayList<>();
         boxCont = new ArrayList<>();
         rotatedRect = new RotatedRect();
@@ -50,20 +51,20 @@ public class OpenCV {
         Imgproc.cvtColor(originalFrame, processFrame, Imgproc.COLOR_BGR2HLS);
         Core.inRange(processFrame, lowFilter, highFilter, processFrame);
 
-        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(15,15));
+        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(15, 15));
         Imgproc.morphologyEx(processFrame, processFrame, Imgproc.MORPH_OPEN, mat);
 
-        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,5));
+        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
         Imgproc.erode(processFrame, processFrame, mat);
 
-        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(10,10));
+        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(10, 10));
         Imgproc.morphologyEx(processFrame, processFrame, Imgproc.MORPH_OPEN, mat);
 
-        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,5));
+        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
         Imgproc.morphologyEx(processFrame, processFrame, Imgproc.MORPH_CLOSE, mat);
 
-        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(20,20));
-        Imgproc.dilate(processFrame, processFrame, mat);
+        mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(20, 20));
+        Imgproc.dilate(processFrame, / processFrame, mat);
 
         contours.clear();
         Imgproc.findContours(processFrame, contours, mat, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -124,14 +125,16 @@ public class OpenCV {
     public double[] getSizeJunction() {
         if (getDetected() && element != null && rotatedRect != null) {
             try {
-                return new double[] {Imgproc.boundingRect(element).height,
+                return new double[]{Imgproc.boundingRect(element).height,
                         Math.min(rotatedRect.size.width, rotatedRect.size.height),
                         Math.max(rotatedRect.size.width, rotatedRect.size.height)};
             } catch (Exception e) {
-                return new double[] {0,0,0};
+                return new double[]{0, 0, 0};
             }
+
         } else {
-            return new double[] {0,0,0};
+
+            return new double[]{0, 0, 0};
 
         }
     }
@@ -144,14 +147,13 @@ public class OpenCV {
         return detected && centerJunction != 0;
     }
 
-    /*public double getArea(){
+    public double getArea() {
         return 0;
     }
 
     public void setFilter(double[][] newFilter) {
         lowFilter = new Scalar(newFilter[0]);
         highFilter = new Scalar(newFilter[1]);
-
     }
 
     public void setStreaming(boolean streamingFilter) {
@@ -159,3 +161,4 @@ public class OpenCV {
     }
 
 }*/
+
