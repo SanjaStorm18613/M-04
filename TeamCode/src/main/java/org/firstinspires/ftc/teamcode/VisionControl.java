@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -33,6 +35,10 @@ public class VisionControl {
 
         webcam.setMillisecondsPermissionTimeout(2500);
 
+        if (webcam.getOverheadTimeMs() >= 2500) {
+            telemetry.addData("Inicialização da camera", webcam.getOverheadTimeMs());
+            telemetry.update();
+        }
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
             @Override
             public void onOpened() {
