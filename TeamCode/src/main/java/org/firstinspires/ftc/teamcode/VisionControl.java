@@ -54,7 +54,6 @@ public class VisionControl {
         webcam.pauseViewport();
         webcam.stopStreaming();
         webcam.closeCameraDevice();
-
     }
     public void stopViewport() {
         webcam.pauseViewport();
