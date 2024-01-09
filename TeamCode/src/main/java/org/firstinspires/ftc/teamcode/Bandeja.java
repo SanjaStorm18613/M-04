@@ -44,7 +44,6 @@ public class Bandeja {
     public void rollBandeja(int signum){
         cont = (cont + 2) % 4;
         servoRoll.setPosition(signum*(cont-1));
-
         //servoRoll.setPosition(++cont % 2);
     }
 
@@ -62,9 +61,9 @@ public class Bandeja {
         servoBandeja.setPosition(.8);
     }
 
-    //public void pitchBandeja(double alpha, double adjust){
-      //  servoPitch.setPosition(.33 - alpha/180 + adjust/180);
-    //}*/
+    public void pitchBandeja(double alpha, double adjust){
+        servoPitch.setPosition(.33 - alpha/180 + adjust/180);
+    }
 
     public Servo getServoBandeja(){
         return this.servoBandeja;
@@ -81,5 +80,8 @@ public class Bandeja {
         servoPitch.setPosition(0);
     }
 
+    public Servo getServoPitch(){
+        return servoPitch;
+    }
 
 }

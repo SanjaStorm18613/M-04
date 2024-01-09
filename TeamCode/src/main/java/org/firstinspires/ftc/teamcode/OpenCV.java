@@ -1,4 +1,4 @@
-/*package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 import android.graphics.Camera;
 import android.graphics.ImageFormat;
 
@@ -45,7 +45,7 @@ public class OpenCV {
         rotatedRect = new RotatedRect();
     }
 
-    @Override
+    //@Override
     public Mat processFrame(Mat originalFrame) {
 
         Imgproc.cvtColor(originalFrame, processFrame, Imgproc.COLOR_BGR2HLS);
@@ -64,7 +64,7 @@ public class OpenCV {
         Imgproc.morphologyEx(processFrame, processFrame, Imgproc.MORPH_CLOSE, mat);
 
         mat = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(20, 20));
-        Imgproc.dilate(processFrame, / processFrame, mat);
+        Imgproc.dilate(processFrame, processFrame, mat);
 
         contours.clear();
         Imgproc.findContours(processFrame, contours, mat, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -160,5 +160,5 @@ public class OpenCV {
         this.streamingFilter = streamingFilter;
     }
 
-}*/
+}
 

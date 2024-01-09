@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.opencv.core.Core;
@@ -20,10 +21,10 @@ public class Detector extends OpenCvPipeline {
     private Mat result = null;
     private int maxValIdx;
     private double contourArea, x, y, w, h, pos;
-    public double[] size;
+    public Size size;
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
 
-    private ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
+    public ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
 
     public Detector() {
         mat = new Mat();
@@ -32,8 +33,7 @@ public class Detector extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
 
-
-        size = new double[]{x, y, w, h};
+        size = new Size(3,3);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
         Scalar lower = new Scalar(87, 77, 46);
@@ -48,7 +48,8 @@ public class Detector extends OpenCvPipeline {
 
         if (result != null) {
             result.release();
-        } else {
+        }
+        else {
             result = new Mat();
         }
 
@@ -73,10 +74,7 @@ public class Detector extends OpenCvPipeline {
                     contours.remove(contourIdx);
 
                 }
-
             }
-
-
         }
 
         Core.bitwise_and(input, input, result, mat);
@@ -93,8 +91,6 @@ public class Detector extends OpenCvPipeline {
 
             Imgproc.rectangle(result, supDir, botEsc, new Scalar(0, 255, 0), 3);
 
-
-            //pos = x + w/2, y + h/2
             setLocation(biggestRect.x + biggestRect.width / 2);
 
         }
@@ -104,43 +100,44 @@ public class Detector extends OpenCvPipeline {
 
         switch(getLocation()){
 
-            case LEFT:  //LEFT ~176
+            case LEFT:  //LEFT ~ to define
                 Imgproc.line(result, new Point(100, 190), new Point(100, 230), new Scalar(0, 255, 255), 3);
                 break;
 
-            case RIGHT:  //RIGHT ~515
+            case RIGHT:  //RIGHT ~ to define
                 Imgproc.line(result, new Point(430, 190), new Point(430, 230), new Scalar(0, 255, 255), 3);
                 break;
 
-            case CENTER:  //CENTER ~327
-                Imgproc.line(result, new Point(312, 190), new Point(312, 230), new Scalar(0, 255, 255), 3);
+            case CENTER:  //CENTER ~ to define
+                Imgproc.line(result, new Point(310, 190), new Point(310, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case NOT_FOUND:
                 default:
+
                 Imgproc.line(result, new Point(200, 180), new Point(400, 290), new Scalar(0, 255, 255), 3);
 
                 Imgproc.line(result, new Point(400, 180), new Point(200, 290), new Scalar(0, 255, 255), 3);
         }
         telemetry.addData("Location", customElementLocation);
         telemetry.update();
-
         return result;
     }
     private void setLocation(int valX) {
 
-        if (valX < 240)  {
-            this.customElementLocation = ElementLoc.LEFT;
+        if (valX < 240) {
+            customElementLocation = ElementLoc.LEFT;
         }
+
         else if (valX > 380) {
-            this.customElementLocation = ElementLoc.RIGHT;
+            customElementLocation = ElementLoc.RIGHT;
         }
+
         else {
-            this.customElementLocation = ElementLoc.CENTER;
+            customElementLocation = ElementLoc.CENTER;
         }
+
     }
-
-
 
     public ElementLoc getLocation() {
         return customElementLocation;
@@ -148,6 +145,10 @@ public class Detector extends OpenCvPipeline {
 
     public enum ElementLoc {
         LEFT, CENTER, RIGHT, NOT_FOUND
+    }
+
+    public void setPos(ElementLoc pos){
+        pos = customElementLocation;
     }
 
 }

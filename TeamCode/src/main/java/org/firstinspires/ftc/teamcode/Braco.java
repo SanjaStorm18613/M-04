@@ -93,7 +93,7 @@ public class Braco {
         error = setPoint - encoder;
         outputPower = (kP * error) / 1000;
 
-        //trava para controle e posição do motor
+        // trava para controle e posição do motor
         // Criar variável para armazenar o valor que vai ser passado para a função setTargetPosition
         // Essa variável recebe o valor que vem dos triggers, mas só muda se o valor do trigger for maior que essa variável atual
         // variavel começa com valor 0 e vai aumentando se o valor do trigger é maior que ela própria
@@ -131,7 +131,7 @@ public class Braco {
         return this.motorBraco;
     }*/
 
-    public void pitch(int up, int down){
+    public void pitchB(int up, int down){
         pos += up/100 * 10;
         pos -= down/100 * 10;
 
@@ -139,7 +139,7 @@ public class Braco {
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(Math.max(up/100,down/100) * 1);
+        motorBraco.setPower(Math.max(up/100, down/100));
     }
 
     public void block(double block){
@@ -148,5 +148,15 @@ public class Braco {
 
     public void travaPos(double pos){
         servoTrava.setPosition(pos);
+    }
+
+    public void pitch(int up, int down){
+        pos += up/100 * 10;
+        pos -= down/100 * 10;
+        pos  = Math.max(pos, 0);
+
+        motorBraco.setTargetPosition(pos);
+        motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBraco.setPower(Math.max(up/100,down/100) * 1);
     }
 }

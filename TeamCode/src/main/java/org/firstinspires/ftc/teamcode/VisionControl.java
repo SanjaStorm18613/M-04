@@ -35,14 +35,13 @@ public class VisionControl {
 
         webcam.setMillisecondsPermissionTimeout(2500);
 
-        if (webcam.getOverheadTimeMs() >= 2500) {
-            telemetry.addData("Inicialização da camera", webcam.getOverheadTimeMs());
-            telemetry.update();
-        }
+
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
             @Override
             public void onOpened() {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                opMode.telemetry.addData("Camera is opened!", " ");
+                opMode.telemetry.update();
             }
 
             @Override

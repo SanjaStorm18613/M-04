@@ -80,7 +80,7 @@ public class SistemaLinear {
 
         pos += (Up ? 1 : 0) * 10;
         pos -= (Down ? 1 : 0) * 10;
-        pos  = Math.max(pos,0);
+        pos  = Math.max(pos, 0);
         armMotor.setTargetPosition(pos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower((Up || Down ? 1 : 0) * .6);
