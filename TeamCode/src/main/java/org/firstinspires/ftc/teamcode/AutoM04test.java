@@ -66,7 +66,7 @@ import java.util.Timer;
  */
 
 @Autonomous(name="AutoM04test", group="Robot")
-@Disabled
+//@Disabled
 
 public class AutoM04test extends LinearOpMode {
     DriveMecanum driveMecanum;

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutoSimulador", group = "Robot")
-//@Disabled
+@Disabled
 
 public class AutoSimulador extends LinearOpMode {
 

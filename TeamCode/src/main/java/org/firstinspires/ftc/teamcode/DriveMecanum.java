@@ -46,7 +46,6 @@ public class DriveMecanum {
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-
         /*imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -62,16 +61,8 @@ public class DriveMecanum {
             m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
-        //kP ==
-        //kI ==
-        //kD ==
-
-        //referenceAngle = Math.toRadians(90);
-
         accTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         accTime.startTime();
-
-
 
         x = opMode.gamepad1.left_stick_x;
         y = opMode.gamepad1.left_stick_y;
@@ -92,11 +83,6 @@ public class DriveMecanum {
         BL.setPower(((y + x) - turn) * vel);
         BR.setPower(((y - x) + turn) * vel);
 
-        /*telemetry.addData("X", x);
-        telemetry.addData("Y", y);
-        telemetry.addData("Velocidade", vel);
-        telemetry.addData("Turn", turn);
-        telemetry.update();*/
     }
 
      public void updateAcceleration(boolean release) {

@@ -95,7 +95,7 @@ public class Detector extends OpenCvPipeline {
 
         }
         else {
-            this.customElementLocation = ElementLoc.NOT_FOUND;
+            customElementLocation = ElementLoc.NOT_FOUND;
         }
 
         switch(getLocation()){
@@ -125,16 +125,18 @@ public class Detector extends OpenCvPipeline {
     }
     private void setLocation(int valX) {
 
-        if (valX < 240) {
+        if (valX < 270) {
+
             customElementLocation = ElementLoc.LEFT;
-        }
 
-        else if (valX > 380) {
+        } else if (valX > 380) {
+
             customElementLocation = ElementLoc.RIGHT;
-        }
 
-        else {
+        } else {
+
             customElementLocation = ElementLoc.CENTER;
+
         }
 
     }
@@ -143,9 +145,6 @@ public class Detector extends OpenCvPipeline {
         return customElementLocation;
     }
 
-    public enum ElementLoc {
-        LEFT, CENTER, RIGHT, NOT_FOUND
-    }
 
     public void setPos(ElementLoc pos){
         pos = customElementLocation;

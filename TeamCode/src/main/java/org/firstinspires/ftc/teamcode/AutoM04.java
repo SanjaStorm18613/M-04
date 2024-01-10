@@ -59,8 +59,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "AutoM04", group = "Robot")
-@Disabled
+@Autonomous(name= "AutoM04", group = "Robot")
+//@Disabled
 public class AutoM04 extends LinearOpMode {
 
     DriveMecanum driveMecanum;
@@ -69,6 +69,7 @@ public class AutoM04 extends LinearOpMode {
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
+
 
     @Override
     public void runOpMode(){

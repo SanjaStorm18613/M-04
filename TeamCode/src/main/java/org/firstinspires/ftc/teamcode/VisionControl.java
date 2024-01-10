@@ -16,7 +16,7 @@ public class VisionControl {
     private OpenCvWebcam webcam;
     private LinearOpMode opMode;
 
-    private Detector pipeline;
+    private Detector detector;
 
     public VisionControl(LinearOpMode opMode) {
 
@@ -27,8 +27,8 @@ public class VisionControl {
                         (WebcamName.class,  "Webcam 1"), cameraMonitorViewId);
 
         initDetectionElement();
-        pipeline = new Detector();
-        setPipeline(pipeline);
+        detector = new Detector();
+        setPipeline(detector);
     }
 
     public void initDetectionElement() {

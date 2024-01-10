@@ -19,7 +19,6 @@ public class SistemaLinear {
 
     //private TouchSensor limit;
 
-
     private int pos = 0;
 
     public SistemaLinear(LinearOpMode opMode){
@@ -27,7 +26,7 @@ public class SistemaLinear {
         this.opMode = opMode;
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "MotorBraco");
-        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -41,7 +40,7 @@ public class SistemaLinear {
         telemetry.update();
     }
 
-    /**Uso de uma limit para detectar o nível do braço**/
+    /**Uso de uma limit para detectar o nível do braço*/
     /*public void resetEnc(){
         if (!limit.isPressed()){
             armMotor.setPower(0.2);
@@ -59,7 +58,7 @@ public class SistemaLinear {
             armMotor.setPower(.6);
         }
     }*/
-    /*public void retrairSistema(boolean Down){
+    public void retrairSistema(boolean Down){
             pos -= (Down ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -71,11 +70,11 @@ public class SistemaLinear {
             pos += (Up ? 1 : 0) * 10;
             armMotor.setTargetPosition(pos);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower((Up ? 1 : 0) * .6);
+            armMotor.setPower((Up ? 0 : 1) * .6);
 
             opMode.telemetry.addData("motor", armMotor.getCurrentPosition());
             opMode.telemetry.update();
-    }*/
+    }
     public void movimentarSistema(boolean Up, boolean Down){
 
         pos += (Up ? 1 : 0) * 10;
@@ -84,6 +83,10 @@ public class SistemaLinear {
         armMotor.setTargetPosition(pos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower((Up || Down ? 1 : 0) * .6);
+
+        opMode.telemetry.addData("motorBraco", armMotor.getCurrentPosition());
+        opMode.telemetry.update();
+
     }
 
 }
