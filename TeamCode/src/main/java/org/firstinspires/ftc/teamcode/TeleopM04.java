@@ -74,31 +74,25 @@ public class TeleopM04 extends LinearOpMode {
             // DroneLauncher
             if(gamepad1.y){
                 lancador.lancarDrone();
+
+            }
+            if(gamepad2.dpad_up){
+                lancador.getServoDrone().setPosition(0);
             }
 
             telemetry.addData("Drone", lancador.getServoDrone().getPosition());
-            //Collector
+
+            //COLETOR
             coletor.collect(Math.floor(gamepad2.right_trigger * 10) / 10);
-            coletor.repel(Math.floor(gamepad2.left_trigger * 10) / 10);
+            coletor.repel(-Math.floor(gamepad2.left_trigger * 10) / 10);
 
-            //detector.processFrame((Mat)webcam);
-            //Arm
-            //if (gamepad1.dpad_up && !armBlockUp) {
-              //  braco.BracoUp();
-            //} else if (gamepad1.dpad_down && !armBlockDown) {
-              //  braco.BracoDown(.5);
-            //}
-
+            //BRACO
             braco.pitch((int)gamepad1.left_trigger * 100, (int)gamepad1.right_trigger * 100);
+            braco.block(gamepad2.x, gamepad2.b); //Trava o braco para que nao caia
+            if(gamepad2.y){
+                braco.travaPos(.6);
+            }
 
-
-
-            //braco.block(gamepad1.dpad_right ? .5 : 0);
-
-            //braco.travaPos(gamepad1.dpad_left ? 1 : 0);
-
-
-            //telemetry.addData("motor", braco.getMotorBraco().getCurrentPosition());
             telemetry.addData("rightTrigger", gamepad1.right_trigger);
             telemetry.addData("leftTrigger", gamepad1.left_trigger);
 
@@ -160,19 +154,17 @@ public class TeleopM04 extends LinearOpMode {
             if(gamepad1.b){
                 bandeja.travarBandeja();
             }
-
-            if(gamepad1.dpad_up){
-                bandeja.pitchBandeja();
-            }
-            if(gamepad1.dpad_down){
-                bandeja.bandejaV();
+            if(gamepad1.dpad_up || gamepad1.dpad_down){
+                bandeja.pitchBandeja(gamepad1.dpad_up, gamepad1.dpad_down);
+                braco.getMotorBraco().getCurrentPosition();
             }
             if(gamepad1.dpad_left && !rollBandejaLeftBlock){
-                bandeja.rollBandeja(0);
+                bandeja.rollBandeja(.1);
             }
             if(gamepad1.dpad_right && !rollBandejaRightBlock){
                 bandeja.rollBandeja(1);
             }
+
 
             //bandeja.rollBandeja(gamepad1.dpad_left, gamepad1.dpad_right);
 

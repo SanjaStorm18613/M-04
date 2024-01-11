@@ -21,6 +21,8 @@ public class Bandeja {
                                   drop = {.1, 0, .5};
     private int adjust = 0, count_drop = -1, cont = 2;
 
+    private double pos;
+
     public Bandeja(LinearOpMode opMode){
 
         this.opMode = opMode;
@@ -41,15 +43,15 @@ public class Bandeja {
 
     public void periodic(){ }
 
-    public void rollBandeja(int signum){
-        cont = (cont + 3) % 4; // MUDANÇA DE CONT + 2 PARA CONT + 3
+    public void rollBandeja(double signum){
+        cont = (cont + 2) % 3; // MUDANÇA DE CONT + 2 PARA CONT + 3 (depois para CONT + 4)
         servoRoll.setPosition(signum*(cont-1));
-        //servoRoll.setPosition(++cont % 2);
+        //servoRoll.setPosition(signum * (++cont % 2));
     }
 
     public void destravarBandeja(){
         count_drop += Math.min(cont,2);
-        servoBandeja.setPosition(drop[count_drop % 3]);
+        servoBandeja.setPosition(drop[count_drop % 3]); // mudança de count_drop % 3 para count_drop % 4
         opMode.telemetry.addData("X", count_drop % 3);
         opMode.telemetry.update();
     }
@@ -62,7 +64,7 @@ public class Bandeja {
     }
 
     public void pitchBandeja(double alpha, double adjust) {
-        servoPitch.setPosition(.33 - alpha/180 + adjust/180);
+        servoPitch.setPosition(.78 - alpha/180 + adjust/180);
     }
 
     public Servo getServoBandeja(){
@@ -73,11 +75,12 @@ public class Bandeja {
         return servoBandeja;
     }
 
-    public void pitchBandeja(){
-        servoPitch.setPosition(.6);
-    }
-    public void bandejaV(){
-        servoPitch.setPosition(0);
+    public void pitchBandeja(boolean up, boolean down) {
+        pos += (up ? 1 : 0);
+        pos -= (down ? 1 : 0);
+        pos = Math.max(pos, 0);
+
+        servoPitch.setPosition(((up || down) ? 1 : 0));
     }
 
     public Servo getServoPitch(){

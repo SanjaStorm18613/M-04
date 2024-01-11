@@ -26,7 +26,7 @@ public class SistemaLinear {
         this.opMode = opMode;
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "MotorBraco");
-        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -82,7 +82,7 @@ public class SistemaLinear {
         pos  = Math.max(pos, 0);
         armMotor.setTargetPosition(pos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower((Up || Down ? 1 : 0) * .6);
+        armMotor.setPower(((Up || Down) ? 1 : 0) * .6);
 
         opMode.telemetry.addData("motorBraco", armMotor.getCurrentPosition());
         opMode.telemetry.update();

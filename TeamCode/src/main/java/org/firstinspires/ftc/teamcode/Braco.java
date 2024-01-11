@@ -126,28 +126,23 @@ public class Braco {
     public DcMotor setMotorBraco(DcMotor motorBraco){
         this.motorBraco = motorBraco;
         return motorBraco;
-    }
+    }*/
     public DcMotor getMotorBraco(){
         return this.motorBraco;
-    }*/
+    }
 
-    public void pitchB(int up, int down){
-        pos += up/100 * 10;
-        pos -= down/100 * 10;
+    public void travaPos(double block){
+        servoTrava.setPosition(block);
+    }
 
+    public void block(boolean trava, boolean destrava){
+
+        pos += (trava ? 1 : 0);
+        pos -= (destrava ? 1 : 0);
         pos  = Math.max(pos, 0);
 
-        motorBraco.setTargetPosition(pos);
-        motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(Math.max(up/100, down/100));
-    }
+        servoBlock.setPosition((trava || destrava ? 1 : 0));
 
-    public void block(double block){
-        servoBlock.setPosition(block);
-    }
-
-    public void travaPos(double pos){
-        servoTrava.setPosition(pos);
     }
 
     public void pitch(int up, int down){
@@ -158,5 +153,9 @@ public class Braco {
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorBraco.setPower(Math.max(up/100,down/100));
+        opMode.telemetry.addData("armMotor", motorBraco.getCurrentPosition());
+        opMode.telemetry.update();
     }
+
+
 }

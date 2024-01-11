@@ -14,6 +14,8 @@ public class Coletor{
     private DcMotor motorCollector;
     private LinearOpMode opMode;
 
+    private double power;
+
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
@@ -24,8 +26,12 @@ public class Coletor{
 
     public void collect(double power){
         motorCollector.setPower(power);
+        //opMode.telemetry.addData("core hex", motorCollector.getCurrentPosition());
+        //opMode.telemetry.update();
     }
     public void repel(double power){
-        motorCollector.setPower(-power);
+        motorCollector.setPower(power);
+        //opMode.telemetry.addData("core hex", motorCollector.getCurrentPosition());
+        //opMode.telemetry.update();
     }
 }
