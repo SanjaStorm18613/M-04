@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -16,10 +16,11 @@ public class VisionControl {
     private OpenCvWebcam webcam;
     private LinearOpMode opMode;
 
-    private Detector detector;
+    private Pipeline pipeline;
 
     public VisionControl(LinearOpMode opMode) {
 
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam1");
         int cameraMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
                                   opMode.hardwareMap.appContext.getPackageName());
 
@@ -27,8 +28,8 @@ public class VisionControl {
                         (WebcamName.class,  "Webcam 1"), cameraMonitorViewId);
 
         initDetectionElement();
-        detector = new Detector();
-        setPipeline(detector);
+        pipeline = new Pipeline();
+        webcam.setPipeline(pipeline);
     }
 
     public void initDetectionElement() {

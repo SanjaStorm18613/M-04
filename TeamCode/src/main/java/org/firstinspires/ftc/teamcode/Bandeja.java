@@ -17,9 +17,8 @@ public class Bandeja {
     private LinearOpMode opMode;
     private double triggerPitch, stage = 0;
 
-    private final double[] pitchStages = {Constants.PitchBandeja.pitchStage1, Constants.PitchBandeja.pitchStage2},
-                                  drop = {.1, 0, .5};
-    private int adjust = 0, count_drop = -1, cont = 2;
+    private final double[] drop = {.1, 0, .5};
+    private int adjust = 0, count_drop = -1, cont = 1;
 
     private double pos;
 
@@ -44,9 +43,10 @@ public class Bandeja {
     public void periodic(){ }
 
     public void rollBandeja(double signum){
-        cont = (cont + 2) % 3; // MUDANÇA DE CONT + 2 PARA CONT + 3 (depois para CONT + 4)
-        servoRoll.setPosition(signum*(cont-1));
+        cont = (cont + 2) % 4; // MUDANÇA DE CONT + 2 PARA CONT + 3 (depois para CONT + 4)
+        servoRoll.setPosition(signum * (cont - 1));
         //servoRoll.setPosition(signum * (++cont % 2));
+        //servoRoll.setDirection
     }
 
     public void destravarBandeja(){
@@ -76,11 +76,12 @@ public class Bandeja {
     }
 
     public void pitchBandeja(boolean up, boolean down) {
-        pos += (up ? 1 : 0);
-        pos -= (down ? 1 : 0);
-        pos = Math.max(pos, 0);
 
-        servoPitch.setPosition(((up || down) ? 1 : 0));
+        pos += (up ? pos : 0) * 2;
+        pos -= (down ? pos : 0) * 2;
+        pos  = Math.max(pos, 0);
+
+        servoPitch.setPosition(((up || down) ? 1 : 0) * 2);
     }
 
     public Servo getServoPitch(){

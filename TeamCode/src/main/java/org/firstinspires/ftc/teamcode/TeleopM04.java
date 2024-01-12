@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvWebcam;
@@ -50,9 +51,8 @@ public class TeleopM04 extends LinearOpMode {
     
 
     private boolean armBlockUp = false, armBlockDown = false, bandejaBlock = false, bandejaBlockTotal = false, bandejaBlockRight = false,
-                    bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, FSUnlock = false, sistemaLinearBlockDown = false,
-                    droneBlock = false;
-
+                    bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, FSUnlock = false,
+                    sistemaLinearBlockDown = false, droneBlock = false, pitchBandeja = false;
 
     @Override
     public void runOpMode() {
@@ -72,19 +72,20 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             // DroneLauncher
-            if(gamepad1.y){
-                lancador.lancarDrone();
+            if (gamepad1.y){
 
+                lancador.lancarDrone();
             }
-            if(gamepad2.dpad_up){
-                lancador.getServoDrone().setPosition(0);
+            if (gamepad2.dpad_up){
+
+                lancador.getServoDrone().setPosition(.5);
             }
 
             telemetry.addData("Drone", lancador.getServoDrone().getPosition());
 
             //COLETOR
             coletor.collect(Math.floor(gamepad2.right_trigger * 10) / 10);
-            coletor.repel(-Math.floor(gamepad2.left_trigger * 10) / 10);
+            coletor.repel(Math.floor(-gamepad2.left_trigger * 10) / 10);
 
             //BRACO
             braco.pitch((int)gamepad1.left_trigger * 100, (int)gamepad1.right_trigger * 100);
@@ -148,25 +149,35 @@ public class TeleopM04 extends LinearOpMode {
             */
 
 
-            if(gamepad1.a && bandejaBlock){
+            if (gamepad1.a && !bandejaBlock){
                 bandeja.destravarBandejaTotal();
             }
-            if(gamepad1.b){
+            if (gamepad1.b){
                 bandeja.travarBandeja();
             }
-            if(gamepad1.dpad_up || gamepad1.dpad_down){
-                bandeja.pitchBandeja(gamepad1.dpad_up, gamepad1.dpad_down);
-                braco.getMotorBraco().getCurrentPosition();
+
+            if (braco.getMotorBraco().getCurrentPosition() > 500) {
+
+                bandeja.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down);
+
+            } else {
+
+               bandeja.getServoPitch().setPosition(.2);
+
             }
-            if(gamepad1.dpad_left && !rollBandejaLeftBlock){
-                bandeja.rollBandeja(.1);
+
+            if (gamepad1.dpad_left && !rollBandejaLeftBlock) {
+
+                bandeja.rollBandeja(.3);
             }
-            if(gamepad1.dpad_right && !rollBandejaRightBlock){
-                bandeja.rollBandeja(1);
+            if (gamepad1.dpad_right && !rollBandejaRightBlock) {
+
+                bandeja.rollBandeja(.7);
             }
 
 
             //bandeja.rollBandeja(gamepad1.dpad_left, gamepad1.dpad_right);
+
 
             rollBandejaLeftBlock = gamepad1.dpad_left;
             rollBandejaRightBlock = gamepad1.dpad_right;

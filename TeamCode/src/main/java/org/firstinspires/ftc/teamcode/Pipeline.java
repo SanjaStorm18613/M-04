@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.opencv.core.Core;
@@ -16,7 +15,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-public class Detector extends OpenCvPipeline {
+public class Pipeline extends OpenCvPipeline {
     private Mat mat, temp, c;
     private Mat result = null;
     private int maxValIdx;
@@ -26,7 +25,7 @@ public class Detector extends OpenCvPipeline {
 
     public ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
 
-    public Detector() {
+    public Pipeline() {
         mat = new Mat();
     }
 
