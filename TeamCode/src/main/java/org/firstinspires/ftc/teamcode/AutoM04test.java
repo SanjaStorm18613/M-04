@@ -100,7 +100,7 @@ public class AutoM04test extends LinearOpMode {
 
         step = 0;
 
-        driveMecanum.resetEnc();
+        //driveMecanum.resetEnc();
 
         waitForStart();
         /*while (opModeIsActive()) {

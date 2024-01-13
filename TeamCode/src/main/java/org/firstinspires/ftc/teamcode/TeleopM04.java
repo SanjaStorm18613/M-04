@@ -31,10 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.opencv.core.Mat;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @TeleOp(name = "TeleopM04", group = "Linear OpMode")
@@ -46,6 +42,7 @@ public class TeleopM04 extends LinearOpMode {
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
+    BandejaTeste bandejaTest;
 
     //Detector detector;
     
@@ -63,6 +60,7 @@ public class TeleopM04 extends LinearOpMode {
         coletor       = new Coletor(this);
         bandeja       = new Bandeja(this);
         braco         = new Braco(this);
+        bandejaTest   = new BandejaTeste(this);
         //detector      = new Detector();
 
         //telemetry.addData("TeleOP" , "Inicializando");
@@ -78,19 +76,19 @@ public class TeleopM04 extends LinearOpMode {
             }
             if (gamepad2.dpad_up){
 
-                lancador.getServoDrone().setPosition(.5);
+                lancador.getServoDrone().setPosition(.3);
             }
 
             telemetry.addData("Drone", lancador.getServoDrone().getPosition());
 
             //COLETOR
             coletor.collect(Math.floor(gamepad2.right_trigger * 10) / 10);
-            coletor.repel(Math.floor(-gamepad2.left_trigger * 10) / 10);
+            coletor.repel(Math.floor(gamepad2.left_trigger * 10) / 10);
 
             //BRACO
             braco.pitch((int)gamepad1.left_trigger * 100, (int)gamepad1.right_trigger * 100);
-            braco.block(gamepad2.x, gamepad2.b); //Trava o braco para que nao caia
-            if(gamepad2.y){
+            braco.block(gamepad2.x, gamepad2.right_bumper); //Trava o braco para que nao caia
+            if(gamepad2.left_bumper){
                 braco.travaPos(.6);
             }
 
@@ -149,7 +147,7 @@ public class TeleopM04 extends LinearOpMode {
             */
 
 
-            if (gamepad1.a && !bandejaBlock){
+            /*if (gamepad1.a && !bandejaBlock){
                 bandeja.destravarBandejaTotal();
             }
             if (gamepad1.b){
@@ -173,15 +171,18 @@ public class TeleopM04 extends LinearOpMode {
             if (gamepad1.dpad_right && !rollBandejaRightBlock) {
 
                 bandeja.rollBandeja(.7);
-            }
+            }*/
+
+            //BANDEJA TEST
+            bandejaTest.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
+            bandejaTest.destravarBandeja(gamepad2.a);
+            bandejaTest.destravarBandejaTotal(gamepad2.b);
+            bandejaTest.travarBandeja(gamepad2.y);
 
 
-            //bandeja.rollBandeja(gamepad1.dpad_left, gamepad1.dpad_right);
-
-
-            rollBandejaLeftBlock = gamepad1.dpad_left;
-            rollBandejaRightBlock = gamepad1.dpad_right;
-            bandejaBlock = !gamepad1.a;
+            rollBandejaLeftBlock = !gamepad2.dpad_left;
+            rollBandejaRightBlock = !gamepad2.dpad_right;
+            bandejaBlock = !gamepad2.a;
 
             //telemetry.addData("bandeja", bandeja.getServoBandeja());
 

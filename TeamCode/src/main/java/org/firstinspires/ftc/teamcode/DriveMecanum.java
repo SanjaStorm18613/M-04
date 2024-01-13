@@ -26,7 +26,6 @@ public class DriveMecanum {
     private DcMotor[] motors;
     private LinearOpMode opMode;
     private ElapsedTime accTime;
-
     //private BNO055IMU imu;
     public double acc = 0, x, y = 0, turn = 0, slowFactor = 0, kP, kI, kD, referenceAngle, integralSum, lastError;
     private int target = 0;
@@ -34,7 +33,6 @@ public class DriveMecanum {
     public DriveMecanum(LinearOpMode opMode) {
 
         this.opMode = opMode;
-
 
         FR = opMode.hardwareMap.get(DcMotor.class, "FR");
         FL = opMode.hardwareMap.get(DcMotor.class, "FL");

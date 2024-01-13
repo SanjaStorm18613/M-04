@@ -40,7 +40,7 @@ public class Teste extends LinearOpMode {
                                   hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId); //declaração do id da webcam
 
-        webcam.setPipeline(new Pipeline()); //definindo o pipeline
+        webcam.setPipeline(new PipelineTest()); //definindo o pipeline
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -57,7 +57,7 @@ public class Teste extends LinearOpMode {
         waitForStart();
     }
 
-    class Pipeline extends OpenCvPipeline{  //contrução do piperline
+    class PipelineTest extends OpenCvPipeline{  //contrução do piperline
         Mat YCbCr = new Mat();
         Mat leftCrop;
         Mat rightCrop;
@@ -67,6 +67,7 @@ public class Teste extends LinearOpMode {
         double midavgfin;
         Mat mat = new Mat();
         Scalar rectColor = new Scalar(0.0, 0.0, 255.0);
+
         //função proscess frame, irá detectar a localização geral de um objeto
         public Mat processFrame(Mat input){
             // e dividir o nosso espaço de vizualização em 3 quadrantes
@@ -105,14 +106,14 @@ public class Teste extends LinearOpMode {
             telemetry.addData("Direita", rightavgfin);
             telemetry.update();
 
-            if (leftavgfin > rightavgfin && leftavgfin > midavgfin){ // linhas para printar em qual quadrante o
+            if (leftavgfin > rightavgfin && leftavgfin > midavgfin) { // linhas para printar em qual quadrante o
                 //objeto está sendo identificado
                 telemetry.addLine("Esquerda");
                 linha = "Esquerda";
-            } else if (rightavgfin > midavgfin){
+            } else if (rightavgfin > midavgfin) {
                 telemetry.addLine("Direita");
                 linha = "Direita";
-            } else{
+            } else {
                 telemetry.addLine("Meio");
                 linha = "Meio";
             }

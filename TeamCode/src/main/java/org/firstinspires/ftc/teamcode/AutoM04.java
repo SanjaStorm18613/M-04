@@ -69,6 +69,7 @@ public class AutoM04 extends LinearOpMode {
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
+    VisionControl visionControl;
 
 
     @Override
@@ -80,6 +81,11 @@ public class AutoM04 extends LinearOpMode {
         coletor = new Coletor(this);
         bandeja = new Bandeja(this);
         braco = new Braco(this);
+        visionControl = new VisionControl(this);
+
+
+
+        waitForStart();
 
         while (opModeIsActive()) {
 

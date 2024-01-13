@@ -35,12 +35,15 @@ public class Pipeline extends OpenCvPipeline {
         size = new Size(3,3);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
-        Scalar lower = new Scalar(87, 77, 46);
-        Scalar upper = new Scalar(124, 80, 255);
+
+        Scalar lower = new Scalar(100, 100, 80);
+        Scalar upper = new Scalar(150, 200, 200);
 
         Core.inRange(mat, lower, upper, mat);
 
-        Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
+        return mat;
+
+        /*Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
 
         temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
@@ -120,7 +123,7 @@ public class Pipeline extends OpenCvPipeline {
         }
         telemetry.addData("Location", customElementLocation);
         telemetry.update();
-        return result;
+        */
     }
     private void setLocation(int valX) {
 

@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Gyro {
 
@@ -14,7 +17,7 @@ public class Gyro {
     private int revolutions;
 
 
-    public Gyro(OpMode opMode){
+    public Gyro(LinearOpMode opMode){
 
         BNO055IMU.Parameters GYRO_imu_parameters;
 
@@ -25,9 +28,10 @@ public class Gyro {
         GYRO_imu_parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         GYRO_imu_parameters.loggingEnabled = false;
 
+        lastAngle = 0;
+
         imu.initialize(GYRO_imu_parameters);
 
-        lastAngle = 0;
         revolutions = 0;
     }
 
@@ -35,10 +39,13 @@ public class Gyro {
 
         double currentAngle = getPeriodicAngle();
 
-        if (180 < Math.abs(lastAngle - currentAngle)) {
+        if ((Math.abs(lastAngle - currentAngle)) > 180) {
 
-            if (lastAngle > currentAngle) revolutions++;
-            else revolutions--;
+            if (lastAngle > currentAngle) {
+                revolutions++;
+            } else {
+                revolutions--;
+            }
 
         }
         lastAngle = currentAngle;
@@ -49,13 +56,7 @@ public class Gyro {
 
     public double getPeriodicAngle(){
 
-        return -imu.getAngularOrientation(AxesReference
-                .INTRINSIC, AxesOrder
-                .ZYX, AngleUnit
-                .DEGREES)
-                .firstAngle;
+        return -imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
 
     }
-
-
 }

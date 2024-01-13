@@ -15,7 +15,7 @@ public class Bandeja {
 
     private Servo servoPitch, servoRoll, servoBandeja;
     private LinearOpMode opMode;
-    private double triggerPitch, stage = 0;
+    private double stage = 0;
 
     private final double[] drop = {.1, 0, .5};
     private int adjust = 0, count_drop = -1, cont = 1;

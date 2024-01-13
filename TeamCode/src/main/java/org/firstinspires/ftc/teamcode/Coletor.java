@@ -30,7 +30,7 @@ public class Coletor{
         //opMode.telemetry.update();
     }
     public void repel(double power){
-        motorCollector.setPower(power);
+        motorCollector.setPower(-power);
         //opMode.telemetry.addData("core hex", motorCollector.getCurrentPosition());
         //opMode.telemetry.update();
     }

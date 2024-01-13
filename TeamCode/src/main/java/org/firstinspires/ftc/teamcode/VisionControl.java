@@ -20,7 +20,7 @@ public class VisionControl {
 
     public VisionControl(LinearOpMode opMode) {
 
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam1");
+        //WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam1");
         int cameraMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
                                   opMode.hardwareMap.appContext.getPackageName());
 
@@ -40,9 +40,8 @@ public class VisionControl {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-                opMode.telemetry.addData("Camera is opened!", " ");
-                opMode.telemetry.update();
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+
             }
 
             @Override
