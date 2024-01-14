@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,17 +12,17 @@ public class BandejaTeste {
     private LinearOpMode opMode;
 
     private double pos;
-    private boolean trava = false, travaTotal = false, travaBandeja = false;
+    private boolean controle = true;
 
     public BandejaTeste(LinearOpMode opMode){
 
         this.opMode = opMode;
 
         servoRoll = opMode.hardwareMap.get(Servo.class, "servoRoll");
-        servoRoll.setDirection(Servo.Direction.FORWARD);
+        servoRoll.setDirection(Servo.Direction.REVERSE);
 
-        servoTravaBandeja = opMode.hardwareMap.get(Servo.class, "servoTrava");
-        servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
+        servoTravaBandeja = opMode.hardwareMap.get(Servo.class, "servoTravaBandeja");
+        //servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
 
         servoPitch = opMode.hardwareMap.get(Servo.class, "servoPitch");
         servoPitch.setDirection(Servo.Direction.REVERSE);
@@ -28,46 +30,55 @@ public class BandejaTeste {
 
     public void rollBandeja(boolean left, boolean right){
 
-        if(left && servoRoll.getPosition() == 0) {
+        if(left && servoRoll.getPosition() == 0){
             servoRoll.setPosition(1);
+            controle = true;
         }
 
         if(right && servoRoll.getPosition() == 1){
             servoRoll.setPosition(0);
+            controle = true;
         }
+        opMode.telemetry.addData("servoRoll", servoRoll.getPosition());
+        opMode.telemetry.addData("controle", controle);
+        opMode.telemetry.update();
     }
 
-    public void destravarBandeja(boolean trava){
+    public void destravarBandeja(){
 
-        this.trava = trava;
+        if(servoRoll.getPosition() < 0.5) {
+            if (controle) {
+                servoTravaBandeja.setPosition(.3);
+            } else  {
+                servoTravaBandeja.setPosition(.6);
+            }
+            controle = !controle;
+        } else {
+            if (controle) {
+                servoTravaBandeja.setPosition(.6);
+            } else  {
+                servoTravaBandeja.setPosition(.3);
+            }
+            controle = !controle;
+        }
 
-        if(servoRoll.getPosition() == 1 && trava) {
-            servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
-            servoTravaBandeja.setPosition(trava ? .3 : 0);
-        }
-        if(servoRoll.getPosition() == 0 && trava) {
-            servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
-            servoTravaBandeja.setPosition(trava ? .5 : 0);
-        }
+
     }
 
-    public void destravarBandejaTotal(boolean travaTotal) {
-
-        this.travaTotal = travaTotal;
-
-        if(travaTotal && (servoRoll.getPosition() == 0 || servoRoll.getPosition() == 1)){
-
+    public void destravarBandejaTotal() {
             servoTravaBandeja.setPosition(1);
-
-        }
     }
 
-    public void travarBandeja(boolean travaBandeja) {
-
-        this.travaBandeja = travaBandeja;
-
-        if(travaBandeja){
+    public void travarBandeja() {
             servoTravaBandeja.setPosition(0);
+    }
+
+    public void pitchBandeja(boolean up, boolean down){
+
+        if(up) {
+            servoPitch.setPosition(.7);
+        } else if (down) {
+            servoPitch.setPosition(0);
         }
     }
 }

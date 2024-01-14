@@ -84,9 +84,6 @@ public class SistemaLinear {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(((Up || Down) ? 1 : 0) * .6);
 
-        opMode.telemetry.addData("motorBraco", armMotor.getCurrentPosition());
-        opMode.telemetry.update();
-
     }
 
 }
