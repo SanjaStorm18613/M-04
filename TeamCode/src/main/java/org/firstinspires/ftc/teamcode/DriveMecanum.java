@@ -74,12 +74,19 @@ public class DriveMecanum {
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
-        double vel = slowFactor * Constants.DriveMecanum.speed * acc;
+        double vel = Constants.DriveMecanum.speed * acc;
 
         FL.setPower(((y - x) - turn) * vel);
         FR.setPower(((y + x) + turn) * vel);
         BL.setPower(((y + x) - turn) * vel);
         BR.setPower(((y - x) + turn) * vel);
+
+
+
+
+
+        opMode.telemetry.addData("mecanumLeftFront", FL.getCurrentPosition());
+        opMode.telemetry.update();
 
     }
 

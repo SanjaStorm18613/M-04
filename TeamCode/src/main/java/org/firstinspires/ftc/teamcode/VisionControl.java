@@ -46,7 +46,7 @@ public class VisionControl {
 
             @Override
             public void onError(int errorCode) {
-                opMode.telemetry.addData("Error while opening camera: ", errorCode);
+                //opMode.telemetry.addData("Error while opening camera: ", errorCode);
             }
         });
     }

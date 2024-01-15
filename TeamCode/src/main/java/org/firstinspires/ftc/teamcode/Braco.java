@@ -141,7 +141,7 @@ public class Braco {
         pos -= (destrava ? 1 : 0);
         pos  = Math.max(pos, 0);
 
-        servoBlock.setPosition((trava || destrava ? 1 : 0));
+        servoBlock.setPosition((trava || destrava ? 0 : 1));
 
     }
 

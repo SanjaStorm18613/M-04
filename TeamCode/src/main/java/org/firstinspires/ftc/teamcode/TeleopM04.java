@@ -78,11 +78,11 @@ public class TeleopM04 extends LinearOpMode {
 
 
             //COLETOR
-            coletor.collect(Math.floor(gamepad2.right_trigger * 10) / 10);
-            coletor.repel(Math.floor(gamepad2.left_trigger * 10) / 10);
+            coletor.collect(Math.floor(-gamepad1.right_trigger * 10) / 10);
+            coletor.repel(Math.floor(gamepad1.left_trigger * 10) / 10);
 
             //BRACO
-            braco.pitch((int)gamepad1.left_trigger * 100, (int)gamepad1.right_trigger * 100);
+            braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
             braco.block(gamepad2.x, gamepad2.right_bumper); //Trava o braco para que nao caia
             if(gamepad2.left_bumper){
                 braco.travaPos(.6);

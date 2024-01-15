@@ -33,19 +33,22 @@ public class Pipeline extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
 
         size = new Size(3,3);
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
+        Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
 
 
-        Scalar lower = new Scalar(100, 100, 80);
-        Scalar upper = new Scalar(150, 200, 200);
+        Scalar lower = new Scalar(100, 155, 30);
+        Scalar upper = new Scalar(200, 250, 255);
 
         Core.inRange(mat, lower, upper, mat);
 
-        return mat;
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
 
-        /*Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
 
+        Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
         temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
+        Imgproc.erode(mat, mat, kernel);
+        Imgproc.dilate(mat, mat, kernel);
+        Imgproc.dilate(mat, mat, kernel);
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
 
         if (result != null) {
@@ -60,18 +63,19 @@ public class Pipeline extends OpenCvPipeline {
             double maxVal = 0;
             int maxValIdx = -1;
 
-            Imgproc.drawContours(result, contours, -1, new Scalar(0, 0, 255), 5);
 
             for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
 
+                Imgproc.drawContours(input, contours, contours.indexOf(customElementLocation), new Scalar(0, 0, 255), 5);
+
                 contourArea = Imgproc.contourArea(contours.get(contourIdx));
 
-                if (contourArea > 500 && contourArea > maxVal) {
+                if (contourArea > 0 && contourArea > maxVal) {
 
                     maxVal = contourArea;
                     maxValIdx = contourIdx;
 
-                } else if ((contourArea <= 500) && (maxValIdx > -1)) {
+                } else if ((contourArea <= 0) && (maxValIdx > -1)) {
 
                     contours.remove(contourIdx);
 
@@ -79,8 +83,12 @@ public class Pipeline extends OpenCvPipeline {
             }
         }
 
+
+
         Core.bitwise_and(input, input, result, mat);
-        mat.release();
+        //mat.release();
+
+
 
         if(maxValIdx >= 0){
 
@@ -99,6 +107,9 @@ public class Pipeline extends OpenCvPipeline {
         else {
             customElementLocation = ElementLoc.NOT_FOUND;
         }
+
+
+
 
         switch(getLocation()){
 
@@ -121,9 +132,8 @@ public class Pipeline extends OpenCvPipeline {
 
                 Imgproc.line(result, new Point(400, 180), new Point(200, 290), new Scalar(0, 255, 255), 3);
         }
-        telemetry.addData("Location", customElementLocation);
-        telemetry.update();
-        */
+        return mat;
+
     }
     private void setLocation(int valX) {
 
