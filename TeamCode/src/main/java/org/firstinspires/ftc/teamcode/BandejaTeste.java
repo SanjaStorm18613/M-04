@@ -39,9 +39,9 @@ public class BandejaTeste {
             servoRoll.setPosition(0);
             controle = true;
         }
-        opMode.telemetry.addData("servoRoll", servoRoll.getPosition());
-        opMode.telemetry.addData("controle", controle);
-        opMode.telemetry.update();
+        //opMode.telemetry.addData("servoRoll", servoRoll.getPosition());
+        //opMode.telemetry.addData("controle", controle);
+        //opMode.telemetry.update();
     }
 
     public void destravarBandeja(){

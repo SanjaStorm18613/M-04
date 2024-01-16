@@ -152,8 +152,13 @@ public class Braco {
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(Math.max(up/100,down/100));
+        motorBraco.setPower(Math.max(up/100, down/100) * .3);
+
+        //opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
+        //opMode.telemetry.update();
     }
+
+    //1250 target
 
 
 }

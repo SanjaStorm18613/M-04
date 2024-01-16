@@ -67,7 +67,7 @@ public class AutoM04 extends LinearOpMode {
     SistemaLinear sistemaLinear;
     Lancador lancaDrone;
     Coletor coletor;
-    Bandeja bandeja;
+    BandejaTeste bandeja;
     Braco braco;
     VisionControl visionControl;
 
@@ -79,9 +79,9 @@ public class AutoM04 extends LinearOpMode {
         sistemaLinear = new SistemaLinear(this);
         lancaDrone = new Lancador(this);
         coletor = new Coletor(this);
-        bandeja = new Bandeja(this);
+        bandeja = new BandejaTeste(this);
         braco = new Braco(this);
-        visionControl = new VisionControl(this);
+        //visionControl = new VisionControl(this);
 
 
 
@@ -89,7 +89,8 @@ public class AutoM04 extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            //driveMecanum.moveForwardAuto(1, 3801);
+            driveMecanum.moveForwardAuto(-0.4, 1000);
+            driveMecanum.turn(.4, 500);
 
         }
     }

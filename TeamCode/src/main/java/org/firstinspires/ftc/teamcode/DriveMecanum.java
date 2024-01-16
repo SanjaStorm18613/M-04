@@ -74,7 +74,7 @@ public class DriveMecanum {
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
-        double vel = Constants.DriveMecanum.speed * acc;
+        double vel = Constants.DriveMecanum.speed * acc * slowFactor;
 
         FL.setPower(((y - x) - turn) * vel);
         FR.setPower(((y + x) + turn) * vel);
@@ -82,11 +82,6 @@ public class DriveMecanum {
         BR.setPower(((y - x) + turn) * vel);
 
 
-
-
-
-        opMode.telemetry.addData("mecanumLeftFront", FL.getCurrentPosition());
-        opMode.telemetry.update();
 
     }
 
@@ -117,8 +112,11 @@ public class DriveMecanum {
         //power = PIDControl(referenceAngle, imu.getAngularOrientation().firstAngle);
         for (DcMotor m : motors) {
             m.setTargetPosition(target);
-            runToPosition();
+            m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             m.setPower(power);
+
+            opMode.telemetry.addData("FL", FL.getCurrentPosition());
+            opMode.telemetry.update();
         }
     }
 
