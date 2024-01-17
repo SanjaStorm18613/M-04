@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class Pipeline extends OpenCvPipeline {
     private Mat mat, temp, c;
+
+    private Scalar lower, upper;
     private Mat result = null;
     private int maxValIdx;
     private double contourArea, x, y, w, h, pos;
@@ -33,11 +35,16 @@ public class Pipeline extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
 
         size = new Size(3,3);
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
+        Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
 
-        Scalar lower = new Scalar(100, 155, 30);
-        Scalar upper = new Scalar(200, 250, 255);
+        //Scalar lower = new Scalar(100, 155, 30);
+        //Scalar upper = new Scalar(200, 250, 255);
+
+        Scalar lower = new Scalar(0, 0, 0);
+        Scalar upper = new Scalar(255, 255, 255);
+
+
 
         Core.inRange(mat, lower, upper, mat);
 
@@ -49,6 +56,7 @@ public class Pipeline extends OpenCvPipeline {
         Imgproc.erode(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
+        //Imgproc.dilate(mat, mat, kernel);
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
 
         if (result != null) {
@@ -66,8 +74,6 @@ public class Pipeline extends OpenCvPipeline {
 
             for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
 
-                Imgproc.drawContours(input, contours, contours.indexOf(customElementLocation), new Scalar(0, 0, 255), 5);
-
                 contourArea = Imgproc.contourArea(contours.get(contourIdx));
 
                 if (contourArea > 0 && contourArea > maxVal) {
@@ -81,56 +87,52 @@ public class Pipeline extends OpenCvPipeline {
 
                 }
             }
+
+            Imgproc.drawContours(mat, contours, maxValIdx, new Scalar(0, 0, 255), 5);
+
+            Core.bitwise_and(input, input, result, mat);
+            //mat.release();
+
+
+            if (maxValIdx >= 0) {
+
+                Rect biggestRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
+
+                Point supDir = new Point(biggestRect.x, biggestRect.y);
+                Point botEsc = new Point(biggestRect.x + biggestRect.width, biggestRect.y + biggestRect.height);
+
+
+                Imgproc.rectangle(mat, supDir, botEsc, new Scalar(0, 255, 0), 3);
+
+                setLocation(biggestRect.x + biggestRect.width / 2);
+
+            } else {
+                customElementLocation = ElementLoc.NOT_FOUND;
+            }
+
         }
-
-
-
-        Core.bitwise_and(input, input, result, mat);
-        //mat.release();
-
-
-
-        if(maxValIdx >= 0){
-
-            Rect biggestRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
-
-
-            Point supDir = new Point(biggestRect.x, biggestRect.y);
-            Point botEsc = new Point(biggestRect.x + biggestRect.width, biggestRect.y + biggestRect.height);
-
-
-            Imgproc.rectangle(result, supDir, botEsc, new Scalar(0, 255, 0), 3);
-
-            setLocation(biggestRect.x + biggestRect.width / 2);
-
-        }
-        else {
-            customElementLocation = ElementLoc.NOT_FOUND;
-        }
-
-
 
 
         switch(getLocation()){
 
             case LEFT:  //LEFT ~ to define
-                Imgproc.line(result, new Point(100, 190), new Point(100, 230), new Scalar(0, 255, 255), 3);
+                Imgproc.line(mat, new Point(100, 190), new Point(100, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case RIGHT:  //RIGHT ~ to define
-                Imgproc.line(result, new Point(430, 190), new Point(430, 230), new Scalar(0, 255, 255), 3);
+                Imgproc.line(mat, new Point(430, 190), new Point(430, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case CENTER:  //CENTER ~ to define
-                Imgproc.line(result, new Point(310, 190), new Point(310, 230), new Scalar(0, 255, 255), 3);
+                Imgproc.line(mat, new Point(310, 190), new Point(310, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case NOT_FOUND:
                 default:
 
-                Imgproc.line(result, new Point(200, 180), new Point(400, 290), new Scalar(0, 255, 255), 3);
+                Imgproc.line(mat, new Point(200, 180), new Point(400, 290), new Scalar(0, 255, 255), 3);
 
-                Imgproc.line(result, new Point(400, 180), new Point(200, 290), new Scalar(0, 255, 255), 3);
+                Imgproc.line(mat, new Point(400, 180), new Point(200, 290), new Scalar(0, 255, 255), 3);
         }
         return mat;
 

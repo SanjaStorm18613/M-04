@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /*
@@ -61,7 +60,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name= "AutoM04", group = "Robot")
 //@Disabled
-public class AutoM04 extends LinearOpMode {
+public class AutoM04_VERMELHO extends LinearOpMode {
 
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
@@ -69,29 +68,52 @@ public class AutoM04 extends LinearOpMode {
     Coletor coletor;
     BandejaTeste bandeja;
     Braco braco;
-    VisionControl visionControl;
+    VisionControl camera;
+    Pipeline detector;
+
+    int step = 0;
 
 
     @Override
     public void runOpMode(){
         telemetry.addData("Inicializando auto", " ");
+
         driveMecanum = new DriveMecanum(this);
+
         sistemaLinear = new SistemaLinear(this);
+
         lancaDrone = new Lancador(this);
+
         coletor = new Coletor(this);
+
         bandeja = new BandejaTeste(this);
+
         braco = new Braco(this);
-        //visionControl = new VisionControl(this);
 
+        detector = new Pipeline();
 
+        camera = new VisionControl(this);
+
+        camera.initDetectionElement();
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            driveMecanum.moveForwardAuto(-0.4, 1000);
-            driveMecanum.turn(.4, 500);
+            if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1000);
+
+            if (driveMecanum.getBL().getCurrentPosition() >= 1000 && step == 0) resetEnc_step();
+
+            if(detector.getLocation() == ElementLoc.LEFT)
+
+            if(step == 1) driveMecanum.turn(-0.4, 500);
 
         }
+
+
+    }
+    public void resetEnc_step(){
+        driveMecanum.resetEnc();
+        step++;
     }
 }

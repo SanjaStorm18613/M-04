@@ -84,6 +84,7 @@ public class TeleopM04 extends LinearOpMode {
             //BRACO
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
             braco.block(gamepad2.x, gamepad2.right_bumper); //Trava o braco para que nao caia
+
             if(gamepad2.left_bumper){
                 braco.travaPos(.6);
             }
@@ -99,13 +100,7 @@ public class TeleopM04 extends LinearOpMode {
 */
             //SistemaLinear
             sistemaLinear.movimentarSistema(gamepad1.left_bumper, gamepad1.right_bumper);
-            //sistemaLinear.esticarSistema(gamepad1.left_bumper);
-            //sistemaLinear.retrairSistema(gamepad1.right_bumper);
 
-            //if (gamepad1.b && !sistemaLinearBlockDown){
-                //sistemaLinear.retrairSistemaTotal(.6, Constants.SistemaLinear.stage0);
-            //}
-            //sistemaLinearBlockDown = gamepad1.b;
 /*
             //Bandeja
             bandeja.pitchBandeja(braco.getMotorBraco().getCurrentPosition(), (Math.floor(gamepad2.right_trigger * 100) / 100));
@@ -167,9 +162,9 @@ public class TeleopM04 extends LinearOpMode {
             }*/
 
             //BANDEJA TEST
-
-            bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
-
+            if((!rollBandejaLeftBlock || !rollBandejaRightBlock) && (gamepad2.dpad_left || gamepad2.dpad_right)) {
+                bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
+            }
             if(gamepad2.a && !bandejaBlock) {
                 bandejaTeste.destravarBandeja();
             }

@@ -5,6 +5,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gam
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
+
 public class BandejaTeste {
 
 
@@ -42,11 +44,13 @@ public class BandejaTeste {
         //opMode.telemetry.addData("servoRoll", servoRoll.getPosition());
         //opMode.telemetry.addData("controle", controle);
         //opMode.telemetry.update();
+        opMode.telemetry.addData("servo", servoTravaBandeja.getPosition());
+        opMode.telemetry.update();
     }
 
     public void destravarBandeja(){
 
-        if(servoRoll.getPosition() < 0.5) {
+        if(servoRoll.getPosition() < 1) {
             if (controle) {
                 servoTravaBandeja.setPosition(.3);
             } else  {
@@ -56,11 +60,12 @@ public class BandejaTeste {
         } else {
             if (controle) {
                 servoTravaBandeja.setPosition(.6);
-            } else  {
+            } else {
                 servoTravaBandeja.setPosition(.3);
             }
             controle = !controle;
         }
+
 
 
     }
@@ -76,7 +81,7 @@ public class BandejaTeste {
     public void pitchBandeja(boolean up, boolean down){
 
         if(up) {
-            servoPitch.setPosition(.7);
+            servoPitch.setPosition(1);
         } else if (down) {
             servoPitch.setPosition(0);
         }
