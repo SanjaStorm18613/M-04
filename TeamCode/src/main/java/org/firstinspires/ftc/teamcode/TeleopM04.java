@@ -193,6 +193,10 @@ public class TeleopM04 extends LinearOpMode {
             driveMecanum.periodic(Math.floor(gamepad1.left_stick_x * 10) / 10,
                                   Math.floor(gamepad1.left_stick_y * 10) / 10,
                                 Math.floor(gamepad1.right_stick_x * 10) / 10);
+            //telemetry.addData("odomX", driveMecanum.getOdomX().getCurrentPosition());
+            telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
+            telemetry.addData("odomY", driveMecanum.getOdomY().getCurrentPosition());
+            telemetry.update();
 
             //telemetry.addData("X", driveMecanum.getX());
             //telemetry.update();

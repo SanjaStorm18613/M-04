@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class DriveMecanum {
 
-    private DcMotor FR, FL, BR, BL;
+    private DcMotor FR, FL, BR, BL, odomX, odomY;
     private DcMotor[] motors;
     private LinearOpMode opMode;
     private ElapsedTime accTime;
@@ -39,10 +39,14 @@ public class DriveMecanum {
         BR = opMode.hardwareMap.get(DcMotor.class, "BR");
         BL = opMode.hardwareMap.get(DcMotor.class, "BL");
 
+        odomY = opMode.hardwareMap.get(DcMotor.class, "odomY");
+
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
         BL.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        odomY.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -81,6 +85,8 @@ public class DriveMecanum {
         BL.setPower(((y + x) - turn) * vel);
         BR.setPower(((y - x) + turn) * vel);
 
+        odomY.setTargetPosition((int)y);
+
 
 
     }
@@ -101,6 +107,8 @@ public class DriveMecanum {
         for (DcMotor m : motors) {
             m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            odomY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            odomY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
@@ -115,8 +123,15 @@ public class DriveMecanum {
             m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             m.setPower(power);
 
-            opMode.telemetry.addData("FL", FL.getCurrentPosition());
-            opMode.telemetry.update();
+        }
+    }
+    public void moveBackwardAuto(double power, int target) {
+        //power = PIDControl(referenceAngle, imu.getAngularOrientation().firstAngle);
+        for (DcMotor m : motors) {
+            m.setTargetPosition(target);
+            m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            m.setPower(-power);
+
         }
     }
 
@@ -130,7 +145,7 @@ public class DriveMecanum {
 
     public void turn(double power, int target) {
 
-        resetEnc();
+        //resetEnc();
 
         FR.setTargetPosition(-target);
         BR.setTargetPosition(-target);
@@ -140,9 +155,9 @@ public class DriveMecanum {
         runToPosition();
 
         FR.setPower(-power);
-        BL.setPower(-power);
+        BL.setPower(power);
         FL.setPower(power);
-        BR.setPower(power);
+        BR.setPower(-power);
 
     }
 
@@ -191,10 +206,20 @@ public class DriveMecanum {
         return BL;
     }
 
-    public double getX(){return this.x;}
+    public DcMotor getOdomX(){
+        return odomX;
+    }
+    public DcMotor getOdomY(){
+        return this.odomY;
+    }
     public double setX(double x){
         this.x = x;
         return x;
+    }
+
+    public DcMotor setOdomY(DcMotor odomY){
+        this.odomY = odomY;
+        return  odomY;
     }
 }
 

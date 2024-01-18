@@ -58,7 +58,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name= "AutoM04", group = "Robot")
+@Autonomous(name= "AutoM04_VERMELHO", group = "Robot")
 //@Disabled
 public class AutoM04_VERMELHO extends LinearOpMode {
 
@@ -100,13 +100,28 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1000);
+            if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1400);
 
-            if (driveMecanum.getBL().getCurrentPosition() >= 1000 && step == 0) resetEnc_step();
+            if (driveMecanum.getOdomY().getCurrentPosition() < -59500 && step == 0) resetEnc_step();
 
-            if(detector.getLocation() == ElementLoc.LEFT)
+            if (step == 1) driveMecanum.turn(-0.5, -950); // turn 90 degrees
 
-            if(step == 1) driveMecanum.turn(-0.4, 500);
+            if (driveMecanum.getOdomY().getCurrentPosition() < -12000 && step == 1) resetEnc_step();
+
+            if (step == 2) driveMecanum.moveBackwardAuto(.6, 1700);
+
+            if (driveMecanum.getOdomY().getCurrentPosition() <= -69000 && step == 2) resetEnc_step();
+
+            if (step == 3) braco.pitchAuto(.5, 500);
+
+            /*switch(detector.getLocation()){
+                case LEFT:
+                    if(step == 1) driveMecanum.turn(-0.4, 500);
+
+            }*/
+
+            telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
+            telemetry.update();
 
         }
 

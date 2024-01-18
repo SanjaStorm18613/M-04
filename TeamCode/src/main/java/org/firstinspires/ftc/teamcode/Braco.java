@@ -37,7 +37,7 @@ public class Braco {
         this.opMode = opMode;
 
         motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
-        motorBraco.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBraco.setDirection(DcMotorSimple.Direction.FORWARD);
 
         motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -152,13 +152,19 @@ public class Braco {
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(Math.max(up/100, down/100) * .3);
+        motorBraco.setPower(Math.max(up/100, down/100) * .6);
 
         //opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
         //opMode.telemetry.update();
     }
 
     //1250 target
+
+    public void pitchAuto(double power, int target){
+        motorBraco.setTargetPosition(target);
+        motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBraco.setPower(power);
+    }
 
 
 }
