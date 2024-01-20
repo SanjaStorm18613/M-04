@@ -102,15 +102,15 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
             if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1400);
 
-            if (driveMecanum.getOdomY().getCurrentPosition() < -59500 && step == 0) resetEnc_step();
+            if (driveMecanum.getOdomY().getCurrentPosition() < -33500 && step == 0) resetEnc_step();
 
             if (step == 1) driveMecanum.turn(-0.5, -950); // turn 90 degrees
 
-            if (driveMecanum.getOdomY().getCurrentPosition() < -12000 && step == 1) resetEnc_step();
+            if (driveMecanum.getOdomY().getCurrentPosition() < -3000 && step == 1) resetEnc_step(); // -2700
 
             if (step == 2) driveMecanum.moveBackwardAuto(.6, 1700);
 
-            if (driveMecanum.getOdomY().getCurrentPosition() <= -69000 && step == 2) resetEnc_step();
+            if (driveMecanum.getOdomY().getCurrentPosition() <= -44900 && step == 2) resetEnc_step();
 
             if (step == 3) braco.pitchAuto(.5, 500);
 
@@ -121,6 +121,7 @@ public class AutoM04_VERMELHO extends LinearOpMode {
             }*/
 
             telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
+            telemetry.addData("valX", detector.getLocation());
             telemetry.update();
 
         }

@@ -40,8 +40,6 @@ public class Bandeja {
         bandejaTelemetry.update();*/
     }
 
-    public void periodic(){ }
-
     public void rollBandeja(double signum){
         cont = (cont + 2) % 4; // MUDANÇA DE CONT + 2 PARA CONT + 3 (depois para CONT + 4)
         servoRoll.setPosition(signum * (cont - 1));

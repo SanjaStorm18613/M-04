@@ -24,7 +24,7 @@ public class BandejaTeste {
         servoRoll.setDirection(Servo.Direction.REVERSE);
 
         servoTravaBandeja = opMode.hardwareMap.get(Servo.class, "servoTravaBandeja");
-        //servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
+        servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
 
         servoPitch = opMode.hardwareMap.get(Servo.class, "servoPitch");
         servoPitch.setDirection(Servo.Direction.REVERSE);
@@ -41,16 +41,15 @@ public class BandejaTeste {
             servoRoll.setPosition(0);
             controle = true;
         }
-        //opMode.telemetry.addData("servoRoll", servoRoll.getPosition());
-        //opMode.telemetry.addData("controle", controle);
-        //opMode.telemetry.update();
+
         opMode.telemetry.addData("servo", servoTravaBandeja.getPosition());
         opMode.telemetry.update();
     }
 
     public void destravarBandeja(){
 
-        if(servoRoll.getPosition() < 1) {
+        if(servoRoll.getPosition() == 1) {
+            servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
             if (controle) {
                 servoTravaBandeja.setPosition(.3);
             } else  {
@@ -58,6 +57,7 @@ public class BandejaTeste {
             }
             controle = !controle;
         } else {
+            servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
             if (controle) {
                 servoTravaBandeja.setPosition(.6);
             } else {
@@ -65,9 +65,6 @@ public class BandejaTeste {
             }
             controle = !controle;
         }
-
-
-
     }
 
     public void destravarBandejaTotal() {
@@ -80,10 +77,15 @@ public class BandejaTeste {
 
     public void pitchBandeja(boolean up, boolean down){
 
-        if(up) {
+        if (up) {
             servoPitch.setPosition(1);
-        } else if (down) {
+        }
+        if (down) {
             servoPitch.setPosition(0);
         }
+    }
+
+    public void testePitch(){
+        servoPitch.setPosition(1);
     }
 }

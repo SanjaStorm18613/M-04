@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+
 import java.util.Timer;
 
 /*
@@ -75,6 +77,7 @@ public class AutoM04test extends LinearOpMode {
 
     VisionControl camera;
 
+    Braco braco;
     Coletor coletor;
     int step;
 
@@ -94,23 +97,25 @@ public class AutoM04test extends LinearOpMode {
 
         telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
+        braco = new Braco(this);
 
         //sistemaLinear = new SistemaLinear(this);
         //coletor = new Coletor(this);
 
         step = 0;
 
+
         //driveMecanum.resetEnc();
 
         waitForStart();
-        /*while (opModeIsActive()) {
+        while (opModeIsActive()) {
 
             idle();
 
             telemetry.addData("DriveMecanumRun", driveMecanum.getBL().getCurrentPosition());
             telemetry.update();
 
-            if (step == 0) {
+            /*if (step == 0) {
                 driveMecanum.moveForwardAuto(.5, 3801);
             }
 
@@ -178,15 +183,16 @@ public class AutoM04test extends LinearOpMode {
                 driveMecanum.moveForwardAuto(.5, -7000);
             }
 
-            //coletor.repelirAuto(.5);
+            //coletor.repelirAuto(.5);*/
 
-        }*/
+            braco.pitchAuto(.8, 500);
+
+        }
 
 
-    //public void resetEnc_step(){
-      //  driveMecanum.resetEnc();
+        //// void resetEnc_step(){
+        //driveMecanum.resetEnc();
         //step++;
-    //}
- }
+    }
 
 }

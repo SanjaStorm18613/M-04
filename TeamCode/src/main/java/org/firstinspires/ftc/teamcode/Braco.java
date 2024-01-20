@@ -25,7 +25,7 @@ public class Braco {
                                       Constants.Braco.stage2, Constants.Braco.stage3 };
 
     private int stage = 0;
-    private double targetPos, adjust = 0, kP, encoder, error, outputPower, reference, setPoint, errorSum;
+    private double targetPos, adjust = 0, setpoint, kP, encoder, error, outputPower, reference, setPoint, errorSum;
     public int target, pos;
 
     private ElapsedTime timer;
@@ -49,7 +49,6 @@ public class Braco {
 
         servoBlock = opMode.hardwareMap.get(Servo.class, "servoBlock");
         servoBlock.setDirection(Servo.Direction.REVERSE);
-
 
         timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         timer.startTime();
@@ -135,13 +134,12 @@ public class Braco {
         servoTrava.setPosition(block);
     }
 
-    public void block(boolean trava, boolean destrava){
+    public void block(boolean trava){
 
         pos += (trava ? 1 : 0);
-        pos -= (destrava ? 1 : 0);
         pos  = Math.max(pos, 0);
 
-        servoBlock.setPosition((trava || destrava ? 0 : 1));
+        servoBlock.setPosition(trava ? 0 : 1);
 
     }
 
@@ -152,7 +150,7 @@ public class Braco {
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(Math.max(up/100, down/100) * .6);
+        motorBraco.setPower(Math.max(up/100, down/100) * .7);
 
         //opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
         //opMode.telemetry.update();
@@ -166,5 +164,26 @@ public class Braco {
         motorBraco.setPower(power);
     }
 
+    public void escalar(){
 
+        setpoint = 550;
+
+        if (motorBraco.getCurrentPosition() < setpoint){
+
+            motorBraco.setTargetPosition((int)setpoint - motorBraco.getCurrentPosition());
+            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBraco.setPower(.6);
+
+        } else if (motorBraco.getCurrentPosition() > setpoint) {
+
+            motorBraco.setTargetPosition(-(motorBraco.getCurrentPosition() - (int)setpoint));
+            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBraco.setPower(.6);
+
+        } else {
+            motorBraco.setTargetPosition(0);
+            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorBraco.setPower(0);
+        }
+    }
 }

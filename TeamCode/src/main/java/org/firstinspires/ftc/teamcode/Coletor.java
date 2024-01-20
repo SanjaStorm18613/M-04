@@ -13,15 +13,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Coletor{
     private DcMotor motorCollector;
     private LinearOpMode opMode;
-    private double power;
 
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
         motorCollector.setDirection(DcMotorSimple.Direction.FORWARD);
     }
-
-    public void periodic(){}
 
     public void collect(double power){
         motorCollector.setPower(power);

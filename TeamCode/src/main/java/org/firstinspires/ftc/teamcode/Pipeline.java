@@ -20,7 +20,7 @@ public class Pipeline extends OpenCvPipeline {
 
     private Scalar lower, upper;
     private Mat result = null;
-    private int maxValIdx;
+    private int maxValIdx, ValX;
     private double contourArea, x, y, w, h, pos;
     public Size size;
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
@@ -38,11 +38,11 @@ public class Pipeline extends OpenCvPipeline {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
 
-        //Scalar lower = new Scalar(100, 155, 30);
-        //Scalar upper = new Scalar(200, 250, 255);
+        Scalar lower = new Scalar(100, 155, 30);
+        Scalar upper = new Scalar(200, 250, 255);
 
-        Scalar lower = new Scalar(0, 0, 0);
-        Scalar upper = new Scalar(255, 255, 255);
+        //Scalar lower = new Scalar(0, 0, 0);
+        //Scalar upper = new Scalar(255, 255, 255);
 
 
 
@@ -116,15 +116,15 @@ public class Pipeline extends OpenCvPipeline {
         switch(getLocation()){
 
             case LEFT:  //LEFT ~ to define
-                Imgproc.line(mat, new Point(100, 190), new Point(100, 230), new Scalar(0, 255, 255), 3);
+                Imgproc.rectangle(mat, new Point(100, 190), new Point(100, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case RIGHT:  //RIGHT ~ to define
-                Imgproc.line(mat, new Point(430, 190), new Point(430, 230), new Scalar(0, 255, 255), 3);
+                Imgproc.rectangle(mat, new Point(430, 190), new Point(430, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case CENTER:  //CENTER ~ to define
-                Imgproc.line(mat, new Point(310, 190), new Point(310, 230), new Scalar(0, 255, 255), 3);
+                Imgproc.rectangle(mat, new Point(310, 190), new Point(310, 230), new Scalar(0, 255, 255), 3);
                 break;
 
             case NOT_FOUND:
@@ -139,6 +139,7 @@ public class Pipeline extends OpenCvPipeline {
     }
     private void setLocation(int valX) {
 
+        this.ValX = ValX;
         if (valX < 270) {
 
             customElementLocation = ElementLoc.LEFT;
@@ -162,6 +163,10 @@ public class Pipeline extends OpenCvPipeline {
 
     public void setPos(ElementLoc pos){
         pos = customElementLocation;
+    }
+
+    public int getValX(){
+        return ValX;
     }
 
 }

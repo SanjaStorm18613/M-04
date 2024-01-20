@@ -66,9 +66,6 @@ public class DriveMecanum {
         accTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         accTime.startTime();
 
-        x = opMode.gamepad1.left_stick_x;
-        y = opMode.gamepad1.left_stick_y;
-        turn = opMode.gamepad1.right_stick_x;
         setSlowFactor(opMode.gamepad1.right_trigger);
 
     }
@@ -78,7 +75,7 @@ public class DriveMecanum {
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
-        double vel = Constants.DriveMecanum.speed * acc * slowFactor;
+        double vel = Constants.DriveMecanum.speed * acc;
 
         FL.setPower(((y - x) - turn) * vel);
         FR.setPower(((y + x) + turn) * vel);
@@ -86,15 +83,12 @@ public class DriveMecanum {
         BR.setPower(((y - x) + turn) * vel);
 
         odomY.setTargetPosition((int)y);
-
-
-
     }
 
-     public void updateAcceleration(boolean release) {
+    public void updateAcceleration(boolean release) {
 
         if (release) {
-            //acc = 0;
+            acc = 0;
             accTime.reset();
             return;
         }
@@ -131,21 +125,18 @@ public class DriveMecanum {
             m.setTargetPosition(target);
             m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             m.setPower(-power);
-
         }
     }
 
     public void runToPosition() {
-
         for (DcMotor m : motors) {
             m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
-
     }
 
     public void turn(double power, int target) {
 
-        //resetEnc();
+        resetEnc();
 
         FR.setTargetPosition(-target);
         BR.setTargetPosition(-target);
@@ -222,6 +213,3 @@ public class DriveMecanum {
         return  odomY;
     }
 }
-
-
-

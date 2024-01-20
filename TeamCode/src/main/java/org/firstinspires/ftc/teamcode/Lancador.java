@@ -17,11 +17,4 @@ public class Lancador {
         servoDrone.setPosition(1);
     }
 
-    public Servo getServoDrone(){
-        return this.servoDrone;
-    }
-    public Servo setServoDrone(Servo servoDrone){
-        this.servoDrone = servoDrone;
-        return servoDrone;
-    }
 }

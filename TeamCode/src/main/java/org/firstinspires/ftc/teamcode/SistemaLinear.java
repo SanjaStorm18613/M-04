@@ -15,8 +15,6 @@ public class SistemaLinear {
 
     private LinearOpMode opMode;
 
-    private boolean bumperUp, bumperDown, buttonDown;
-
     //private TouchSensor limit;
 
     private int pos = 0;
@@ -26,18 +24,11 @@ public class SistemaLinear {
         this.opMode = opMode;
 
         armMotor = opMode.hardwareMap.get(DcMotor.class, "MotorBraco");
-        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-    }
-
-    public void periodic(){
-        armMotor.setPower(0.8);
-        telemetry.addData("pos", pos);
-        telemetry.update();
     }
 
     /**Uso de uma limit para detectar o nível do braço*/
@@ -48,8 +39,6 @@ public class SistemaLinear {
             armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
-    /**Criando funções para esticar e retrair o sistema, para chama-las no periodic(), sem a necessidade da criação de if's, else's, etc.
-
 
     public void retrairSistemaTotal(double power, int target){
         if (armMotor.getCurrentPosition() > 100){
@@ -82,7 +71,7 @@ public class SistemaLinear {
         pos  = Math.max(pos, 0);
         armMotor.setTargetPosition(pos);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower(((Up || Down) ? .8 : 0) * 1);
+        armMotor.setPower((Up || Down) ? 1 : 0);
 
     }
 

@@ -49,7 +49,7 @@ public class TeleopM04 extends LinearOpMode {
 
     private boolean armBlockUp = false, armBlockDown = false, bandejaBlock = false, bandejaBlockTotal = false, bandejaBlockRight = false,
                     bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, FSUnlock = false,
-                    sistemaLinearBlockDown = false, droneBlock = false, pitchBandeja = false, bandejaBlockTrava = false;
+                    sistemaLinearBlockDown = false, droneBlock = false, pitchBandeja = false, bandejaBlockTrava = false, escalar = false;
 
     @Override
     public void runOpMode() {
@@ -70,12 +70,7 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             // DroneLauncher
-            if (gamepad1.y){
-
-                lancador.lancarDrone();
-            }
-
-
+            if (gamepad1.y) lancador.lancarDrone();
 
             //COLETOR
             coletor.repel(Math.floor(-gamepad1.right_trigger * 10) / 10);
@@ -83,12 +78,17 @@ public class TeleopM04 extends LinearOpMode {
 
             //BRACO
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
-            braco.block(gamepad2.x, gamepad2.right_bumper); //Trava o braco para que nao caia
+            if(gamepad1.x && !escalar){
+                braco.escalar();
+            }
+
+            braco.block(gamepad2.x); //Trava o braco para que nao caia
 
             if(gamepad2.left_bumper){
                 braco.travaPos(.6);
             }
-            
+
+            escalar = gamepad1.x;
 /*
             armBlockUp = gamepad1.dpad_up;
             armBlockDown = gamepad1.dpad_down;
@@ -176,7 +176,7 @@ public class TeleopM04 extends LinearOpMode {
 
             }
             bandejaTeste.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down);
-
+            //bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
 
             rollBandejaRightBlock = gamepad2.dpad_right;
             rollBandejaLeftBlock = gamepad2.dpad_left;
@@ -184,8 +184,6 @@ public class TeleopM04 extends LinearOpMode {
             bandejaBlock = gamepad2.a;
             bandejaBlockTrava = gamepad2.y;
             bandejaBlockTotal = gamepad2.b;
-
-
 
             //telemetry.addData("bandeja", bandeja.getServoBandeja());
 
