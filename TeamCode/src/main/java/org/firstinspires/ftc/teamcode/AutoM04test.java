@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -72,11 +74,8 @@ import java.util.Timer;
 
 public class AutoM04test extends LinearOpMode {
     DriveMecanum driveMecanum;
-
     SistemaLinear sistemaLinear;
-
     VisionControl camera;
-
     Braco braco;
     Coletor coletor;
     int step;
@@ -89,15 +88,11 @@ public class AutoM04test extends LinearOpMode {
 
         camera.initDetectionElement();
 
-        waitForStart();
-
-        while (!isStarted() && !isStopRequested()) {
-
-        }
 
         telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
         braco = new Braco(this);
+
 
         //sistemaLinear = new SistemaLinear(this);
         //coletor = new Coletor(this);
@@ -107,8 +102,11 @@ public class AutoM04test extends LinearOpMode {
 
         //driveMecanum.resetEnc();
 
-        waitForStart();
-        while (opModeIsActive()) {
+
+        while (!isStarted() && !isStopRequested()) {
+            telemetry.addData("camera", camera.getPipeline().getLocation());
+            telemetry.addData("area", camera.getPipeline().getMaxVal());
+            telemetry.addData("idxArea", camera.getPipeline().getMaxValIdx());
 
             idle();
 
@@ -185,7 +183,7 @@ public class AutoM04test extends LinearOpMode {
 
             //coletor.repelirAuto(.5);*/
 
-            braco.pitchAuto(.8, 500);
+            //braco.pitchAuto(.8, 500);
 
         }
 

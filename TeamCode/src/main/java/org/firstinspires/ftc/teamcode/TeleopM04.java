@@ -49,7 +49,8 @@ public class TeleopM04 extends LinearOpMode {
 
     private boolean armBlockUp = false, armBlockDown = false, bandejaBlock = false, bandejaBlockTotal = false, bandejaBlockRight = false,
                     bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, FSUnlock = false,
-                    sistemaLinearBlockDown = false, droneBlock = false, pitchBandeja = false, bandejaBlockTrava = false, escalar = false;
+                    sistemaLinearBlockDown = false, droneBlock = false, pitchBandejaUp = false, pitchBandejaDown = false,
+                    bandejaBlockTrava = false, escalar = false;
 
     @Override
     public void runOpMode() {
@@ -163,23 +164,28 @@ public class TeleopM04 extends LinearOpMode {
 
             //BANDEJA TEST
             if((!rollBandejaLeftBlock || !rollBandejaRightBlock) && (gamepad2.dpad_left || gamepad2.dpad_right)) {
-                bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
+                bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right); //Roll
             }
             if(gamepad2.a && !bandejaBlock) {
-                bandejaTeste.destravarBandeja();
+                bandejaTeste.destravarBandeja(); //Destravar
             }
             if(gamepad2.b && !bandejaBlockTotal){
-                bandejaTeste.destravarBandejaTotal();
+                bandejaTeste.destravarBandejaTotal(); //Destravar
             }
             if(gamepad2.y && !bandejaBlockTrava){
-                bandejaTeste.travarBandeja();
+                bandejaTeste.travarBandeja(); //Travar
 
             }
-            bandejaTeste.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down);
+            if((!pitchBandejaUp || !pitchBandejaDown) && (gamepad2.dpad_up || gamepad2.dpad_down)) {
+                bandejaTeste.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down); //Pitch
+            }
             //bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
 
             rollBandejaRightBlock = gamepad2.dpad_right;
             rollBandejaLeftBlock = gamepad2.dpad_left;
+
+            pitchBandejaDown = gamepad2.dpad_down;
+            pitchBandejaUp = gamepad2.dpad_up;
 
             bandejaBlock = gamepad2.a;
             bandejaBlockTrava = gamepad2.y;

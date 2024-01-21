@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -21,9 +23,9 @@ public class Pipeline extends OpenCvPipeline {
     private Scalar lower, upper;
     private Mat result = null;
     private int maxValIdx, ValX;
-    private double contourArea, x, y, w, h, pos;
+    private double contourArea, x, y, w, h, pos, maxVal, storage;
     public Size size;
-    private ArrayList<MatOfPoint> contours = new ArrayList<>();
+//    private ArrayList<MatOfPoint> contours = new ArrayList<>();
 
     public ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
 
@@ -38,8 +40,8 @@ public class Pipeline extends OpenCvPipeline {
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
 
-        Scalar lower = new Scalar(100, 155, 30);
-        Scalar upper = new Scalar(200, 250, 255);
+        Scalar lower = new Scalar(100, 100, 80);
+        Scalar upper = new Scalar(150, 200, 200);
 
         //Scalar lower = new Scalar(0, 0, 0);
         //Scalar upper = new Scalar(255, 255, 255);
@@ -57,20 +59,14 @@ public class Pipeline extends OpenCvPipeline {
         Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
         //Imgproc.dilate(mat, mat, kernel);
+
+        ArrayList<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
 
-        if (result != null) {
-            result.release();
-        }
-        else {
-            result = new Mat();
-        }
+        maxVal = 0;
+        maxValIdx = -1;
 
         if (contours.size() > 0) {
-
-            double maxVal = 0;
-            int maxValIdx = -1;
-
 
             for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
 
@@ -88,20 +84,20 @@ public class Pipeline extends OpenCvPipeline {
                 }
             }
 
-            Imgproc.drawContours(mat, contours, maxValIdx, new Scalar(0, 0, 255), 5);
 
-            Core.bitwise_and(input, input, result, mat);
-            //mat.release();
 
+            //Core.bitwise_and(input, input, result, mat);
+            input.copyTo(mat);
 
             if (maxValIdx >= 0) {
+                Imgproc.drawContours(mat, contours, maxValIdx, new Scalar(0, 0, 255), 5);
 
                 Rect biggestRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
 
                 Point supDir = new Point(biggestRect.x, biggestRect.y);
                 Point botEsc = new Point(biggestRect.x + biggestRect.width, biggestRect.y + biggestRect.height);
 
-
+                storage = biggestRect.height * biggestRect.width;
                 Imgproc.rectangle(mat, supDir, botEsc, new Scalar(0, 255, 0), 3);
 
                 setLocation(biggestRect.x + biggestRect.width / 2);
@@ -134,26 +130,31 @@ public class Pipeline extends OpenCvPipeline {
 
                 Imgproc.line(mat, new Point(400, 180), new Point(200, 290), new Scalar(0, 255, 255), 3);
         }
+
+
         return mat;
 
     }
     private void setLocation(int valX) {
 
         this.ValX = ValX;
-        if (valX < 270) {
+        if (valX < 100) {
 
             customElementLocation = ElementLoc.LEFT;
 
-        } else if (valX > 380) {
+        } else if (valX > 180) {
 
             customElementLocation = ElementLoc.RIGHT;
 
-        } else {
+        } else if (valX > 100 && valX < 180) {
 
             customElementLocation = ElementLoc.CENTER;
 
-        }
+        } else {
 
+            customElementLocation = ElementLoc.NOT_FOUND;
+
+        }
     }
 
     public ElementLoc getLocation() {
@@ -167,6 +168,12 @@ public class Pipeline extends OpenCvPipeline {
 
     public int getValX(){
         return ValX;
+    }
+    public int getMaxValIdx(){
+        return maxValIdx;
+    }
+    public double getMaxVal(){
+        return storage;
     }
 
 }

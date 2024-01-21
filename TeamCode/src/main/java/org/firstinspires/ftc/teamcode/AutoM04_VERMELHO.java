@@ -100,7 +100,7 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1400);
+            /*if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1400);
 
             if (driveMecanum.getOdomY().getCurrentPosition() < -33500 && step == 0) resetEnc_step();
 
@@ -114,7 +114,7 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
             if (step == 3) braco.pitchAuto(.5, 500);
 
-            /*switch(detector.getLocation()){
+            switch(detector.getLocation()){
                 case LEFT:
                     if(step == 1) driveMecanum.turn(-0.4, 500);
 
@@ -123,10 +123,7 @@ public class AutoM04_VERMELHO extends LinearOpMode {
             telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
             telemetry.addData("valX", detector.getLocation());
             telemetry.update();
-
         }
-
-
     }
     public void resetEnc_step(){
         driveMecanum.resetEnc();

@@ -49,7 +49,6 @@ public class BandejaTeste {
     public void destravarBandeja(){
 
         if(servoRoll.getPosition() == 1) {
-            servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
             if (controle) {
                 servoTravaBandeja.setPosition(.3);
             } else  {
@@ -57,7 +56,6 @@ public class BandejaTeste {
             }
             controle = !controle;
         } else {
-            servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
             if (controle) {
                 servoTravaBandeja.setPosition(.6);
             } else {

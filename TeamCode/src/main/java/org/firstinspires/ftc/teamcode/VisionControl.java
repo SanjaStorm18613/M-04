@@ -63,4 +63,8 @@ public class VisionControl {
     public void stopViewport() {
         webcam.pauseViewport();
     }
+
+    public Pipeline getPipeline(){
+        return pipeline;
+    }
 }

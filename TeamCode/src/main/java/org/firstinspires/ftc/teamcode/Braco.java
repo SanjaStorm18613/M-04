@@ -37,7 +37,7 @@ public class Braco {
         this.opMode = opMode;
 
         motorBraco = opMode.hardwareMap.get(DcMotor.class, "BracoMotor");
-        motorBraco.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorBraco.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -64,10 +64,6 @@ public class Braco {
         motorBraco.setTargetPosition((int)targetPos);
         motorBraco.setPower(0.8);
 
-    }
-
-    public double getTargetPos() {
-        return targetPos;
     }
 
     /*public void BracoUp(){
@@ -142,8 +138,8 @@ public class Braco {
         servoBlock.setPosition(trava ? 0 : 1);
 
     }
-
     public void pitch(int up, int down){
+
         pos += up/100 * 10;
         pos -= down/100 * 10;
         pos  = Math.max(pos, 0);
@@ -155,8 +151,6 @@ public class Braco {
         //opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
         //opMode.telemetry.update();
     }
-
-    //1250 target
 
     public void pitchAuto(double power, int target){
         motorBraco.setTargetPosition(target);
@@ -170,20 +164,22 @@ public class Braco {
 
         if (motorBraco.getCurrentPosition() < setpoint){
 
-            motorBraco.setTargetPosition((int)setpoint - motorBraco.getCurrentPosition());
+            motorBraco.setTargetPosition(motorBraco.getCurrentPosition());
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(.6);
 
         } else if (motorBraco.getCurrentPosition() > setpoint) {
 
-            motorBraco.setTargetPosition(-(motorBraco.getCurrentPosition() - (int)setpoint));
+            motorBraco.setTargetPosition((int)setpoint);
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(.6);
 
         } else {
+
             motorBraco.setTargetPosition(0);
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(0);
+
         }
     }
 }

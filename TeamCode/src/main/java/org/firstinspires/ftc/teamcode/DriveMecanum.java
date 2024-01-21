@@ -67,7 +67,6 @@ public class DriveMecanum {
         accTime.startTime();
 
         setSlowFactor(opMode.gamepad1.right_trigger);
-
     }
 
     public void periodic(double x, double y, double turn) {
