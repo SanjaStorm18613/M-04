@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp(name = "TeleopM04", group = "Linear OpMode")
@@ -79,7 +80,7 @@ public class TeleopM04 extends LinearOpMode {
 
             //BRACO
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
-            if(gamepad1.x && !escalar){
+            if(gamepad1.x){
                 braco.escalar();
             }
 
@@ -89,7 +90,6 @@ public class TeleopM04 extends LinearOpMode {
                 braco.travaPos(.6);
             }
 
-            escalar = gamepad1.x;
 /*
             armBlockUp = gamepad1.dpad_up;
             armBlockDown = gamepad1.dpad_down;
@@ -200,6 +200,7 @@ public class TeleopM04 extends LinearOpMode {
             //telemetry.addData("odomX", driveMecanum.getOdomX().getCurrentPosition());
             telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
             telemetry.addData("odomY", driveMecanum.getOdomY().getCurrentPosition());
+            telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
             telemetry.update();
 
             //telemetry.addData("X", driveMecanum.getX());

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Coletor{
     private DcMotor motorCollector;
     private LinearOpMode opMode;
+    private double power;
 
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
@@ -21,9 +22,18 @@ public class Coletor{
     }
 
     public void collect(double power){
+        this.power = power;
         motorCollector.setPower(power);
     }
     public void repel(double power){
+        this.power = power;
         motorCollector.setPower(power);
+    }
+
+    public void repelAuto(){
+        motorCollector.setPower(1);
+    }
+    public DcMotor getMotorCollector(){
+        return motorCollector;
     }
 }

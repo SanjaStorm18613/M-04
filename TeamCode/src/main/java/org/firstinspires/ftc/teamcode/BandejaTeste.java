@@ -48,16 +48,16 @@ public class BandejaTeste {
 
     public void destravarBandeja(){
 
-        if(servoRoll.getPosition() == 1) {
+        if (servoRoll.getPosition() == 1) {
             if (controle) {
                 servoTravaBandeja.setPosition(.3);
             } else  {
-                servoTravaBandeja.setPosition(.6);
+                servoTravaBandeja.setPosition(1);
             }
             controle = !controle;
         } else {
             if (controle) {
-                servoTravaBandeja.setPosition(.6);
+                servoTravaBandeja.setPosition(1);
             } else {
                 servoTravaBandeja.setPosition(.3);
             }
@@ -79,7 +79,7 @@ public class BandejaTeste {
             servoPitch.setPosition(1);
         }
         if (down) {
-            servoPitch.setPosition(0);
+            servoPitch.setPosition(.1);
         }
     }
 
