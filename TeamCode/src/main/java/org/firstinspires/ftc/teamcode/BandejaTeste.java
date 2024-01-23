@@ -13,6 +13,8 @@ public class BandejaTeste {
     private Servo servoRoll, servoTravaBandeja, servoPitch;
     private LinearOpMode opMode;
 
+    Braco braco;
+
     private double pos;
     private boolean controle = true;
 
@@ -20,11 +22,13 @@ public class BandejaTeste {
 
         this.opMode = opMode;
 
+        braco = new Braco(this.opMode);
+
         servoRoll = opMode.hardwareMap.get(Servo.class, "servoRoll");
         servoRoll.setDirection(Servo.Direction.REVERSE);
 
         servoTravaBandeja = opMode.hardwareMap.get(Servo.class, "servoTravaBandeja");
-        servoTravaBandeja.setDirection(Servo.Direction.REVERSE);
+        servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
 
         servoPitch = opMode.hardwareMap.get(Servo.class, "servoPitch");
         servoPitch.setDirection(Servo.Direction.REVERSE);
@@ -50,27 +54,27 @@ public class BandejaTeste {
 
         if (servoRoll.getPosition() == 1) {
             if (controle) {
-                servoTravaBandeja.setPosition(.3);
+                servoTravaBandeja.setPosition(.6);
             } else  {
-                servoTravaBandeja.setPosition(1);
+                servoTravaBandeja.setPosition(.3);
             }
             controle = !controle;
         } else {
             if (controle) {
-                servoTravaBandeja.setPosition(1);
-            } else {
                 servoTravaBandeja.setPosition(.3);
+            } else {
+                servoTravaBandeja.setPosition(.60);
             }
             controle = !controle;
         }
     }
 
     public void destravarBandejaTotal() {
-            servoTravaBandeja.setPosition(1);
+        servoTravaBandeja.setPosition(0);
     }
 
     public void travarBandeja() {
-            servoTravaBandeja.setPosition(0);
+        servoTravaBandeja.setPosition(1);
     }
 
     public void pitchBandeja(boolean up, boolean down){
@@ -83,7 +87,22 @@ public class BandejaTeste {
         }
     }
 
-    public void testePitch(){
-        servoPitch.setPosition(1);
+    public void pitch(boolean up, boolean down){
+
+        if(braco.getMotorBraco().getCurrentPosition() > 0 && braco.getMotorBraco().getCurrentPosition() < 200){
+            servoPitch.setPosition(0);
+        } else if (up && braco.getMotorBraco().getCurrentPosition() > 201) {
+            servoPitch.setPosition(1);
+        } else if (down && braco.getMotorBraco().getCurrentPosition() > 201) {
+            servoPitch.setPosition(.1);
+        }
+
     }
+
+    public void testePitch(){
+        servoPitch.setPosition(0);
+    }
+
+
+
 }

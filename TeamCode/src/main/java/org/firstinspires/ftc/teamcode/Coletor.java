@@ -18,6 +18,7 @@ public class Coletor{
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
+        motorCollector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorCollector.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 

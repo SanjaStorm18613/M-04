@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -90,8 +92,6 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         braco = new Braco(this);
 
-        detector = new Pipeline();
-
         camera = new VisionControl(this);
 
         camera.initDetectionElement();
@@ -100,29 +100,21 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            /*if (step == 0) driveMecanum.moveForwardAuto(-0.4, 1400);
-
-            if (driveMecanum.getOdomY().getCurrentPosition() < -33500 && step == 0) resetEnc_step();
-
-            if (step == 1) driveMecanum.turn(-0.5, -950); // turn 90 degrees
-
-            if (driveMecanum.getOdomY().getCurrentPosition() < -3000 && step == 1) resetEnc_step(); // -2700
-
-            if (step == 2) driveMecanum.moveBackwardAuto(.6, 1700);
-
-            if (driveMecanum.getOdomY().getCurrentPosition() <= -44900 && step == 2) resetEnc_step();
-
-            if (step == 3) braco.pitchAuto(.5, 500);
-
-            switch(detector.getLocation()){
-                case LEFT:
-                    if(step == 1) driveMecanum.turn(-0.4, 500);
-
-            }*/
-
             telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
-            telemetry.addData("valX", detector.getLocation());
+            telemetry.addData("valX", camera.getPipeline().getLocation());
+            telemetry.addData("area", camera.getPipeline().getMaxVal());
+            telemetry.addData("idxArea", camera.getPipeline().getMaxValIdx());
             telemetry.update();
+            switch(camera.getPipeline().getLocation()){
+                case RIGHT:
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.4, 1000);
+                    if(driveMecanum.getBL().getCurrentPosition() >= 1000 && step == 1) resetEnc_step();
+                    if(step == 1) driveMecanum.turn(.5, 1000);
+                default:
+                    break;
+            }
+
+
         }
     }
     public void resetEnc_step(){

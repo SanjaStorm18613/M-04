@@ -39,14 +39,11 @@ public class Pipeline extends OpenCvPipeline {
         size = new Size(3,3);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
-
-        Scalar lower = new Scalar(100, 100, 80);
-        Scalar upper = new Scalar(150, 200, 200);
+        Scalar lower = new Scalar(100, 60, 80);
+        Scalar upper = new Scalar(150, 230, 200);
 
         //Scalar lower = new Scalar(0, 0, 0);
         //Scalar upper = new Scalar(255, 255, 255);
-
-
 
         Core.inRange(mat, lower, upper, mat);
 
@@ -56,6 +53,7 @@ public class Pipeline extends OpenCvPipeline {
         Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
         temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
         Imgproc.erode(mat, mat, kernel);
+        Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
         //Imgproc.dilate(mat, mat, kernel);
@@ -83,8 +81,6 @@ public class Pipeline extends OpenCvPipeline {
 
                 }
             }
-
-
 
             //Core.bitwise_and(input, input, result, mat);
             input.copyTo(mat);
@@ -138,11 +134,11 @@ public class Pipeline extends OpenCvPipeline {
     private void setLocation(int valX) {
 
         this.ValX = ValX;
-        if (valX < 100) {
+        if (valX < 140) {
 
             customElementLocation = ElementLoc.LEFT;
 
-        } else if (valX > 180) {
+        } else if (valX > 200) {
 
             customElementLocation = ElementLoc.RIGHT;
 

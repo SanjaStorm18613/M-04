@@ -40,7 +40,7 @@ public class VisionControl {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.SIDEWAYS_RIGHT);
 
             }
 
