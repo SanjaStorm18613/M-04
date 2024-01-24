@@ -22,14 +22,13 @@ public class Coletor{
         motorCollector.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    public void collect(double power){
+    public void collectorControl(double powerC, double powerR){
         this.power = power;
-        motorCollector.setPower(power);
+        power += powerC;
+        power -= powerR;
+        motorCollector.setPower(powerC + powerR);
     }
-    public void repel(double power){
-        this.power = power;
-        motorCollector.setPower(power);
-    }
+
 
     public void repelAuto(){
         motorCollector.setPower(1);

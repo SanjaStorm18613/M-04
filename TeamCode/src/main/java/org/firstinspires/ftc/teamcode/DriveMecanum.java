@@ -135,7 +135,7 @@ public class DriveMecanum {
 
     public void turn(double power, int target) {
 
-        resetEnc();
+        //resetEnc();
 
         FR.setTargetPosition(-target);
         BR.setTargetPosition(-target);
@@ -148,6 +148,14 @@ public class DriveMecanum {
         BL.setPower(power);
         FL.setPower(power);
         BR.setPower(-power);
+
+    }
+    public void setPowerZero() {
+
+        FR.setPower(0);
+        BL.setPower(0);
+        FL.setPower(0);
+        BR.setPower(0);
 
     }
 

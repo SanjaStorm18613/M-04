@@ -75,8 +75,12 @@ public class TeleopM04 extends LinearOpMode {
             if (gamepad1.y) lancador.lancarDrone();
 
             //COLETOR
-            coletor.repel(Math.floor(-gamepad1.right_trigger * 10) / 10);
-            coletor.collect(Math.floor(gamepad1.left_trigger * 10) / 10);
+            //coletor.repel(Math.round(-gamepad1.right_trigger * 10) / 10.0);
+            //coletor.collect(Math.floor(gamepad1.left_trigger * 10) / 10.0);
+
+            coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
+            telemetry.addData("leftTrigger", gamepad1.left_trigger);
+            telemetry.addData("rightTrigger", gamepad1.right_trigger);
 
             //BRACO
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);

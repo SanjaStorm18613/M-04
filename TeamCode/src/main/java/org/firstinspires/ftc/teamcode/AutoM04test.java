@@ -78,12 +78,19 @@ public class AutoM04test extends LinearOpMode {
     VisionControl camera;
     Braco braco;
     Coletor coletor;
+    Pipeline pipeline = new Pipeline();
     int step;
 
 
+    public void initiation(){
+        camera = new VisionControl(this);
+
+        camera.initDetectionElement();
+        camera.setPipeline(pipeline);
+        telemetry.addData("Camera", camera.getPipeline().getLocation());
+    }
     @Override
     public void runOpMode() {
-
         camera = new VisionControl(this);
 
         camera.initDetectionElement();
@@ -92,6 +99,7 @@ public class AutoM04test extends LinearOpMode {
         telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
         braco = new Braco(this);
+        coletor = new Coletor(this);
 
 
         //sistemaLinear = new SistemaLinear(this);
@@ -103,7 +111,9 @@ public class AutoM04test extends LinearOpMode {
         //driveMecanum.resetEnc();
 
 
+
         while (!isStarted() && !isStopRequested()) {
+
             telemetry.addData("camera", camera.getPipeline().getLocation());
             telemetry.addData("area", camera.getPipeline().getMaxVal());
             telemetry.addData("idxArea", camera.getPipeline().getMaxValIdx());
@@ -112,6 +122,7 @@ public class AutoM04test extends LinearOpMode {
 
             telemetry.addData("DriveMecanumRun", driveMecanum.getBL().getCurrentPosition());
             telemetry.update();
+            //coletor.collectorControl(0, -0.3);
 
             /*if (step == 0) {
                 driveMecanum.moveForwardAuto(.5, 3801);
@@ -185,6 +196,9 @@ public class AutoM04test extends LinearOpMode {
 
             //braco.pitchAuto(.8, 500);
 
+        }
+        while(opModeIsActive()){
+            camera.stopDetection();
         }
 
 

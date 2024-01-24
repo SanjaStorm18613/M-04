@@ -57,7 +57,7 @@ public class VisionControl {
 
     public void stopDetection(){
         webcam.pauseViewport();
-        webcam.stopStreaming();
+        //webcam.stopStreaming();
         webcam.closeCameraDevice();
     }
     public void stopViewport() {

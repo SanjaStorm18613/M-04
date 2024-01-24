@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -134,15 +135,15 @@ public class Pipeline extends OpenCvPipeline {
     private void setLocation(int valX) {
 
         this.ValX = ValX;
-        if (valX < 140) {
+        if (valX < 200) {
 
             customElementLocation = ElementLoc.LEFT;
 
-        } else if (valX > 200) {
+        } else if (valX > 480) {
 
             customElementLocation = ElementLoc.RIGHT;
 
-        } else if (valX > 100 && valX < 180) {
+        } else if (valX > 200 && valX < 480) {
 
             customElementLocation = ElementLoc.CENTER;
 
@@ -151,6 +152,7 @@ public class Pipeline extends OpenCvPipeline {
             customElementLocation = ElementLoc.NOT_FOUND;
 
         }
+        //telemetry.addData("valX", valX);
     }
 
     public ElementLoc getLocation() {
