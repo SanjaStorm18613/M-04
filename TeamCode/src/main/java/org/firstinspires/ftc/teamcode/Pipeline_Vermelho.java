@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -18,7 +14,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-public class Pipeline extends OpenCvPipeline {
+public class Pipeline_Vermelho extends OpenCvPipeline {
     private Mat mat, temp, c;
 
     private Scalar lower, upper;
@@ -30,7 +26,7 @@ public class Pipeline extends OpenCvPipeline {
 
     public ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
 
-    public Pipeline() {
+    public Pipeline_Vermelho() {
         mat = new Mat();
     }
 

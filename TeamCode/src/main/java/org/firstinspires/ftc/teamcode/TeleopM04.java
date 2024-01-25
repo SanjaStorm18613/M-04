@@ -72,37 +72,17 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive()) {
 
             // DroneLauncher
-            if (gamepad1.y) lancador.lancarDrone();
+            if(gamepad1.y) lancador.lancarDrone();
 
             //COLETOR
-            //coletor.repel(Math.round(-gamepad1.right_trigger * 10) / 10.0);
-            //coletor.collect(Math.floor(gamepad1.left_trigger * 10) / 10.0);
-
             coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
-            telemetry.addData("leftTrigger", gamepad1.left_trigger);
-            telemetry.addData("rightTrigger", gamepad1.right_trigger);
 
             //BRACO
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
-            if(gamepad1.x){
-                braco.escalar();
-            }
 
-            braco.block(gamepad2.x); //Trava o braco para que nao caia
+            if (gamepad2.left_bumper) braco.travaPos();
+            braco.block(gamepad2.x);
 
-            if(gamepad2.left_bumper){
-                braco.travaPos(.6);
-            }
-
-/*
-            armBlockUp = gamepad1.dpad_up;
-            armBlockDown = gamepad1.dpad_down;
-
-            if (gamepad1.a) {
-                sistemaLinear.retrairSistemaTotal();
-                bandeja.rollBandeja(0);
-            }
-*/
             //SistemaLinear
             sistemaLinear.movimentarSistema(gamepad1.left_bumper, gamepad1.right_bumper);
 
@@ -195,8 +175,6 @@ public class TeleopM04 extends LinearOpMode {
             bandejaBlockTrava = gamepad2.y;
             bandejaBlockTotal = gamepad2.b;
 
-            //telemetry.addData("bandeja", bandeja.getServoBandeja());
-
             //Tração
             driveMecanum.periodic(Math.floor(gamepad1.left_stick_x * 10) / 10,
                                   Math.floor(gamepad1.left_stick_y * 10) / 10,
@@ -207,8 +185,6 @@ public class TeleopM04 extends LinearOpMode {
             telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
             telemetry.update();
 
-            //telemetry.addData("X", driveMecanum.getX());
-            //telemetry.update();
 
         }
     }

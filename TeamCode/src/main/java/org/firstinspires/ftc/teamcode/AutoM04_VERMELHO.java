@@ -98,37 +98,39 @@ public class AutoM04_VERMELHO extends LinearOpMode {
         camera = new VisionControl(this);
 
         telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
-        telemetry.addData("valX", camera.getPipeline().getLocation());
-        telemetry.addData("area", camera.getPipeline().getMaxVal());
-        telemetry.addData("idxArea", camera.getPipeline().getMaxValIdx());
+        telemetry.addData("valX", camera.getPipelineVermelho().getLocation());
+        telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
+        telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
         telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
         telemetry.update();
-
-
 
         camera.initDetectionElement();
 
         telemetry.update();
         while(!isStarted() && !isStopRequested()){
-            telemetry.addData("camera", camera.getPipeline().getLocation());
+            telemetry.addData("camera", camera.getPipelineVermelho().getLocation());
             telemetry.update();
         }
         while (opModeIsActive()) {
-
-            camera.stopDetection();
-
-            switch(camera.getPipeline().getLocation()){
+            if(camera.getDetected()){
+                camera.stopDetection();
+            }
+            switch(camera.getPipelineVermelho().getLocation()){
                 case CENTER:
                     camera.stopViewport();
+
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
                         resetEnc_step();
                     }
+
                     if(step == 1) driveMecanum.turn(0.5, -2000);
+
                     if(driveMecanum.getOdomY().getCurrentPosition() < -20690 && step == 1) {
                         resetEnc_step();
-                        //driveMecanum.setPowerZero();
                     }
+
                     if(step == 2) {
                         //driveMecanum.setPowerZero();
                         //timer.reset();
@@ -137,18 +139,16 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                         coletor.collectorControl(0, -0.5);
                         driveMecanum.setPowerZero();
                     }
-                    if(step == 3 && driveMecanum.getOdomY().getCurrentPosition() == 0){
-                        driveMecanum.setPowerZero();
-                        resetEnc_step();
-                        coletor.collectorControl(0, 0);
-                    }
                 case LEFT:
                     camera.stopViewport();
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
                         resetEnc_step();
                     }
+
                     if(step == 1) driveMecanum.turn(.6, -950);
+
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -13200 && step == 1){
                         resetEnc_step();
                     }
@@ -161,14 +161,20 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                         driveMecanum.setPowerZero();
                     }
                 case RIGHT:
+                    camera.stopViewport();
+
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
                         resetEnc_step();
                     }
+
                     if(step == 1) driveMecanum.turn(.6, 950);
+
                     if(driveMecanum.getOdomY().getCurrentPosition() >= 13400 && step == 1){
                         resetEnc_step();
                     }
+
                     if(step == 2) {
                         //driveMecanum.setPowerZero();
                         //timer.reset();
@@ -180,13 +186,12 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                 default:
                     break;
             }
-            telemetry.addData("valX", camera.getPipeline().getLocation());
-            telemetry.addData("area", camera.getPipeline().getMaxVal());
-            telemetry.addData("idxArea", camera.getPipeline().getMaxValIdx());
+            telemetry.addData("valX", camera.getPipelineVermelho().getLocation());
+            telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
+            telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
             telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
             telemetry.addData("odom", driveMecanum.getOdomY().getCurrentPosition());
             telemetry.update();
-
 
         }
     }

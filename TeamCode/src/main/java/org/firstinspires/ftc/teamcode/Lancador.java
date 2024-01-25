@@ -16,5 +16,7 @@ public class Lancador {
     public void lancarDrone(){
         servoDrone.setPosition(1);
     }
-
+    public void setDroneZero(){
+        servoDrone.setPosition(.5);
+    }
 }

@@ -63,7 +63,7 @@ public class BandejaTeste {
             if (controle) {
                 servoTravaBandeja.setPosition(.3);
             } else {
-                servoTravaBandeja.setPosition(.60);
+                servoTravaBandeja.setPosition(.6);
             }
             controle = !controle;
         }
@@ -101,6 +101,10 @@ public class BandejaTeste {
 
     public void testePitch(){
         servoPitch.setPosition(0);
+    }
+
+    public Servo getServoTravaBandeja(){
+        return servoTravaBandeja;
     }
 
 

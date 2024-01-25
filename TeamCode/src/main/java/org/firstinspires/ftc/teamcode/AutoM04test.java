@@ -29,19 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
-
-import java.util.Timer;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -78,7 +67,7 @@ public class AutoM04test extends LinearOpMode {
     VisionControl camera;
     Braco braco;
     Coletor coletor;
-    Pipeline pipeline = new Pipeline();
+    Pipeline_Vermelho pipelineVermelho = new Pipeline_Vermelho();
     int step;
 
 
@@ -86,8 +75,8 @@ public class AutoM04test extends LinearOpMode {
         camera = new VisionControl(this);
 
         camera.initDetectionElement();
-        camera.setPipeline(pipeline);
-        telemetry.addData("Camera", camera.getPipeline().getLocation());
+        camera.setPipeline(pipelineVermelho);
+        telemetry.addData("Camera", camera.getPipelineVermelho().getLocation());
     }
     @Override
     public void runOpMode() {
@@ -114,9 +103,9 @@ public class AutoM04test extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested()) {
 
-            telemetry.addData("camera", camera.getPipeline().getLocation());
-            telemetry.addData("area", camera.getPipeline().getMaxVal());
-            telemetry.addData("idxArea", camera.getPipeline().getMaxValIdx());
+            telemetry.addData("camera", camera.getPipelineVermelho().getLocation());
+            telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
+            telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
 
             idle();
 

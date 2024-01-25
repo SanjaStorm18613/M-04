@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -11,12 +9,15 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.nio.channels.Pipe;
+
 public class VisionControl {
 
     private OpenCvWebcam webcam;
     private LinearOpMode opMode;
 
-    private Pipeline pipeline;
+    private Pipeline_Vermelho pipelineVermelho;
+    private Pipeline_Azul pipelineAzul;
 
     public VisionControl(LinearOpMode opMode) {
 
@@ -28,8 +29,10 @@ public class VisionControl {
                         (WebcamName.class,  "Webcam 1"), cameraMonitorViewId);
 
         initDetectionElement();
-        pipeline = new Pipeline();
-        webcam.setPipeline(pipeline);
+        pipelineAzul = new Pipeline_Azul();
+        pipelineVermelho = new Pipeline_Vermelho();
+        webcam.setPipeline(pipelineVermelho);
+        webcam.setPipeline(pipelineAzul);
     }
 
     public void initDetectionElement() {
@@ -41,7 +44,6 @@ public class VisionControl {
             @Override
             public void onOpened() {
                 webcam.startStreaming(1280, 720, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-
             }
 
             @Override
@@ -64,7 +66,20 @@ public class VisionControl {
         webcam.pauseViewport();
     }
 
-    public Pipeline getPipeline(){
-        return pipeline;
+    public Pipeline_Vermelho getPipelineVermelho(){
+        return pipelineVermelho;
+    }
+    public Pipeline_Azul getPipelineAzul(){
+        return pipelineAzul;
+    }
+    public boolean getDetected(){
+        boolean getDetected = false;
+        if(pipelineVermelho.getLocation() == ElementLoc.LEFT || pipelineVermelho.getLocation() == ElementLoc.RIGHT || pipelineVermelho.getLocation() == ElementLoc.CENTER){
+            getDetected = true;
+        }
+        else{
+            getDetected = false;
+        }
+        return getDetected;
     }
 }
