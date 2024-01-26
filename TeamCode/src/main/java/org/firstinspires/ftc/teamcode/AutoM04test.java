@@ -101,7 +101,7 @@ public class AutoM04test extends LinearOpMode {
 
 
 
-        while (!isStarted() && !isStopRequested()) {
+        while (opModeIsActive()) {
 
             telemetry.addData("camera", camera.getPipelineVermelho().getLocation());
             telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());

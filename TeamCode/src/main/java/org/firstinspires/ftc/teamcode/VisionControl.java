@@ -21,6 +21,7 @@ public class VisionControl {
 
     public VisionControl(LinearOpMode opMode) {
 
+        this.opMode = opMode;
         //WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam1");
         int cameraMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id",
                                   opMode.hardwareMap.appContext.getPackageName());

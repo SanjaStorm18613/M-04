@@ -13,16 +13,12 @@ public class BandejaTeste {
     private Servo servoRoll, servoTravaBandeja, servoPitch;
     private LinearOpMode opMode;
 
-    Braco braco;
-
     private double pos;
     private boolean controle = true;
 
     public BandejaTeste(LinearOpMode opMode){
 
         this.opMode = opMode;
-
-        braco = new Braco(this.opMode);
 
         servoRoll = opMode.hardwareMap.get(Servo.class, "servoRoll");
         servoRoll.setDirection(Servo.Direction.REVERSE);
@@ -45,9 +41,6 @@ public class BandejaTeste {
             servoRoll.setPosition(0);
             controle = true;
         }
-
-        opMode.telemetry.addData("servo", servoTravaBandeja.getPosition());
-        opMode.telemetry.update();
     }
 
     public void destravarBandeja(){
@@ -85,18 +78,6 @@ public class BandejaTeste {
         if (down) {
             servoPitch.setPosition(.1);
         }
-    }
-
-    public void pitch(boolean up, boolean down){
-
-        if(braco.getMotorBraco().getCurrentPosition() > 0 && braco.getMotorBraco().getCurrentPosition() < 200){
-            servoPitch.setPosition(0);
-        } else if (up && braco.getMotorBraco().getCurrentPosition() > 201) {
-            servoPitch.setPosition(1);
-        } else if (down && braco.getMotorBraco().getCurrentPosition() > 201) {
-            servoPitch.setPosition(.1);
-        }
-
     }
 
     public void testePitch(){

@@ -43,7 +43,6 @@ public class TeleopM04 extends LinearOpMode {
     Coletor coletor;
     Bandeja bandeja;
     Braco braco;
-    BandejaTeste bandejaTeste;
 
     //Detector detector;
     
@@ -62,14 +61,12 @@ public class TeleopM04 extends LinearOpMode {
         coletor       = new Coletor(this);
         //bandeja       = new Bandeja(this);
         braco         = new Braco(this);
-        bandejaTeste   = new BandejaTeste(this);
-        //detector      = new Detector();
 
         //telemetry.addData("TeleOP" , "Inicializando");
 
         waitForStart();
 
-        while(opModeIsActive()) {
+        while(opModeIsActive() && !isStopRequested()) {
 
             // DroneLauncher
             if(gamepad1.y) lancador.lancarDrone();
@@ -86,82 +83,23 @@ public class TeleopM04 extends LinearOpMode {
             //SistemaLinear
             sistemaLinear.movimentarSistema(gamepad1.left_bumper, gamepad1.right_bumper);
 
-/*
-            //Bandeja
-            bandeja.pitchBandeja(braco.getMotorBraco().getCurrentPosition(), (Math.floor(gamepad2.right_trigger * 100) / 100));
-
-            if (gamepad2.a && !bandejaBlockRight){
-                bandeja.rollBandeja(1);
-                bandeja.destravarBandeja();
-
-            } else if (gamepad2.b && !bandejaBlockLeft){
-                bandeja.rollBandeja(-1);
-                bandeja.destravarBandeja();
-            }
-            bandejaBlockRight = gamepad2.a;
-            bandejaBlockLeft  = gamepad2.b;
-
-            if (gamepad2.left_bumper && !bandejaBlock){
-                bandeja.destravarBandeja();
-            } else if (gamepad2.right_bumper && !bandejaBlockTotal){
-                bandeja.destravarBandejaTotal();
-                bandeja.rollBandeja(1);
-            }
-            bandejaBlock      = gamepad2.left_bumper;
-            bandejaBlockTotal = gamepad2.right_bumper;
-
-            if (gamepad2.dpad_right && !rollBandejaRightBlock){
-                bandeja.rollBandeja(1);
-            } else if (gamepad2.dpad_left && !rollBandejaLeftBlock){
-                bandeja.rollBandeja(-1);
-            }
-            rollBandejaRightBlock = gamepad2.dpad_right;
-            rollBandejaLeftBlock  = gamepad2.dpad_left;
-            */
-
-
-            /*if (gamepad1.a && !bandejaBlock){
-                bandeja.destravarBandejaTotal();
-            }
-            if (gamepad1.b){
-                bandeja.travarBandeja();
-            }
-
-            if (braco.getMotorBraco().getCurrentPosition() > 500) {
-
-                bandeja.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down);
-
-            } else {
-
-               bandeja.getServoPitch().setPosition(.2);
-
-            }
-
-            if (gamepad1.dpad_left && !rollBandejaLeftBlock) {
-
-                bandeja.rollBandeja(.3);
-            }
-            if (gamepad1.dpad_right && !rollBandejaRightBlock) {
-
-                bandeja.rollBandeja(.7);
-            }*/
 
             //BANDEJA TEST
             if((!rollBandejaLeftBlock || !rollBandejaRightBlock) && (gamepad2.dpad_left || gamepad2.dpad_right)) {
-                bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right); //Roll
+                braco.bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right); //Roll
             }
             if(gamepad2.a && !bandejaBlock) {
-                bandejaTeste.destravarBandeja(); //Destravar
+                braco.bandejaTeste.destravarBandeja(); //Destravar
             }
             if(gamepad2.b && !bandejaBlockTotal){
-                bandejaTeste.destravarBandejaTotal(); //Destravar
+                braco.bandejaTeste.destravarBandejaTotal(); //Destravar
             }
             if(gamepad2.y && !bandejaBlockTrava){
-                bandejaTeste.travarBandeja(); //Travar
+                braco.bandejaTeste.travarBandeja(); //Travar
 
             }
             if((!pitchBandejaUp || !pitchBandejaDown) && (gamepad2.dpad_up || gamepad2.dpad_down)) {
-                bandejaTeste.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down); //Pitch
+                braco.bandejaTeste.pitchBandeja(gamepad2.dpad_up, gamepad2.dpad_down); //Pitch
             }
             //bandejaTeste.rollBandeja(gamepad2.dpad_left, gamepad2.dpad_right);
 
@@ -179,11 +117,12 @@ public class TeleopM04 extends LinearOpMode {
             driveMecanum.periodic(Math.floor(gamepad1.left_stick_x * 10) / 10,
                                   Math.floor(gamepad1.left_stick_y * 10) / 10,
                                 Math.floor(gamepad1.right_stick_x * 10) / 10);
+
             //telemetry.addData("odomX", driveMecanum.getOdomX().getCurrentPosition());
-            telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
-            telemetry.addData("odomY", driveMecanum.getOdomY().getCurrentPosition());
-            telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
-            telemetry.update();
+            //telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
+            //telemetry.addData("odomY", driveMecanum.getOdomY().getCurrentPosition());
+            //telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
+            //telemetry.update();
 
 
         }

@@ -22,9 +22,6 @@ public class Coletor{
     }
 
     public void collectorControl(double powerC, double powerR){
-        this.power = power;
-        power += powerC;
-        power -= powerR;
         motorCollector.setPower(powerC + powerR);
     }
 }

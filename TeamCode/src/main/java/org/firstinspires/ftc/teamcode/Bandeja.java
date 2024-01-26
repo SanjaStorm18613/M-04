@@ -41,17 +41,13 @@ public class Bandeja {
     }
 
     public void rollBandeja(double signum){
-        cont = (cont + 2) % 4; // MUDANÇA DE CONT + 2 PARA CONT + 3 (depois para CONT + 4)
+        cont = (cont + 2) % 4;
         servoRoll.setPosition(signum * (cont - 1));
-        //servoRoll.setPosition(signum * (++cont % 2));
-        //servoRoll.setDirection
     }
 
     public void destravarBandeja(){
         count_drop += Math.min(cont,2);
-        servoBandeja.setPosition(drop[count_drop % 3]); // mudança de count_drop % 3 para count_drop % 4
-        opMode.telemetry.addData("X", count_drop % 3);
-        opMode.telemetry.update();
+        servoBandeja.setPosition(drop[count_drop % 3]);
     }
 
     public void travarBandeja() {

@@ -32,7 +32,7 @@ public class Braco {
 
     private double[] resp = {0, 1, 2, 3, 4, 5, 6, 6, 7, 7};
 
-    private BandejaTeste bandejaTeste;
+    public BandejaTeste bandejaTeste;
 
     public Braco(LinearOpMode opMode){
 
