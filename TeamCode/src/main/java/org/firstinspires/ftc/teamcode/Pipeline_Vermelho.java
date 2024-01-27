@@ -131,15 +131,15 @@ public class Pipeline_Vermelho extends OpenCvPipeline {
     private void setLocation(int valX) {
 
         this.ValX = ValX;
-        if (valX < 200) {
+        if (valX < 400) {
 
             customElementLocation = ElementLoc.LEFT;
 
-        } else if (valX > 480) {
+        } else if (valX > 900) {
 
             customElementLocation = ElementLoc.RIGHT;
 
-        } else if (valX > 200 && valX < 480) {
+        } else if (valX > 400 && valX < 900) {
 
             customElementLocation = ElementLoc.CENTER;
 

@@ -61,9 +61,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name= "AutoM04_VERMELHO", group = "Robot")
+@Autonomous(name= "AutoM04_AZUL", group = "Robot")
 //@Disabled
-public class AutoM04_VERMELHO extends LinearOpMode {
+public class AutoM04_AZUL extends LinearOpMode {
 
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
@@ -95,12 +95,12 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         timer = new ElapsedTime();
 
-        camera = new VisionControl(this, 1);
+        camera = new VisionControl(this, 2);
 
         telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
-        telemetry.addData("valX", camera.getPipelineVermelho().getLocation());
-        telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
-        telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
+        telemetry.addData("valX", camera.getPipelineAzul().getLocation());
+        telemetry.addData("area", camera.getPipelineAzul().getMaxVal());
+        telemetry.addData("idxArea", camera.getPipelineAzul().getMaxValIdx());
         telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
         telemetry.update();
 
@@ -108,14 +108,14 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         telemetry.update();
         while(!isStarted() && !isStopRequested()){
-            telemetry.addData("camera", camera.getPipelineVermelho().getLocation());
+            telemetry.addData("camera", camera.getPipelineAzul().getLocation());
             telemetry.update();
         }
         while (opModeIsActive()) {
             if(camera.getDetected()){
                 camera.stopDetection();
             }
-            switch(camera.getPipelineVermelho().getLocation()){
+            switch(camera.getPipelineAzul().getLocation()){
                 case CENTER:
                     camera.stopViewport();
 
@@ -189,9 +189,9 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                 default:
                     break;
             }
-            telemetry.addData("valX", camera.getPipelineVermelho().getLocation());
-            telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
-            telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
+            telemetry.addData("valX", camera.getPipelineAzul().getLocation());
+            telemetry.addData("area", camera.getPipelineAzul().getMaxVal());
+            telemetry.addData("idxArea", camera.getPipelineAzul().getMaxValIdx());
             telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
             telemetry.addData("odom", driveMecanum.getOdomY().getCurrentPosition());
             telemetry.update();

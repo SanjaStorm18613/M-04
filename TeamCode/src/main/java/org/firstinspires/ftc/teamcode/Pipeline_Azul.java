@@ -36,8 +36,8 @@ public class Pipeline_Azul extends OpenCvPipeline {
         size = new Size(3,3);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
 
-        Scalar lower = new Scalar(212, 60, 80);
-        Scalar upper = new Scalar(150, 230, 200);
+        Scalar lower = new Scalar (0, 70, 50);
+        Scalar upper = new Scalar (30, 100, 200);
 
         //Scalar lower = new Scalar(0, 0, 0);
         //Scalar upper = new Scalar(255, 255, 255);
@@ -50,6 +50,10 @@ public class Pipeline_Azul extends OpenCvPipeline {
         Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
         temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
         Imgproc.erode(mat, mat, kernel);
+        Imgproc.erode(mat, mat, kernel);
+        Imgproc.erode(mat, mat, kernel);
+        Imgproc.erode(mat, mat, kernel);
+        Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
         Imgproc.dilate(mat, mat, kernel);
@@ -83,7 +87,7 @@ public class Pipeline_Azul extends OpenCvPipeline {
             input.copyTo(mat);
 
             if (maxValIdx >= 0) {
-                Imgproc.drawContours(mat, contours, maxValIdx, new Scalar(0, 0, 255), 5);
+                Imgproc.drawContours(mat, contours, maxValIdx, new Scalar(255, 0, 0), 5);
 
                 Rect biggestRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
 
@@ -131,15 +135,15 @@ public class Pipeline_Azul extends OpenCvPipeline {
     private void setLocation(int valX) {
 
         this.ValX = ValX;
-        if (valX < 200) {
+        if (valX < 400) {
 
             customElementLocation = ElementLoc.LEFT;
 
-        } else if (valX > 480) {
+        } else if (valX > 900) {
 
             customElementLocation = ElementLoc.RIGHT;
 
-        } else if (valX > 200 && valX < 480) {
+        } else if (valX > 400 && valX < 900) {
 
             customElementLocation = ElementLoc.CENTER;
 

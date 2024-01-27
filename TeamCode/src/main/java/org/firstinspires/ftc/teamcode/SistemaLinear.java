@@ -57,4 +57,8 @@ public class SistemaLinear {
         armMotor.setPower((Up || Down) ? 1 : 0);
 
     }
+
+    public void inverterMotor(){
+        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
 }

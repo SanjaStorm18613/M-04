@@ -19,7 +19,13 @@ public class VisionControl {
     private Pipeline_Vermelho pipelineVermelho;
     private Pipeline_Azul pipelineAzul;
 
-    public VisionControl(LinearOpMode opMode) {
+    /**
+     *
+     * @param opMode
+     * @param setPipeline
+     * @throws IllegalStateException
+     */
+    public VisionControl(LinearOpMode opMode, int setPipeline) {
 
         this.opMode = opMode;
         //WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam1");
@@ -32,8 +38,18 @@ public class VisionControl {
         initDetectionElement();
         pipelineAzul = new Pipeline_Azul();
         pipelineVermelho = new Pipeline_Vermelho();
-        webcam.setPipeline(pipelineVermelho);
-        webcam.setPipeline(pipelineAzul);
+
+        switch(setPipeline){
+            case 1:
+                webcam.setPipeline(pipelineVermelho);
+                break;
+            case 2:
+                webcam.setPipeline(pipelineAzul);
+                break;
+            default:
+                throw new IllegalStateException("pipeline not found");
+
+        }
     }
 
     public void initDetectionElement() {
@@ -44,7 +60,7 @@ public class VisionControl {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
             @Override
             public void onOpened() {
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override

@@ -72,7 +72,7 @@ public class AutoM04test extends LinearOpMode {
 
 
     public void initiation(){
-        camera = new VisionControl(this);
+        camera = new VisionControl(this,1);
 
         camera.initDetectionElement();
         camera.setPipeline(pipelineVermelho);
@@ -80,7 +80,7 @@ public class AutoM04test extends LinearOpMode {
     }
     @Override
     public void runOpMode() {
-        camera = new VisionControl(this);
+        camera = new VisionControl(this,1);
 
         camera.initDetectionElement();
 

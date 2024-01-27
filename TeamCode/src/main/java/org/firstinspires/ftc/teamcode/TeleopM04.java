@@ -50,7 +50,7 @@ public class TeleopM04 extends LinearOpMode {
     private boolean armBlockUp = false, armBlockDown = false, bandejaBlock = false, bandejaBlockTotal = false, bandejaBlockRight = false,
                     bandejaBlockLeft = false, rollBandejaLeftBlock = false, rollBandejaRightBlock = false, FSUnlock = false,
                     sistemaLinearBlockDown = false, droneBlock = false, pitchBandejaUp = false, pitchBandejaDown = false,
-                    bandejaBlockTrava = false, escalar = false;
+                    bandejaBlockTrava = false, escalar = false, inverterMotorElevador = false;
 
     @Override
     public void runOpMode() {
@@ -75,6 +75,7 @@ public class TeleopM04 extends LinearOpMode {
             coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
 
             //BRACO
+            if(gamepad2.back) braco.inverterMotor();
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
 
             if (gamepad2.left_bumper) braco.travaPos();
@@ -82,6 +83,9 @@ public class TeleopM04 extends LinearOpMode {
 
             //SistemaLinear
             sistemaLinear.movimentarSistema(gamepad1.left_bumper, gamepad1.right_bumper);
+            if(gamepad1.back && !inverterMotorElevador) sistemaLinear.inverterMotor();
+
+            inverterMotorElevador = gamepad1.back;
 
 
             //BANDEJA TEST

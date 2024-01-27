@@ -185,5 +185,9 @@ public class Braco {
             motorBraco.setPower(0);
 
         }
+
+    }
+    public void inverterMotor(){
+        motorBraco.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 }
