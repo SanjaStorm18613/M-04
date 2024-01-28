@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
@@ -12,6 +13,8 @@ public class BandejaTeste {
 
     private Servo servoRoll, servoTravaBandeja, servoPitch;
     private LinearOpMode opMode;
+
+    private DcMotor lampada;
 
     private double pos;
     private boolean controle = true;
@@ -28,6 +31,8 @@ public class BandejaTeste {
 
         servoPitch = opMode.hardwareMap.get(Servo.class, "servoPitch");
         servoPitch.setDirection(Servo.Direction.REVERSE);
+
+        lampada = opMode.hardwareMap.get(DcMotor.class, "lampada");
     }
 
     public void rollBandeja(boolean left, boolean right){
@@ -70,24 +75,34 @@ public class BandejaTeste {
         servoTravaBandeja.setPosition(1);
     }
 
-    public void pitchBandeja(boolean up, boolean down){
+    public void pitchBandeja(boolean up){
 
-        if (up) {
+        /*if (up) {
             servoPitch.setPosition(1);
         }
         if (down) {
-            servoPitch.setPosition(.1);
-        }
+            servoPitch.setPosition(0);
+        }*/
+        pos += (up ? 1 : 0) * 10;
+        pos  = Math.max(pos, 0);
+
+        servoPitch.setPosition(up ? 1 : 0);
     }
 
-    public void testePitch(){
-        servoPitch.setPosition(0);
+    public void testePitch(double pos){
+        servoPitch.setPosition(pos);
     }
 
     public Servo getServoTravaBandeja(){
         return servoTravaBandeja;
     }
 
+    public Servo getServoPitch(){
+        return servoPitch;
+    }
 
+    public DcMotor getLampada(){
+        return lampada;
+    }
 
 }

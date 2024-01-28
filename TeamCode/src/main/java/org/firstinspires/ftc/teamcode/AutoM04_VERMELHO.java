@@ -29,11 +29,20 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Size;
 import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -71,8 +80,11 @@ public class AutoM04_VERMELHO extends LinearOpMode {
     Coletor coletor;
     BandejaTeste bandeja;
     Braco braco;
-    VisionControl camera;
     ElapsedTime timer;
+    ElementLoc loc;
+    private AprilTagProcessor aprilTag;
+    private Pipeline_Vermelho pv;
+    private VisionPortal visionPortal;
 
     int step = 0;
 
@@ -95,30 +107,23 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         timer = new ElapsedTime();
 
-        camera = new VisionControl(this, 1);
+        initCamera();
 
-        telemetry.addData("BL", driveMecanum.getOdomY().getCurrentPosition());
-        telemetry.addData("valX", camera.getPipelineVermelho().getLocation());
-        telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
-        telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
-        telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
-        telemetry.update();
-
-        camera.initDetectionElement();
-
+        timer.reset();
         telemetry.update();
         while(!isStarted() && !isStopRequested()){
-            telemetry.addData("camera", camera.getPipelineVermelho().getLocation());
+            telemetry.addData("camera", loc);
             telemetry.update();
+            if (pv.getLocation() != ElementLoc.NOT_FOUND) {
+                loc = pv.getLocation();
+                visionPortal.setProcessorEnabled(pv,false);
+            }
+
         }
         while (opModeIsActive()) {
-            if(camera.getDetected()){
-                camera.stopDetection();
-            }
-            switch(camera.getPipelineVermelho().getLocation()){
-                case CENTER:
-                    camera.stopViewport();
 
+            switch(loc){
+                case CENTER:
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
 
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
@@ -133,23 +138,25 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
                     if(step == 2) {
                         //driveMecanum.setPowerZero();
-                        //timer.reset();
-                        //timer = new ElapsedTime(3);
-                        //timer.startTime();
+                        timer.startTime();
                         coletor.collectorControl(0, -0.5);
                         driveMecanum.setPowerZero();
+                        resetEnc_step();
                     }
+                    if(step == 3 && timer.seconds() > 4){
+                        driveMecanum.setPowerZero();
+                        coletor.collectorControl(0, 0);
+                        resetEnc_step();
+                    }
+                    //odom = 11900;
                     break;
                 case LEFT:
-                    camera.stopViewport();
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
 
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
                         resetEnc_step();
                     }
-
                     if(step == 1) driveMecanum.turn(.6, -950);
-
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -13200 && step == 1){
                         resetEnc_step();
                     }
@@ -163,8 +170,6 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                     }
                     break;
                 case RIGHT:
-                    camera.stopViewport();
-
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
 
                     if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
@@ -177,23 +182,25 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                         resetEnc_step();
                     }
 
-                    if(step == 2) {
+                    if(step == 2 && driveMecanum.getOdomY().getCurrentPosition() >= 60) {
                         //driveMecanum.setPowerZero();
-                        //timer.reset();
-                        //timer = new ElapsedTime(3);
-                        //timer.startTime();
+                        timer.startTime();
                         coletor.collectorControl(0, -0.5);
                         driveMecanum.setPowerZero();
+                        resetEnc_step();
+                    }
+
+                    if(step == 3){
+                        if(timer.seconds() > 4) {
+                            coletor.collectorControl(0, 0);
+                        }
+                        resetEnc_step();
                     }
                     break;
                 default:
                     break;
             }
-            telemetry.addData("valX", camera.getPipelineVermelho().getLocation());
-            telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
-            telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
-            telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
-            telemetry.addData("odom", driveMecanum.getOdomY().getCurrentPosition());
+            telemetry.addData("step", step);
             telemetry.update();
 
         }
@@ -202,4 +209,54 @@ public class AutoM04_VERMELHO extends LinearOpMode {
         driveMecanum.resetEnc();
         step++;
     }
+
+    private void telemetryAprilTag() {
+
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        telemetry.addData("# AprilTags Detected", currentDetections.size());
+
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+            } else {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+        }   // end for() loop
+
+        // Add "key" information to telemetry
+        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+        telemetry.addLine("RBE = Range, Bearing & Elevation");
+
+    }   // end method telemetryAprilTag()
+
+    private void initCamera() {
+
+        // Create the AprilTag processor.
+        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+
+        pv = new Pipeline_Vermelho();
+
+        // Create the vision portal by using a builder.
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+        builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        // Choose a camera resolution. Not all cameras support all resolutions.
+        builder.setCameraResolution(new Size(1280, 720));
+
+        // Set and enable the processor.
+        builder.addProcessor(aprilTag);
+        builder.addProcessor(pv);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortal = builder.build();
+
+        // Disable or re-enable the aprilTag processor at any time.
+        visionPortal.setProcessorEnabled(pv, true);
+
+    }   // end method initAprilTag()
 }

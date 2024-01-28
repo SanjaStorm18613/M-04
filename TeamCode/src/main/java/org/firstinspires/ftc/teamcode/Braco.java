@@ -152,6 +152,7 @@ public class Braco {
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         if(encoder >= 300){
             bandejaTeste.destravarBandeja();
         }

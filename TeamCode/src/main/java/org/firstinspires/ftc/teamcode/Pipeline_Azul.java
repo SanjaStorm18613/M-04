@@ -1,6 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -14,52 +20,63 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-public class Pipeline_Azul extends OpenCvPipeline {
-    private Mat mat, temp, c;
-
+public class Pipeline_Azul implements VisionProcessor {
+    private final Paint green;
+    private Mat mat, temp;
     private Scalar lower, upper;
-    private Mat result = null;
-    private int maxValIdx, ValX;
-    private double contourArea, x, y, w, h, pos, maxVal, storage;
+    private int maxValIdx;
+    private double contourArea, maxVal;
     public Size size;
-//    private ArrayList<MatOfPoint> contours = new ArrayList<>();
-
+    private ArrayList<MatOfPoint> contours;
+    private Point p;
     public ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
 
     public Pipeline_Azul() {
         mat = new Mat();
+
+        green = new Paint();
+        green.setColor(Color.rgb(0,255,0));
+
+        p = new Point(-1,-1);
+    }
+
+    private void setLocation(int valX) {
+        if (valX < 400) {
+            customElementLocation = ElementLoc.LEFT;
+        } else if (valX > 900) {
+            customElementLocation = ElementLoc.RIGHT;
+        } else if (valX > 400 && valX < 900) {
+            customElementLocation = ElementLoc.CENTER;
+        } else {
+            customElementLocation = ElementLoc.NOT_FOUND;
+        }
+    }
+
+    public ElementLoc getLocation() {
+        return customElementLocation;
     }
 
     @Override
-    public Mat processFrame(Mat input) {
+    public void init(int width, int height, CameraCalibration calibration) {
+        lower = new Scalar (0, 70, 50);
+        upper = new Scalar (30, 100, 200);
+    }
 
+    @Override
+    public Object processFrame(Mat frame, long captureTimeNanos) {
         size = new Size(3,3);
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HLS);
-
-        Scalar lower = new Scalar (0, 70, 50);
-        Scalar upper = new Scalar (30, 100, 200);
-
-        //Scalar lower = new Scalar(0, 0, 0);
-        //Scalar upper = new Scalar(255, 255, 255);
+        Imgproc.cvtColor(frame, mat, Imgproc.COLOR_BGR2HLS);
 
         Core.inRange(mat, lower, upper, mat);
 
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
 
-
         Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
-        temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
-        Imgproc.erode(mat, mat, kernel);
-        Imgproc.erode(mat, mat, kernel);
-        Imgproc.erode(mat, mat, kernel);
-        Imgproc.erode(mat, mat, kernel);
-        Imgproc.dilate(mat, mat, kernel);
-        Imgproc.dilate(mat, mat, kernel);
-        Imgproc.dilate(mat, mat, kernel);
-        Imgproc.dilate(mat, mat, kernel);
-        //Imgproc.dilate(mat, mat, kernel);
+        temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size( ));
+        Imgproc.erode(mat, mat, kernel, p, 4);
+        Imgproc.dilate(mat, mat, kernel, p ,4);
 
-        ArrayList<MatOfPoint> contours = new ArrayList<>();
+        contours = new ArrayList<>();
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
 
         maxVal = 0;
@@ -82,96 +99,21 @@ public class Pipeline_Azul extends OpenCvPipeline {
 
                 }
             }
-
-            //Core.bitwise_and(input, input, result, mat);
-            input.copyTo(mat);
-
-            if (maxValIdx >= 0) {
-                Imgproc.drawContours(mat, contours, maxValIdx, new Scalar(255, 0, 0), 5);
-
-                Rect biggestRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
-
-                Point supDir = new Point(biggestRect.x, biggestRect.y);
-                Point botEsc = new Point(biggestRect.x + biggestRect.width, biggestRect.y + biggestRect.height);
-
-                storage = biggestRect.height * biggestRect.width;
-                Imgproc.rectangle(mat, supDir, botEsc, new Scalar(0, 255, 0), 3);
-
-                setLocation(biggestRect.x + biggestRect.width / 2);
-
-            } else {
-                customElementLocation = ElementLoc.NOT_FOUND;
-            }
-
+            frame.copyTo(mat);
         }
-
-
-        switch(getLocation()){
-
-            case LEFT:  //LEFT ~ to define
-                Imgproc.rectangle(mat, new Point(100, 190), new Point(100, 230), new Scalar(0, 255, 255), 3);
-                break;
-
-            case RIGHT:  //RIGHT ~ to define
-                Imgproc.rectangle(mat, new Point(430, 190), new Point(430, 230), new Scalar(0, 255, 255), 3);
-                break;
-
-            case CENTER:  //CENTER ~ to define
-                Imgproc.rectangle(mat, new Point(310, 190), new Point(310, 230), new Scalar(0, 255, 255), 3);
-                break;
-
-            case NOT_FOUND:
-            default:
-
-                Imgproc.line(mat, new Point(200, 180), new Point(400, 290), new Scalar(0, 255, 255), 3);
-
-                Imgproc.line(mat, new Point(400, 180), new Point(200, 290), new Scalar(0, 255, 255), 3);
-        }
-
-
         return mat;
-
     }
-    private void setLocation(int valX) {
 
-        this.ValX = ValX;
-        if (valX < 400) {
+    @Override
+    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+        if (maxValIdx >= 0) {
+            Rect bRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
 
-            customElementLocation = ElementLoc.LEFT;
+            canvas.drawRect(bRect.x, bRect.y,bRect.x + bRect.width, bRect.y + bRect.height, green);
 
-        } else if (valX > 900) {
-
-            customElementLocation = ElementLoc.RIGHT;
-
-        } else if (valX > 400 && valX < 900) {
-
-            customElementLocation = ElementLoc.CENTER;
-
+            setLocation(bRect.x + bRect.width / 2);
         } else {
-
             customElementLocation = ElementLoc.NOT_FOUND;
-
         }
-        //telemetry.addData("valX", valX);
     }
-
-    public ElementLoc getLocation() {
-        return customElementLocation;
-    }
-
-
-    public void setPos(ElementLoc pos){
-        pos = customElementLocation;
-    }
-
-    public int getValX(){
-        return ValX;
-    }
-    public int getMaxValIdx(){
-        return maxValIdx;
-    }
-    public double getMaxVal(){
-        return storage;
-    }
-
 }

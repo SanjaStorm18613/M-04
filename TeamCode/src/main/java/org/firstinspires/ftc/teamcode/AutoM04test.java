@@ -30,7 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.
@@ -64,32 +66,25 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class AutoM04test extends LinearOpMode {
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
-    VisionControl camera;
     Braco braco;
     Coletor coletor;
     Pipeline_Vermelho pipelineVermelho = new Pipeline_Vermelho();
     int step;
+    ElapsedTime timer;
 
 
     public void initiation(){
-        camera = new VisionControl(this,1);
-
-        camera.initDetectionElement();
-        camera.setPipeline(pipelineVermelho);
-        telemetry.addData("Camera", camera.getPipelineVermelho().getLocation());
     }
     @Override
     public void runOpMode() {
-        camera = new VisionControl(this,1);
 
-        camera.initDetectionElement();
-
-
+        timer = new ElapsedTime();
         telemetry.addData("Inicializando Autonomo", "Chassi pronto!");
         driveMecanum = new DriveMecanum(this);
         braco = new Braco(this);
         coletor = new Coletor(this);
-
+        timer.reset();
+        timer.startTime();
 
         //sistemaLinear = new SistemaLinear(this);
         //coletor = new Coletor(this);
@@ -100,100 +95,35 @@ public class AutoM04test extends LinearOpMode {
         //driveMecanum.resetEnc();
 
 
+        while (!isStarted() && !isStopRequested()) {
 
-        while (opModeIsActive()) {
 
-            telemetry.addData("camera", camera.getPipelineVermelho().getLocation());
-            telemetry.addData("area", camera.getPipelineVermelho().getMaxVal());
-            telemetry.addData("idxArea", camera.getPipelineVermelho().getMaxValIdx());
-
+            telemetry.addData("timer", timer.seconds());
             idle();
 
             telemetry.addData("DriveMecanumRun", driveMecanum.getBL().getCurrentPosition());
             telemetry.update();
-            //coletor.collectorControl(0, -0.3);
+            if (timer.seconds() > 5) timer.reset();
 
-            /*if (step == 0) {
-                driveMecanum.moveForwardAuto(.5, 3801);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() >= 3800 && step == 0) {
-                resetEnc_step();
-            }
-
-            if (step == 1) {
-                driveMecanum.turn(.5, 2871);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() > ConstantsAuto.Drive.degree90 && step == 1) {
-                resetEnc_step();
-            }
-
-            if (step == 2) {
-                driveMecanum.moveForwardAuto(.6, 11001);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() > 11000 && step == 2) {
-                resetEnc_step();
-            }
-
-            if (step == 3) {
-                driveMecanum.right(.5, 3301);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() < -3300 && step == 3) {
-                resetEnc_step();
-            }
-
-            if (step == 4) {
-                driveMecanum.moveForwardAuto(-0.5, -11001);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() < -11000 && step == 4) {
-                resetEnc_step();
-            }
-
-            if (step == 5) {
-                driveMecanum.turn(-0.5, -2871);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() < -ConstantsAuto.Drive.degree90 && step == 5) {
-                resetEnc_step();
-            }
-
-            if (step == 6) {
-                driveMecanum.moveForwardAuto(.5, 6001);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() > 6000 && step == 6) {
-                resetEnc_step();
-            }
-
-            if (step == 7) {
-                driveMecanum.turn(.5, 5742);
-            }
-
-            if (driveMecanum.getBL().getCurrentPosition() > 5741 && step == 7) {
-                resetEnc_step();
-            }
-
-            if (step == 8) {
-                driveMecanum.moveForwardAuto(.5, -7000);
-            }
-
-            //coletor.repelirAuto(.5);*/
-
-            //braco.pitchAuto(.8, 500);
 
         }
-        while(opModeIsActive()){
-            camera.stopDetection();
+        waitForStart();
+        while (opModeIsActive()) {
+            if (step == 0) {
+                braco.bandejaTeste.testePitch(0);
+                step++;
+            }
+            if(step == 1 && braco.bandejaTeste.getServoPitch().getPosition() == 0){
+                braco.pitchAuto(.6, 1550);
+                step++;
+            }
+            if(braco.getMotorBraco().getCurrentPosition() >= 1550 && step == 2){
+                braco.bandejaTeste.testePitch(1);
+            }
+            if(braco.bandejaTeste.getServoPitch().getPosition() == 1){
+                braco.bandejaTeste.travarBandeja();
+            }
         }
 
-
-        //// void resetEnc_step(){
-        //driveMecanum.resetEnc();
-        //step++;
     }
-
 }
