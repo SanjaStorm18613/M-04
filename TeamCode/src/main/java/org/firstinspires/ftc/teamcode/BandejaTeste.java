@@ -73,6 +73,7 @@ public class BandejaTeste {
 
     public void travarBandeja() {
         servoTravaBandeja.setPosition(1);
+
     }
 
     public void pitchBandeja(boolean up){

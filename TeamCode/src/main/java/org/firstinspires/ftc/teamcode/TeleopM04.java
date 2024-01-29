@@ -41,7 +41,6 @@ public class TeleopM04 extends LinearOpMode {
     SistemaLinear sistemaLinear;
     Lancador lancador;
     Coletor coletor;
-    Bandeja bandeja;
     Braco braco;
 
     //Detector detector;
@@ -67,7 +66,7 @@ public class TeleopM04 extends LinearOpMode {
 
         while(opModeIsActive() && !isStopRequested()) {
 
-            braco.bandejaTeste.getLampada().setPower(.5);
+
             // DroneLauncher
             if(gamepad1.y) lancador.lancarDrone();
 
@@ -102,6 +101,12 @@ public class TeleopM04 extends LinearOpMode {
             }
             if(gamepad2.y && !bandejaBlockTrava){
                 braco.bandejaTeste.travarBandeja(); //Travar
+
+            }
+            if(braco.bandejaTeste.getServoTravaBandeja().getPosition() == 1){
+                braco.bandejaTeste.getLampada().setPower(.6);
+            } else if(braco.bandejaTeste.getServoTravaBandeja().getPosition() == 0) {
+                braco.bandejaTeste.getLampada().setPower(0);
             }
             braco.bandejaTeste.pitchBandeja(gamepad1.x);
 
@@ -121,7 +126,7 @@ public class TeleopM04 extends LinearOpMode {
                                 Math.floor(gamepad1.right_stick_x * 10) / 10);
 
             telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
-            //telemetry.addData("odomY", driveMecanum.getOdomY().getCurrentPosition());
+            telemetry.addData("odomY", braco.bandejaTeste.getLampada().getCurrentPosition());
             telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
             telemetry.update();
 

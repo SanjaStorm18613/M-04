@@ -153,9 +153,6 @@ public class Braco {
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        if(encoder >= 300){
-            bandejaTeste.destravarBandeja();
-        }
         motorBraco.setPower(Math.max(up/100, down/100) * 100);
 
         //opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
