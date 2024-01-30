@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 
 import android.graphics.Canvas;
@@ -15,29 +15,32 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
 
-public class Pipeline_Azul implements VisionProcessor {
-    private final Paint green;
+public class Pipeline_Vermelho implements VisionProcessor {
+    private Point p;
     private Mat mat, temp;
     private Scalar lower, upper;
     private int maxValIdx;
     private double contourArea, maxVal;
     public Size size;
+    private Paint green;
     private ArrayList<MatOfPoint> contours;
-    private Point p;
     public ElementLoc customElementLocation = ElementLoc.NOT_FOUND;
 
-    public Pipeline_Azul() {
+    public Pipeline_Vermelho() {
         mat = new Mat();
 
         green = new Paint();
         green.setColor(Color.rgb(0,255,0));
 
         p = new Point(-1,-1);
+    }
+
+    public ElementLoc getLocation() {
+        return customElementLocation;
     }
 
     private void setLocation(int valX) {
@@ -52,14 +55,11 @@ public class Pipeline_Azul implements VisionProcessor {
         }
     }
 
-    public ElementLoc getLocation() {
-        return customElementLocation;
-    }
-
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
-        lower = new Scalar (0, 70, 50);
-        upper = new Scalar (30, 100, 200);
+        lower = new Scalar(100, 60, 80);
+        upper = new Scalar(150, 230, 200);
+
     }
 
     @Override
@@ -72,9 +72,9 @@ public class Pipeline_Azul implements VisionProcessor {
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
 
         Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
-        temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size( ));
-        Imgproc.erode(mat, mat, kernel, p, 4);
-        Imgproc.dilate(mat, mat, kernel, p ,4);
+        temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2));
+        Imgproc.erode(mat, mat, kernel, p, 1);
+        Imgproc.dilate(mat, mat, kernel, p,3);
 
         contours = new ArrayList<>();
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
@@ -99,6 +99,7 @@ public class Pipeline_Azul implements VisionProcessor {
 
                 }
             }
+            
             frame.copyTo(mat);
         }
         return mat;

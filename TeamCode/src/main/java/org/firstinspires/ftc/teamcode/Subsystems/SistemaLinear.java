@@ -1,14 +1,8 @@
-package org.firstinspires.ftc.teamcode;
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class SistemaLinear {
     private DcMotor armMotor;
@@ -58,7 +52,14 @@ public class SistemaLinear {
 
     }
 
-    public void inverterMotor(){
+    public void inverterMotorForward(){
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+    public void inverterMotorReverse(){
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    public DcMotor getArmMotor(){
+        return armMotor;
     }
 }

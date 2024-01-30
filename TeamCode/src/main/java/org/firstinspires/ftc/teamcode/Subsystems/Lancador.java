@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -15,8 +15,5 @@ public class Lancador {
     }
     public void lancarDrone(){
         servoDrone.setPosition(1);
-    }
-    public void setDroneZero(){
-        servoDrone.setPosition(.5);
     }
 }

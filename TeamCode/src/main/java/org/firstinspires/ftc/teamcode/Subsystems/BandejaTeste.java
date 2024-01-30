@@ -1,23 +1,19 @@
-package org.firstinspires.ftc.teamcode;
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
-
 public class BandejaTeste {
-
 
     private Servo servoRoll, servoTravaBandeja, servoPitch;
     private LinearOpMode opMode;
 
-    private DcMotor lampada;
+    private DcMotor motorPitch;
 
     private double pos;
-    private boolean controle = true;
+    private boolean controle = false;
 
     public BandejaTeste(LinearOpMode opMode){
 
@@ -32,7 +28,8 @@ public class BandejaTeste {
         servoPitch = opMode.hardwareMap.get(Servo.class, "servoPitch");
         servoPitch.setDirection(Servo.Direction.REVERSE);
 
-        lampada = opMode.hardwareMap.get(DcMotor.class, "lampada");
+        motorPitch = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
+        motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void rollBandeja(boolean left, boolean right){
@@ -48,46 +45,46 @@ public class BandejaTeste {
         }
     }
 
-    public void destravarBandeja(){
-
-        if (servoRoll.getPosition() == 1) {
+    public void travarBandeja(){
             if (controle) {
                 servoTravaBandeja.setPosition(.6);
-            } else  {
-                servoTravaBandeja.setPosition(.3);
-            }
-            controle = !controle;
-        } else {
-            if (controle) {
-                servoTravaBandeja.setPosition(.3);
             } else {
-                servoTravaBandeja.setPosition(.6);
+                servoTravaBandeja.setPosition(.3);
             }
             controle = !controle;
-        }
     }
 
-    public void destravarBandejaTotal() {
+    public void travarBandejaTotal() {
         servoTravaBandeja.setPosition(0);
     }
 
-    public void travarBandeja() {
+    public void destravarBandeja() {
         servoTravaBandeja.setPosition(1);
-
     }
 
     public void pitchBandeja(boolean up){
-
-        /*if (up) {
-            servoPitch.setPosition(1);
-        }
-        if (down) {
-            servoPitch.setPosition(0);
-        }*/
-        pos += (up ? 1 : 0) * 10;
+        pos += (up ? 1 : 0);
         pos  = Math.max(pos, 0);
 
-        servoPitch.setPosition(up ? 1 : 0);
+        servoPitch.setPosition(up ? .6 : 0);
+    }
+    public void pitchBandejaMotor(boolean go, boolean back){
+        if(go){
+            motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+            motorPitch.setPower(.5);
+        } else if (back){
+            motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+            motorPitch.setPower(.5);
+        } else {
+            motorPitch.setPower(0);
+        }
+    }
+
+    public void inverterMotorPitchForward(){
+        motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+    public void inverterMotorPitchReverse(){
+        motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void testePitch(double pos){
@@ -102,8 +99,10 @@ public class BandejaTeste {
         return servoPitch;
     }
 
-    public DcMotor getLampada(){
-        return lampada;
+
+
+    public DcMotor getMotorPitch(){
+        return motorPitch;
     }
 
 }

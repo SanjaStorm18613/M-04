@@ -27,12 +27,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Autonomous.Pipeline_Vermelho;
+import org.firstinspires.ftc.teamcode.Subsystems.Braco;
+import org.firstinspires.ftc.teamcode.Subsystems.Coletor;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveMecanum;
+import org.firstinspires.ftc.teamcode.Subsystems.SistemaLinear;
 
 /*
  * This OpMode illustrates the concept of driving a path based on encoder counts.

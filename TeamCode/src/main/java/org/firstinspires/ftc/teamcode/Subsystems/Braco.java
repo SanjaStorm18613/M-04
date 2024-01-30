@@ -1,37 +1,25 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
+import org.firstinspires.ftc.teamcode.Constants.Constants;
 
 public class Braco {
 
     private DcMotor motorBraco;
     private Servo servoTrava, servoBlock;
     private LinearOpMode opMode;
-    private final double[] stages = { Constants.Braco.stage0, Constants.Braco.stage1,
-                                      Constants.Braco.stage2, Constants.Braco.stage3 };
-
     private int stage = 0;
     private double targetPos, adjust = 0, kP, encoder, error, outputPower, reference, setPoint, errorSum;
-    public int target, setpoint, pos;
-
+    public int pos;
     private ElapsedTime timer;
-
-    private double[] resp = {0, 1, 2, 3, 4, 5, 6, 6, 7, 7};
-
     public BandejaTeste bandejaTeste;
 
     public Braco(LinearOpMode opMode){
@@ -59,7 +47,7 @@ public class Braco {
 
     }
 
-    public void periodic(double adjust) {
+    /*public void periodic(double adjust) {
 
         targetPos = stages[stage] + adjust * Constants.Braco.adjust;
 
@@ -68,15 +56,6 @@ public class Braco {
         motorBraco.setTargetPosition((int)targetPos);
         motorBraco.setPower(0.8);
 
-    }
-
-    /*public void BracoUp(){
-            stage = min((stage + 1), 3);
-            motorBraco.setPower(.6);
-    }
-    public void BracoDown(double power){
-            stage = max((stage - 1), 0);
-            motorBraco.setPower(.6);
     }
 
     public void PitchBraco(double targetPos, double power) {
@@ -90,7 +69,7 @@ public class Braco {
         setPoint = Constants.Braco.stage1;
 
         error = setPoint - encoder;
-        outputPower = (kP * error) / 1000;
+        if(encoder > 1500) outputPower = (kP * error) / 1000;
 
         // trava para controle e posição do motor
         // Criar variável para armazenar o valor que vai ser passado para a função setTargetPosition
@@ -106,9 +85,7 @@ public class Braco {
             motorBraco.setPower(outputPower);
 
         }
-        if (encoder < 0) {
-            resetEncoder();
-        }
+        if (encoder < 0) resetEncoder();
 
 
         else if(motorBraco.getCurrentPosition() < Constants.Braco.stage0 || motorBraco.getCurrentPosition() > Constants.Braco.stage1){
@@ -134,14 +111,14 @@ public class Braco {
         servoTrava.setPosition(.6);
     }
 
-    public void block(boolean trava){
+    /*public void block(boolean trava){
 
         pos += (trava ? 1 : 0);
         pos  = Math.max(pos, 0);
 
         servoBlock.setPosition(trava ? 0 : 1);
 
-    }
+    }*/
     public void pitch(int up, int down){
 
         pos += up/100 * 10;
@@ -154,9 +131,6 @@ public class Braco {
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBraco.setPower(Math.max(up/100, down/100) * 100);
-
-        //opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
-        //opMode.telemetry.update();
     }
 
     public void pitchAuto(double power, int target){
@@ -165,27 +139,10 @@ public class Braco {
         motorBraco.setPower(power);
     }
 
-    public void escalar(){
-
-        setpoint = 1350;
-        encoder = motorBraco.getCurrentPosition();
-
-        if (encoder < setpoint || encoder > setpoint){
-
-            motorBraco.setTargetPosition(setpoint);
-            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBraco.setPower(.6);
-
-        } else {
-
-            motorBraco.setTargetPosition(0);
-            motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBraco.setPower(0);
-
-        }
-
-    }
-    public void inverterMotor(){
+    public void inverterMotorForward(){
         motorBraco.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+    public void inverterMotorReverse(){
+        motorBraco.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }

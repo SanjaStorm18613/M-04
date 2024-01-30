@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 public enum ElementLoc {
     LEFT, CENTER, RIGHT, NOT_FOUND
