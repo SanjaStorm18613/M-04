@@ -82,7 +82,6 @@ public class AutoM04_VERMELHO extends LinearOpMode {
     SistemaLinear sistemaLinear;
     Lancador lancaDrone;
     Coletor coletor;
-    BandejaTeste bandeja;
     Braco braco;
     ElapsedTime timer;
     ElementLoc loc;
@@ -105,8 +104,6 @@ public class AutoM04_VERMELHO extends LinearOpMode {
 
         coletor = new Coletor(this);
 
-        bandeja = new BandejaTeste(this);
-
         braco = new Braco(this);
 
         timer = new ElapsedTime();
@@ -122,10 +119,10 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                 loc = pipelineVermelho.getLocation();
                 visionPortal.setProcessorEnabled(pipelineVermelho,false);
             }
-
         }
         while (opModeIsActive()) {
 
+            timer.startTime();
             switch(loc){
                 case CENTER:
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
@@ -134,23 +131,35 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                         resetEnc_step();
                     }
 
-                    if(step == 1) driveMecanum.turn(0.5, -2000);
+                    if(step == 1) driveMecanum.turn(0.5, -1700);
 
-                    if(driveMecanum.getOdomY().getCurrentPosition() < -20690 && step == 1) {
+                    if(driveMecanum.getBL().getCurrentPosition() < -1690 && step == 1) {
                         resetEnc_step();
                     }
 
                     if(step == 2) {
-                        //driveMecanum.setPowerZero();
+                        timer = new ElapsedTime();
+                        timer.reset();
                         timer.startTime();
-                        coletor.collectorControl(0, -0.5);
+                        coletor.collectorControl(0, -0.4);
                         driveMecanum.setPowerZero();
                         resetEnc_step();
                     }
-                    if(step == 3 && timer.seconds() > 4){
-                        driveMecanum.setPowerZero();
-                        coletor.collectorControl(0, 0);
+                    if(step == 3 && timer.seconds() > 3){
+                        coletor.collectorControl(0.4, -0.4);
                         resetEnc_step();
+                    }
+                    if(step == 4){
+                        driveMecanum.moveBackwardAuto(.6, 500);
+                    }
+                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() > 490){
+                        resetEnc_step();
+                    }
+                    if(step == 5){
+                        driveMecanum.right(.5, -2000);
+                    }
+                    if(step == 5 && driveMecanum.getBL().getCurrentPosition() > 1990){
+                        driveMecanum.setPowerZero();
                     }
                     //odom = 11900;
                     break;
@@ -161,15 +170,25 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 1) driveMecanum.turn(.6, -950);
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -13200 && step == 1){
+                    if(driveMecanum.getOdomY().getCurrentPosition() <= -12500 && step == 1){
                         resetEnc_step();
                     }
                     if(step == 2) {
-                        //driveMecanum.setPowerZero();
-                        //timer.reset();
-                        //timer = new ElapsedTime(3);
-                        //timer.startTime();
+                        timer = new ElapsedTime();
+                        timer.reset();
+                        timer.startTime();
                         coletor.collectorControl(0, -0.5);
+                        driveMecanum.setPowerZero();
+                        resetEnc_step();
+                    }
+                    if(timer.seconds() > 4 && step == 3){
+                        coletor.collectorControl(.5, -0.5);
+                        resetEnc_step();
+                    }
+                    if(step == 4){
+                        driveMecanum.moveBackwardAuto(.6, 2400);
+                    }
+                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() >= 2390){
                         driveMecanum.setPowerZero();
                     }
                     break;
@@ -186,19 +205,30 @@ public class AutoM04_VERMELHO extends LinearOpMode {
                         resetEnc_step();
                     }
 
-                    if(step == 2 && driveMecanum.getOdomY().getCurrentPosition() >= 60) {
-                        //driveMecanum.setPowerZero();
+                    if(step == 2) {
+                        timer = new ElapsedTime();
+                        timer.reset();
                         timer.startTime();
-                        coletor.collectorControl(0, -0.5);
+                        coletor.collectorControl(0, -0.4);
                         driveMecanum.setPowerZero();
                         resetEnc_step();
                     }
 
-                    if(step == 3){
-                        if(timer.seconds() > 4) {
-                            coletor.collectorControl(0, 0);
-                        }
+                    if(step == 3 && timer.seconds() > 4){
+                        coletor.collectorControl(.4, -0.4);
                         resetEnc_step();
+                    }
+                    if(step == 4){
+                        driveMecanum.right(.5, -600);
+                    }
+                    if(driveMecanum.getBL().getCurrentPosition() > 590 && step == 4){
+                        resetEnc_step();
+                    }
+                    if(step == 5){
+                        driveMecanum.moveBackwardAuto(.6, -1500);
+                    }
+                    if(driveMecanum.getBL().getCurrentPosition() < -1450 && step == 5){
+                        driveMecanum.setPowerZero();
                     }
                     break;
                 default:

@@ -79,7 +79,6 @@ public class AutoM04_AZUL extends LinearOpMode {
     SistemaLinear sistemaLinear;
     Lancador lancaDrone;
     Coletor coletor;
-    BandejaTeste bandeja;
     Braco braco;
     ElapsedTime timer;
     ElementLoc loc;
@@ -100,8 +99,6 @@ public class AutoM04_AZUL extends LinearOpMode {
         lancaDrone = new Lancador(this);
 
         coletor = new Coletor(this);
-
-        bandeja = new BandejaTeste(this);
 
         braco = new Braco(this);
 
@@ -156,12 +153,16 @@ public class AutoM04_AZUL extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 2) {
-                        //driveMecanum.setPowerZero();
-                        //timer.reset();
-                        //timer = new ElapsedTime(3);
-                        //timer.startTime();
+                        timer.startTime();
                         coletor.collectorControl(0, -0.5);
                         driveMecanum.setPowerZero();
+                    }
+                    if(timer.seconds() > 3 && step == 2){
+                        coletor.collectorControl(0,0);
+                        resetEnc_step();
+                    }
+                    if(step == 3){
+                        driveMecanum.moveBackwardAuto(.6, 800);
                     }
                     break;
                 case RIGHT:

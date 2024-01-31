@@ -77,7 +77,7 @@ public class Pipeline_Azul implements VisionProcessor {
         Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3));
 
         Imgproc.threshold(mat, mat, 20, 255, Imgproc.THRESH_BINARY);
-        temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size( ));
+        temp = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2,2));
         Imgproc.erode(mat, mat, kernel, p, 4);
         Imgproc.dilate(mat, mat, kernel, p ,4);
 
@@ -90,9 +90,7 @@ public class Pipeline_Azul implements VisionProcessor {
 
             contours.sort((matOfPoint, t1) -> {
                 double a1 = Imgproc.contourArea(matOfPoint), a2 = Imgproc.contourArea(t1);
-                if (a1 < a2) return -1;
-                else if (a1 > a2) return 1;
-                else return 0;
+                return Double.compare(a1, a2);
             });
             /*for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
 
@@ -116,8 +114,8 @@ public class Pipeline_Azul implements VisionProcessor {
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
-        if (maxValIdx >= 0) {
-            Rect bRect = Imgproc.boundingRect(new MatOfPoint(contours.get(0).toArray()));
+        if (contours.size() > 0) {
+            Rect bRect = Imgproc.boundingRect(new MatOfPoint(contours.get(contours.size()-1).toArray()));
 
             canvas.drawRect(bRect.x, bRect.y,bRect.x + bRect.width, bRect.y + bRect.height, green);
 

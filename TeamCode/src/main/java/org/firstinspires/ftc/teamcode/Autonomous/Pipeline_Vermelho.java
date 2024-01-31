@@ -82,7 +82,7 @@ public class Pipeline_Vermelho implements VisionProcessor {
         maxVal = 0;
         maxValIdx = -1;
 
-        if (contours.size() > 0) {
+        /*if (contours.size() > 0) {
 
             for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
 
@@ -101,12 +101,33 @@ public class Pipeline_Vermelho implements VisionProcessor {
             }
             
             frame.copyTo(mat);
+        }*/
+
+        if (contours.size() > 0) {
+
+            for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
+
+                contourArea = Imgproc.contourArea(contours.get(contourIdx));
+
+                if (contourArea > 0 && contourArea > maxVal) {
+
+                    maxVal = contourArea;
+                    maxValIdx = contourIdx;
+
+                } else if ((contourArea <= 0) && (maxValIdx > -1)) {
+
+                    contours.remove(contourIdx);
+
+                }
+            }
+            frame.copyTo(mat);
         }
         return mat;
     }
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+
         if (maxValIdx >= 0) {
             Rect bRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
 

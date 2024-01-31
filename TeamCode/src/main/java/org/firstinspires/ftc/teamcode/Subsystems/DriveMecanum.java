@@ -26,14 +26,14 @@ public class DriveMecanum {
         BR = opMode.hardwareMap.get(DcMotor.class, "BR");
         BL = opMode.hardwareMap.get(DcMotor.class, "BL");
 
-        //odomY = opMode.hardwareMap.get(DcMotor.class, "odomY");
+        odomY = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
 
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
         BL.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-       // odomY.setDirection(DcMotorSimple.Direction.REVERSE);
+        odomY.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -67,8 +67,7 @@ public class DriveMecanum {
         FR.setPower(((y + x) + turn) * vel);
         BL.setPower(((y + x) - turn) * vel);
         BR.setPower(((y - x) + turn) * vel);
-
-        //odomY.setTargetPosition((int)y);
+        odomY.setTargetPosition((int)y);
     }
 
     public void updateAcceleration(boolean release) {
@@ -87,8 +86,8 @@ public class DriveMecanum {
         for (DcMotor m : motors) {
             m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            //odomY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            //odomY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            odomY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            odomY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
