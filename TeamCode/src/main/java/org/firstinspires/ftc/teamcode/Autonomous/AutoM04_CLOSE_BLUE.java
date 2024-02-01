@@ -116,82 +116,6 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
             }
         }
         while (opModeIsActive()) {
-           /* switch(loc){
-                case CENTER:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
-
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
-                        resetEnc_step();
-                    }
-
-                    if(step == 1) driveMecanum.turn(0.5, -2000);
-
-                    if(driveMecanum.getOdomY().getCurrentPosition() < -20690 && step == 1) {
-                        resetEnc_step();
-                    }
-
-                    if(step == 2) {
-                        //driveMecanum.setPowerZero();
-                        //timer.reset();
-                        //timer = new ElapsedTime(3);
-                        //timer.startTime();
-                        coletor.collectorControl(0, -0.5);
-                        driveMecanum.setPowerZero();
-                    }
-                    break;
-                case LEFT:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
-
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
-                        resetEnc_step();
-                    }
-
-                    if(step == 1) driveMecanum.turn(.6, -950);
-
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -13200 && step == 1){
-                        resetEnc_step();
-                    }
-                    if(step == 2) {
-                        timer.startTime();
-                        coletor.collectorControl(0, -0.5);
-                        driveMecanum.setPowerZero();
-                    }
-                    if(timer.seconds() > 3 && step == 2){
-                        coletor.collectorControl(0,0);
-                        resetEnc_step();
-                    }
-                    if(step == 3){
-                        driveMecanum.moveBackwardAuto(.6, 800);
-                    }
-                    break;
-                case RIGHT:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
-
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
-                        resetEnc_step();
-                    }
-
-                    if(step == 1) driveMecanum.turn(.6, 950);
-
-                    if(driveMecanum.getOdomY().getCurrentPosition() >= 11600 && step == 1){
-                        resetEnc_step();
-                    }
-
-                    if(step == 2) {
-                        timer.startTime();
-                        coletor.collectorControl(0, -0.5);
-                        driveMecanum.setPowerZero();
-                        resetEnc_step();
-                    }
-
-                    if(step == 3 && timer.seconds() > 4){
-                        coletor.collectorControl(0, 0);
-                        resetEnc_step();
-                    }
-                    break;
-                default:
-                    break;*/
-
             switch(loc){
                 case CENTER:
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
@@ -255,9 +179,9 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 4){
-                        driveMecanum.right(.5, 600);
+                        driveMecanum.right(.5, 1100);
                     }
-                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() < -590){
+                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() < -1090){
                         resetEnc_step();
                     }
                     if(step == 5) {
