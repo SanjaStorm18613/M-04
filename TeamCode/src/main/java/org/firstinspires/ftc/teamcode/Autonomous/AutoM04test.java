@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -66,7 +67,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.SistemaLinear;
  */
 
 @Autonomous(name="AutoM04test", group="Robot")
-//@Disabled
+@Disabled
 
 public class AutoM04test extends LinearOpMode {
     DriveMecanum driveMecanum;

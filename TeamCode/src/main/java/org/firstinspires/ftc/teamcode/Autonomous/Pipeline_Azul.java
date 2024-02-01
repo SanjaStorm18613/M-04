@@ -39,8 +39,6 @@ public class Pipeline_Azul implements VisionProcessor {
         green.setColor(Color.rgb(0,255,0));
 
         p = new Point(-1,-1);
-
-        contours = new ArrayList<>();
     }
 
     private void setLocation(int valX) {
@@ -68,7 +66,6 @@ public class Pipeline_Azul implements VisionProcessor {
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         size = new Size(3,3);
-        contours.clear();
 
         Imgproc.cvtColor(frame, mat, Imgproc.COLOR_BGR2HLS);
 
@@ -81,6 +78,8 @@ public class Pipeline_Azul implements VisionProcessor {
         Imgproc.erode(mat, mat, kernel, p, 4);
         Imgproc.dilate(mat, mat, kernel, p ,4);
 
+        contours = new ArrayList<>();
+
         Imgproc.findContours(mat, contours, temp, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
 
         maxVal = 0;
@@ -88,11 +87,7 @@ public class Pipeline_Azul implements VisionProcessor {
 
         if (contours.size() > 0) {
 
-            contours.sort((matOfPoint, t1) -> {
-                double a1 = Imgproc.contourArea(matOfPoint), a2 = Imgproc.contourArea(t1);
-                return Double.compare(a1, a2);
-            });
-            /*for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
+            for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
 
                 contourArea = Imgproc.contourArea(contours.get(contourIdx));
 
@@ -106,7 +101,7 @@ public class Pipeline_Azul implements VisionProcessor {
                     contours.remove(contourIdx);
 
                 }
-            }*/
+            }
             frame.copyTo(mat);
         }
         return mat;
@@ -115,7 +110,7 @@ public class Pipeline_Azul implements VisionProcessor {
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
         if (contours.size() > 0) {
-            Rect bRect = Imgproc.boundingRect(new MatOfPoint(contours.get(contours.size()-1).toArray()));
+            Rect bRect = Imgproc.boundingRect(new MatOfPoint(contours.get(maxValIdx).toArray()));
 
             canvas.drawRect(bRect.x, bRect.y,bRect.x + bRect.width, bRect.y + bRect.height, green);
 

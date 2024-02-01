@@ -65,6 +65,7 @@ public class Pipeline_Vermelho implements VisionProcessor {
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         size = new Size(3,3);
+
         Imgproc.cvtColor(frame, mat, Imgproc.COLOR_BGR2HLS);
 
         Core.inRange(mat, lower, upper, mat);
@@ -81,27 +82,6 @@ public class Pipeline_Vermelho implements VisionProcessor {
 
         maxVal = 0;
         maxValIdx = -1;
-
-        /*if (contours.size() > 0) {
-
-            for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
-
-                contourArea = Imgproc.contourArea(contours.get(contourIdx));
-
-                if (contourArea > 0 && contourArea > maxVal) {
-
-                    maxVal = contourArea;
-                    maxValIdx = contourIdx;
-
-                } else if ((contourArea <= 0) && (maxValIdx > -1)) {
-
-                    contours.remove(contourIdx);
-
-                }
-            }
-            
-            frame.copyTo(mat);
-        }*/
 
         if (contours.size() > 0) {
 
