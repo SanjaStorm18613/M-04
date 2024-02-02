@@ -182,7 +182,7 @@ public class AutoM04_FAR_BLUE extends LinearOpMode {
 
                     if(step == 1) driveMecanum.turn(.6, 950);
 
-                    if(driveMecanum.getOdomY().getCurrentPosition() >= 11600 && step == 1){
+                    if(driveMecanum.getBL().getCurrentPosition() >= 940 && step == 1){
                         resetEnc_step();
                     }
 

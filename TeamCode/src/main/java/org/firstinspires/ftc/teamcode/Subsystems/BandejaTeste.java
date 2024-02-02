@@ -29,7 +29,7 @@ public class BandejaTeste {
         servoPitch.setDirection(Servo.Direction.REVERSE);
 
         motorPitch = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
-        motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void rollBandeja(boolean left, boolean right){
@@ -70,21 +70,21 @@ public class BandejaTeste {
     }
     public void pitchBandejaMotor(boolean go, boolean back){
         if(go){
-            motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
-            motorPitch.setPower(.5);
+            //motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+            motorPitch.setPower(.4);
         } else if (back){
-            motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
-            motorPitch.setPower(.5);
+            //motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+            motorPitch.setPower(-.4);
         } else {
             motorPitch.setPower(0);
         }
     }
 
     public void inverterMotorPitchForward(){
-        motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+        //motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
     }
     public void inverterMotorPitchReverse(){
-        motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+        //motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void testePitch(double pos){

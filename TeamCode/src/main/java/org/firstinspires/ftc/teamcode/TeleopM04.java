@@ -107,16 +107,6 @@ public class TeleopM04 extends LinearOpMode {
                 braco.bandejaTeste.travarBandejaTotal(); //Destravar
             }
 
-            double servoPosition = braco.bandejaTeste.getServoTravaBandeja().getPosition();
-
-            /*if (servoPosition == 1) {
-                braco.bandejaTeste.getLampada().setPower(.6);
-            } else if (servoPosition == 0 || servoPosition == .3 || servoPosition == .6) {
-                braco.bandejaTeste.getLampada().setPower(0);
-            }*/
-
-            //braco.bandejaTeste.pitchBandeja(gamepad1.x);
-
             braco.bandejaTeste.pitchBandejaMotor(gamepad1.x, gamepad1.a);
 
             DcMotor motorPitch = braco.bandejaTeste.getMotorPitch();
@@ -139,10 +129,8 @@ public class TeleopM04 extends LinearOpMode {
                                 Math.floor(gamepad1.right_stick_x * 10) / 10);
 
             telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
-            //telemetry.addData("odomY", braco.bandejaTeste.getLampada().getCurrentPosition());
             telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
             telemetry.update();
-
         }
     }
 }
