@@ -208,13 +208,12 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
                         timer = new ElapsedTime();
                         timer.reset();
                         timer.startTime();
-                        coletor.collectorControl(0, -0.5);
+                        coletor.collectorControl(0, -0.4);
                         driveMecanum.setPowerZero();
                         resetEnc_step();
                     }
                     if(step == 3 && timer.seconds() > 4){
-                        coletor.collectorControl(.5, -0.5);
-                        resetEnc_step();
+                        coletor.collectorControl(.4, -0.4);                        resetEnc_step();
                     }
                     if(step == 4){
                         driveMecanum.moveBackwardAuto(.6, 2300);
@@ -229,7 +228,7 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
             }
             telemetry.addData("timer", timer.seconds());
             telemetry.addData("getBL", driveMecanum.getBL().getCurrentPosition());
-            telemetry.addData("odom", driveMecanum.getOdomY().getCurrentPosition());
+            //telemetry.addData("odom", driveMecanum.getOdomY().getCurrentPosition());
             telemetry.update();
         }
 

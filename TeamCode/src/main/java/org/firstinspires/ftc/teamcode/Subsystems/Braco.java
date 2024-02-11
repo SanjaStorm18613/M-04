@@ -17,8 +17,8 @@ public class Braco {
     private Servo servoTrava, servoBlock;
     private LinearOpMode opMode;
     private int stage = 0;
-    private double targetPos, adjust = 0, kP, encoder, error, outputPower, reference, setPoint, errorSum;
-    public int pos;
+    private double targetPos, adjust = 0, kP, error, outputPower, reference, setPoint, errorSum;
+    public int pos, encoder;
     private ElapsedTime timer;
     public BandejaTeste bandejaTeste;
 
@@ -35,7 +35,7 @@ public class Braco {
         motorBraco.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         servoTrava = opMode.hardwareMap.get(Servo.class, "servoTrava");
-        servoTrava.setDirection(Servo.Direction.FORWARD);
+        servoTrava.setDirection(Servo.Direction.REVERSE);
 
         servoBlock = opMode.hardwareMap.get(Servo.class, "servoBlock");
         servoBlock.setDirection(Servo.Direction.REVERSE);
@@ -44,6 +44,8 @@ public class Braco {
 
         timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         timer.startTime();
+
+        encoder = motorBraco.getCurrentPosition();
 
     }
 
@@ -62,7 +64,7 @@ public class Braco {
 
         //this.target = target;
         //float lastTarget = target;
-        //resetEncoder();
+        resetEncoder();
 
         encoder = motorBraco.getCurrentPosition();
         reference = Constants.Braco.stage0;
@@ -93,16 +95,11 @@ public class Braco {
             motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorBraco.setPower(.1);
         }
-    }
+    }*/
 
     public void resetEncoder(){
         motorBraco.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-
-    public DcMotor setMotorBraco(DcMotor motorBraco){
-        this.motorBraco = motorBraco;
-        return motorBraco;
-    }*/
     public DcMotor getMotorBraco(){
         return this.motorBraco;
     }
@@ -121,16 +118,19 @@ public class Braco {
     }*/
     public void pitch(int up, int down){
 
-        pos += up/100 * 10;
-        pos -= down/100 * 10;
+        pos += up/100. * 30;
+        pos -= down/100. * 10;
         pos  = Math.max(pos, 0);
 
-        encoder = motorBraco.getCurrentPosition();
+        //calcP = (pos - motorBraco.getCurrentPosition()) * kp;
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBraco.setPower(1);
 
-        motorBraco.setPower(Math.max(up/100, down/100) * 100);
+
+        opMode.telemetry.addData("encoder", Math.toDegrees(Math.abs(motorBraco.getCurrentPosition()/1000)));
+        //opMode.telemetry.update();
     }
 
     public void pitchAuto(double power, int target){

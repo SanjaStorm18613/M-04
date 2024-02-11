@@ -44,9 +44,9 @@ public class Pipeline_Azul implements VisionProcessor {
     private void setLocation(int valX) {
         if (valX < 400) {
             customElementLocation = ElementLoc.LEFT;
-        } else if (valX > 900) {
+        } else if (valX > 1000) {
             customElementLocation = ElementLoc.RIGHT;
-        } else if (valX > 400 && valX < 900) {
+        } else if (valX > 400 && valX < 1000) {
             customElementLocation = ElementLoc.CENTER;
         } else {
             customElementLocation = ElementLoc.NOT_FOUND;

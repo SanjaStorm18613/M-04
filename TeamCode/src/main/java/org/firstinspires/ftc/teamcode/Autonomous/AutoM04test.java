@@ -115,20 +115,7 @@ public class AutoM04test extends LinearOpMode {
         }
         waitForStart();
         while (opModeIsActive()) {
-            if (step == 0) {
-                braco.bandejaTeste.testePitch(0);
-                step++;
-            }
-            if(step == 1 && braco.bandejaTeste.getServoPitch().getPosition() == 0){
-                braco.pitchAuto(.6, 1550);
-                step++;
-            }
-            if(braco.getMotorBraco().getCurrentPosition() >= 1550 && step == 2){
-                braco.bandejaTeste.testePitch(1);
-            }
-            if(braco.bandejaTeste.getServoPitch().getPosition() == 1){
-                braco.bandejaTeste.travarBandeja();
-            }
+             //coletor.collectorControl(0, -0.4);
         }
 
     }

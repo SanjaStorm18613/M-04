@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class BandejaTeste {
 
-    private Servo servoRoll, servoTravaBandeja, servoPitch;
+    private Servo servoRoll, servoTravaBandeja, servoPitch, lampada;
     private LinearOpMode opMode;
 
+    int pos = 0, prevpos = 0;
     private DcMotor motorPitch;
 
-    private double pos;
     private boolean controle = false;
 
     public BandejaTeste(LinearOpMode opMode){
@@ -30,54 +30,59 @@ public class BandejaTeste {
 
         motorPitch = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
         motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
-    }
+        motorPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorPitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //motorPitch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-    public void rollBandeja(boolean left, boolean right){
+        lampada = opMode.hardwareMap.get(Servo.class, "lampada");
+        lampada.setDirection(Servo.Direction.FORWARD);
 
-        if(left && servoRoll.getPosition() == 0){
-            servoRoll.setPosition(1);
-            controle = true;
-        }
-
-        if(right && servoRoll.getPosition() == 1){
-            servoRoll.setPosition(0);
-            controle = true;
-        }
     }
 
     public void travarBandeja(){
             if (controle) {
                 servoTravaBandeja.setPosition(.6);
-            } else {
+                lampada.setPosition(1);
+            } else if (servoTravaBandeja.getPosition() >= .6 && !controle) {
                 servoTravaBandeja.setPosition(.3);
+                if(servoTravaBandeja.getPosition() >= .3) lampada.setPosition(0);
             }
             controle = !controle;
     }
 
     public void travarBandejaTotal() {
         servoTravaBandeja.setPosition(0);
+        lampada.setPosition(0);
     }
 
     public void destravarBandeja() {
         servoTravaBandeja.setPosition(1);
+        lampada.setPosition(0);
     }
 
-    public void pitchBandeja(boolean up){
-        pos += (up ? 1 : 0);
-        pos  = Math.max(pos, 0);
+    public void pitchBandejaMotor(int go, int back){
+        //pos += go/100. * 10;
+        //pos -= back/100. * 10;
+        //pos  = Math.max(pos, 0);
 
-        servoPitch.setPosition(up ? .6 : 0);
-    }
-    public void pitchBandejaMotor(boolean go, boolean back){
-        if(go){
-            //motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
-            motorPitch.setPower(.4);
-        } else if (back){
-            //motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
-            motorPitch.setPower(-.4);
-        } else {
-            motorPitch.setPower(0);
+        //calcP = (pos - motorBraco.getCurrentPosition()) * kp;
+
+        if (go == 1){
+            pos = 100;
+        } else if (back == 1 && go == 0){
+            pos = 0;
         }
+
+        motorPitch.setTargetPosition(200);
+        motorPitch.setPower(1);
+
+        opMode.telemetry.addData("motorPitch", motorPitch.getCurrentPosition());
+        opMode.telemetry.addData("pos", pos);
+        opMode.telemetry.addData("x", prevpos);
+        opMode.telemetry.addData("a", back);
+        opMode.telemetry.addData("trava", servoTravaBandeja.getPosition());
+        opMode.telemetry.addData("lampada", lampada.getPosition());
     }
 
     public void inverterMotorPitchForward(){
@@ -85,6 +90,10 @@ public class BandejaTeste {
     }
     public void inverterMotorPitchReverse(){
         //motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    public void goBackPitch(){
+
     }
 
     public void testePitch(double pos){
@@ -103,6 +112,10 @@ public class BandejaTeste {
 
     public DcMotor getMotorPitch(){
         return motorPitch;
+    }
+
+    public void lampada(){
+        lampada.setPosition(1);
     }
 
 }

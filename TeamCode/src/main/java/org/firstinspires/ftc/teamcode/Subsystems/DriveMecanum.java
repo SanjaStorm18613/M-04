@@ -33,7 +33,7 @@ public class DriveMecanum {
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        odomY.setDirection(DcMotorSimple.Direction.REVERSE);
+        //odomY.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -56,17 +56,19 @@ public class DriveMecanum {
         setSlowFactor(opMode.gamepad1.right_trigger);
     }
 
-    public void periodic(double x, double y, double turn) {
+    public void periodic(double x, double y, double turn, boolean reduce) {
         this.x = x;
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
         double vel = Constants.DriveMecanum.speed * acc;
 
-        FL.setPower(((y - x) - turn) * vel);
-        FR.setPower(((y + x) + turn) * vel);
-        BL.setPower(((y + x) - turn) * vel);
-        BR.setPower(((y - x) + turn) * vel);
+        double freio = (reduce ? 0.5:1.0);
+
+        FL.setPower(((y - x) - turn) * vel * freio);
+        FR.setPower(((y + x) + turn) * vel * freio);
+        BL.setPower(((y + x) - turn) * vel * freio);
+        BR.setPower(((y - x) + turn) * vel * freio);
         odomY.setTargetPosition((int)y);
     }
 
@@ -86,8 +88,8 @@ public class DriveMecanum {
         for (DcMotor m : motors) {
             m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            odomY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            odomY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //odomY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //odomY.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 

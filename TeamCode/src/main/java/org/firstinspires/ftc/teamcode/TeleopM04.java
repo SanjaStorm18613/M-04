@@ -70,7 +70,7 @@ public class TeleopM04 extends LinearOpMode {
             if(gamepad1.y) lancador.lancarDrone();
 
             //COLETOR
-            coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
+            coletor.collectorControlc(gamepad1.a, gamepad1.x);//(gamepad1.left_trigger, -gamepad1.right_trigger);
 
             //BRACO
             braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
@@ -90,11 +90,15 @@ public class TeleopM04 extends LinearOpMode {
 
             DcMotor armMotor = sistemaLinear.getArmMotor();
 
-            if(gamepad1.back && !inverterMotorElevador && armMotor.getDirection() == DcMotorSimple.Direction.REVERSE) {
+            /*if(gamepad1.back && !inverterMotorElevador && armMotor.getDirection() == DcMotorSimple.Direction.REVERSE) {
                 sistemaLinear.inverterMotorForward();
             } else if(gamepad1.back && !inverterMotorElevador && armMotor.getDirection() == DcMotorSimple.Direction.FORWARD){
                 sistemaLinear.inverterMotorReverse();
-            }
+            }*/
+
+            sistemaLinear.setMode(gamepad1.back);
+
+            sistemaLinear.potenciaMotorElevador(gamepad1.dpad_up);
 
             inverterMotorElevador = gamepad1.back;
 
@@ -107,16 +111,16 @@ public class TeleopM04 extends LinearOpMode {
                 braco.bandejaTeste.travarBandejaTotal(); //Destravar
             }
 
-            braco.bandejaTeste.pitchBandejaMotor(gamepad1.x, gamepad1.a);
+           // braco.bandejaTeste.pitchBandejaMotor(gamepad1.x ? 1 : 0, gamepad1.a ? 1 : 0);
 
-            DcMotor motorPitch = braco.bandejaTeste.getMotorPitch();
+            /*DcMotor motorPitch = braco.bandejaTeste.getMotorPitch();
 
             if(gamepad1.b && !inverterMotorPitch && motorPitch.getDirection() == DcMotorSimple.Direction.FORWARD){
                 braco.bandejaTeste.inverterMotorPitchReverse();
             }
             if(gamepad1.b && !inverterMotorPitch && motorPitch.getDirection() == DcMotorSimple.Direction.REVERSE){
                 braco.bandejaTeste.inverterMotorPitchForward();
-            }
+            }*/
 
             inverterMotorPitch = gamepad1.b;
             bandejaBlock = gamepad2.a;
@@ -126,7 +130,8 @@ public class TeleopM04 extends LinearOpMode {
             //Tração
             driveMecanum.periodic(Math.floor(gamepad1.left_stick_x * 10) / 10,
                                   Math.floor(gamepad1.left_stick_y * 10) / 10,
-                                Math.floor(gamepad1.right_stick_x * 10) / 10);
+                                Math.floor(gamepad1.right_stick_x * 10) / 10,
+                                     gamepad1.b);
 
             telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
             telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());

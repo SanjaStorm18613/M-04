@@ -184,9 +184,9 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 4){
-                        driveMecanum.moveBackwardAuto(.6, 2100);
+                        driveMecanum.moveBackwardAuto(.6, 1800);
                     }
-                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() >= 2090){
+                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() >= 1790){
                         driveMecanum.setPowerZero();
                     }
                     break;
