@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Constants.Constants;
 
 public class DriveMecanum {
 
-    private DcMotor FR, FL, BR, BL, odomX, odomY;
+    private DcMotor FR, FL, BR, BL, odomY;
     private DcMotor[] motors;
     private LinearOpMode opMode;
     private ElapsedTime accTime;
@@ -41,7 +41,6 @@ public class DriveMecanum {
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);*/
 
-
         motors = new DcMotor[]{FL, FR, BR, BL};
 
         resetEnc();
@@ -56,14 +55,14 @@ public class DriveMecanum {
         setSlowFactor(opMode.gamepad1.right_trigger);
     }
 
-    public void periodic(double x, double y, double turn, boolean reduce) {
+    public void driveControl(double x, double y, double turn, boolean reduce) {
         this.x = x;
 
         updateAcceleration(Math.abs(x) < 0.1 && Math.abs(y) < 0.1 && Math.abs(turn) < 0.1);
 
         double vel = Constants.DriveMecanum.speed * acc;
 
-        double freio = (reduce ? 0.5:1.0);
+        double freio = (reduce ? .5 : 1.);
 
         FL.setPower(((y - x) - turn) * vel * freio);
         FR.setPower(((y + x) + turn) * vel * freio);
@@ -98,12 +97,10 @@ public class DriveMecanum {
     }
 
     public void moveForwardAuto(double power, int target) {
-        //power = PIDControl(referenceAngle, imu.getAngularOrientation().firstAngle);
         for (DcMotor m : motors) {
             m.setTargetPosition(target);
             m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             m.setPower(power);
-
         }
     }
     public void moveBackwardAuto(double power, int target) {
@@ -162,49 +159,10 @@ public class DriveMecanum {
         FR.setPower(-power);
 
     }
-
-   /* public double PIDControl(double reference, double state) {
-
-        double error = angleWrap(reference - state);
-        integralSum += error * accTime.milliseconds();
-        double derivative = (error - lastError) / accTime.milliseconds();
-        error = lastError;
-        accTime.reset();
-
-        double output = (error * kP) + (derivative * kD) + (integralSum * kI);
-        return output;
-
-    }
-
-    public double angleWrap(double radians){
-        while(radians > Math.PI){ radians -= 2 * Math.PI; }
-
-        while(radians < -Math.PI){ radians += 2 * Math.PI; }
-
-        return radians;
-    }*/
-
     public DcMotor getBL(){
         return this.BL;
     }
-    public DcMotor setBL(DcMotor BL){
-        this.BL = BL;
-        return BL;
-    }
-
-    public DcMotor getOdomX(){
-        return odomX;
-    }
     public DcMotor getOdomY(){
         return this.odomY;
-    }
-    public double setX(double x){
-        this.x = x;
-        return x;
-    }
-
-    public DcMotor setOdomY(DcMotor odomY){
-        this.odomY = odomY;
-        return  odomY;
     }
 }

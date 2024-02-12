@@ -1,0 +1,154 @@
+package org.firstinspires.ftc.teamcode.Subsystems;
+
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+public class Bandeja {
+
+    private Servo servoTravaBandeja, travaAutonomo;
+    private LinearOpMode opMode;
+    private RevBlinkinLedDriver led;
+    private int pos = 0;
+    private DcMotor motorPitch;
+    private int posit, encoder, setPoint = 0, lastError = 0, error;
+    private double errorRate = 0, errorSum = 0, lastTime = 0, kP, kD, kI, outputPower, dt;
+    private ElapsedTime time, timerToGo;
+
+    private boolean controle = false;
+
+    public Bandeja(LinearOpMode opMode){
+
+        this.opMode = opMode;
+
+        servoTravaBandeja = opMode.hardwareMap.get(Servo.class, "servoTravaBandeja");
+        servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
+
+        travaAutonomo = opMode.hardwareMap.get(Servo.class, "travaAutonomo");
+        travaAutonomo.setDirection(Servo.Direction.REVERSE);
+
+        motorPitch = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
+        motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorPitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorPitch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        led = opMode.hardwareMap.get(RevBlinkinLedDriver.class, "led");
+
+        time = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        time.reset();
+
+        timerToGo = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        timerToGo.reset();
+
+        timerToGo.startTime();
+        time.startTime();
+
+    }
+
+    public void travarBandeja(){
+        if (controle) {
+            servoTravaBandeja.setPosition(.6);
+            led.setPattern(RevBlinkinLedDriver.BlinkinPattern.FIRE_LARGE);
+        } else if (servoTravaBandeja.getPosition() >= .6 && !controle) {
+            servoTravaBandeja.setPosition(.3);
+            if(servoTravaBandeja.getPosition() >= .3) led.close();
+        }
+        controle = !controle;
+    }
+
+
+    public void travarBandejaTotal() {
+        servoTravaBandeja.setPosition(0);
+        //lampada.setPosition(0);
+    }
+
+    public void destravarBandeja() {
+        servoTravaBandeja.setPosition(1);
+        //lampada.setPosition(0);
+    }
+    public Servo getServoTravaBandeja(){
+        return servoTravaBandeja;
+    }
+    public DcMotor getMotorPitch(){
+        return motorPitch;
+    }
+    public void lampada(){
+        //lampada.setPosition(1);
+    }
+
+    public void pitchControl(boolean a, boolean x) {
+
+        if(a && encoder > -10) {
+
+            setPoint = 150;
+            //travaPitch = true;
+            encoder = motorPitch.getCurrentPosition();
+
+            error = setPoint - encoder;
+
+            kP = .08;
+            kD = .0005;
+            kI = .0000000006;
+
+            errorRate = ((error - lastError) / dt);
+            lastError = error;
+            lastTime = time.time();
+
+            dt = time.time() - lastTime;
+            errorSum += error * dt;
+
+            outputPower = error * kP + kI * errorSum + kD * errorRate;
+
+            motorPitch.setPower(outputPower);
+
+            if (encoder >= 149 && encoder <= 151) {
+                motorPitch.setPower(0);
+            }
+        }
+
+        else if(x && encoder != 0){
+            setPoint = 0;
+
+            encoder = motorPitch.getCurrentPosition();
+
+            error = setPoint - encoder;
+
+            kP = .08;
+            kD = .0005;
+            kI = .0000000006;
+
+            errorRate = ((error - lastError) / dt);
+            lastError = error;
+            lastTime = time.time();
+
+            dt = time.time() - lastTime;
+            errorSum += error * dt;
+
+            outputPower = error * kP + kI * errorSum + kD * errorRate;
+
+            motorPitch.setPower(outputPower * .5);
+            if (encoder >= -4 && encoder <= 2) {
+                motorPitch.setPower(0);
+            }
+        } else {
+            motorPitch.setPower(0);
+        }
+
+        opMode.telemetry.addData("posit", encoder);
+        opMode.telemetry.addData("D", errorRate);
+        opMode.telemetry.addData("I", errorSum);
+        opMode.telemetry.addData("trava", servoTravaBandeja.getPosition());
+        opMode.telemetry.addData("motorPitch", motorPitch.getCurrentPosition());
+        opMode.telemetry.addData("pos", pos);
+        //opMode.telemetry.addData("lampada", lampada.getPosition());
+    }
+
+    public void travaAutonomo(){
+        travaAutonomo.setPosition(1);
+    }
+
+}

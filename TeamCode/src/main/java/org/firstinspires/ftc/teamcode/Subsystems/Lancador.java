@@ -13,7 +13,10 @@ public class Lancador {
         servoDrone = opMode.hardwareMap.get(Servo.class, "Drone");
         servoDrone.setDirection(Servo.Direction.FORWARD);
     }
-    public void lancarDrone(){
-        servoDrone.setPosition(1);
+    public void lancarDrone(boolean lancar){
+        if(lancar) servoDrone.setPosition(1);
+    }
+    public void droneSetZero(boolean dpad_up){
+        if(dpad_up) servoDrone.setPosition(.2);
     }
 }

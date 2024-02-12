@@ -76,7 +76,6 @@ import java.util.List;
 @Autonomous(name= "AutoM04_CLOSE_RED", group = "Robot")
 //@Disabled
 public class AutoM04_CLOSE_RED extends LinearOpMode {
-
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
     Lancador lancaDrone;
@@ -87,10 +86,7 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
     private AprilTagProcessor aprilTag;
     private Pipeline_Vermelho pipelineVermelho;
     private VisionPortal visionPortal;
-
     int step = 0;
-
-
     @Override
     public void runOpMode(){
         telemetry.addData("Inicializando auto", " ");
@@ -234,7 +230,6 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
             }
             telemetry.addData("step", step);
             telemetry.update();
-
         }
     }
     public void resetEnc_step(){

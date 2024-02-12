@@ -13,7 +13,7 @@ public class SistemaLinear {
 
     private int pos = 0, lastPos = 0;
 
-    private boolean manterPot = false, manterBlock = false, inverterDirecao = true, travaInverter = false;
+    private boolean inverterDirecao = true, travaInverter = false;
 
     public SistemaLinear(LinearOpMode opMode) {
 
@@ -26,10 +26,6 @@ public class SistemaLinear {
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-
-    /**
-     * Uso de uma limit para detectar o nível do braço
-     */
     /*public void resetEnc(){
         if (!limit.isPressed()){
             armMotor.setPower(0.2);
@@ -46,18 +42,10 @@ public class SistemaLinear {
         }
     }*/
     public void movimentarSistema(boolean Up, boolean Down) {
-
-        /*pos += (Up ? 1 : 0) * 20;
-        pos -= (Down ? 1 : 0) * 20;
-        pos  = Math.max(pos, 0);
-        armMotor.setTargetPosition(pos);
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armMotor.setPower(1);*/
-
         if (inverterDirecao) {
             if (Up || Down) {
                 lastPos = armMotor.getCurrentPosition();
-                pos = lastPos + (Up ? 2000 : (Down ? -2000 : 0));
+                pos = lastPos + (Up ? 10000 : (Down ? -10000 : 0));
             } else {
                 pos = lastPos;
             }
@@ -72,26 +60,10 @@ public class SistemaLinear {
             armMotor.setPower(Up ? 1 : (Down ? -1 : 0));
         }
 
-        opMode.telemetry.addData("power elevador", armMotor.getPower());
+        //opMode.telemetry.addData("power elevador", armMotor.getPower());
         //opMode.telemetry.update();
 
     }
-
-    public void potenciaMotorElevador(boolean manter) {
-        if (manter && !manterBlock) {
-            manterPot = !manterPot;
-        }
-        manterBlock = manter;
-    }
-
-    public void inverterMotorForward() {
-        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-    }
-
-    public void inverterMotorReverse() {
-        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
-
     public void setMode(boolean inverterModo) {
         if (inverterModo && !travaInverter) {
             if (!inverterDirecao) {

@@ -116,7 +116,9 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
             }
         }
         while (opModeIsActive()) {
+
             switch(loc){
+
                 case CENTER:
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
 
@@ -219,6 +221,43 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
                         driveMecanum.moveBackwardAuto(.6, 2300);
                     }
                     if(step == 4 && driveMecanum.getBL().getCurrentPosition() >= 2290){
+                        driveMecanum.setPowerZero();
+                    }
+                case NOT_FOUND:
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+
+                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
+                        resetEnc_step();
+                    }
+
+                    if(step == 1) driveMecanum.turn(0.5, -1700);
+
+                    if(driveMecanum.getBL().getCurrentPosition() < -1690 && step == 1) {
+                        resetEnc_step();
+                    }
+
+                    if(step == 2) {
+                        timer = new ElapsedTime();
+                        timer.reset();
+                        timer.startTime();
+                        coletor.collectorControl(0, -0.4);
+                        driveMecanum.setPowerZero();
+                        resetEnc_step();
+                    }
+                    if(step == 3 && timer.seconds() > 4){
+                        coletor.collectorControl(0.4, -0.4);
+                        resetEnc_step();
+                    }
+                    if(step == 4){
+                        driveMecanum.moveBackwardAuto(.6, 500);
+                    }
+                    if(step == 4 && driveMecanum.getBL().getCurrentPosition() > 490){
+                        resetEnc_step();
+                    }
+                    if(step == 5){
+                        driveMecanum.right(.5, 2000);
+                    }
+                    if(step == 5 && driveMecanum.getBL().getCurrentPosition() < -1990){
                         driveMecanum.setPowerZero();
                     }
                     break;
