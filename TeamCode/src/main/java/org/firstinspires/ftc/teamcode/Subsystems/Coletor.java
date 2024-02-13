@@ -10,7 +10,6 @@ public class Coletor{
     private DcMotor motorCollector;
     private LinearOpMode opMode;
 
-
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");

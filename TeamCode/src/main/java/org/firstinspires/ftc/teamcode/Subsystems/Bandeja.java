@@ -14,7 +14,7 @@ public class Bandeja {
     private RevBlinkinLedDriver led;
     private int pos = 0;
     private DcMotor motorPitch;
-    private int posit, encoder, setPoint = 0, lastError = 0, error;
+    private int encoder, setPoint = 0, lastError = 0, error;
     private double errorRate = 0, errorSum = 0, lastTime = 0, kP, kD, kI, outputPower, dt;
     private ElapsedTime time, timerToGo;
 
@@ -49,7 +49,7 @@ public class Bandeja {
 
     }
 
-    public void travarBandeja(){
+    public void bandejaControl(){
         if (controle) {
             servoTravaBandeja.setPosition(.6);
             led.setPattern(RevBlinkinLedDriver.BlinkinPattern.FIRE_LARGE);
@@ -60,7 +60,6 @@ public class Bandeja {
         controle = !controle;
     }
 
-
     public void travarBandejaTotal() {
         servoTravaBandeja.setPosition(0);
         //lampada.setPosition(0);
@@ -68,7 +67,6 @@ public class Bandeja {
 
     public void destravarBandeja() {
         servoTravaBandeja.setPosition(1);
-        //lampada.setPosition(0);
     }
     public Servo getServoTravaBandeja(){
         return servoTravaBandeja;
@@ -76,16 +74,11 @@ public class Bandeja {
     public DcMotor getMotorPitch(){
         return motorPitch;
     }
-    public void lampada(){
-        //lampada.setPosition(1);
-    }
-
     public void pitchControl(boolean a, boolean x) {
 
         if(a && encoder > -10) {
 
             setPoint = 150;
-            //travaPitch = true;
             encoder = motorPitch.getCurrentPosition();
 
             error = setPoint - encoder;

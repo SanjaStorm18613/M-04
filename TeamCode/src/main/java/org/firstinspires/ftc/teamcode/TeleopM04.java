@@ -66,7 +66,7 @@ public class TeleopM04 extends LinearOpMode {
 
         while(opModeIsActive() && !isStopRequested()) {
 
-            // DroneLauncher
+            //LANCADOR
             lancador.lancarDrone(gamepad1.y);
             lancador.droneSetZero(gamepad1.dpad_up);
 
@@ -74,7 +74,7 @@ public class TeleopM04 extends LinearOpMode {
             coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
 
             //BRACO
-            braco.pitch((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
+            braco.armControl((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
 
             if(gamepad2.back && !inverterMotorBraco && braco.getMotorBraco().getDirection() == DcMotorSimple.Direction.REVERSE) {
                 braco.inverterMotorForward();
@@ -84,20 +84,20 @@ public class TeleopM04 extends LinearOpMode {
             }
             inverterMotorBraco = gamepad2.back;
 
-            //SistemaLinear
+            //SISTEMA LINEAR
             sistemaLinear.movimentarSistema(gamepad1.left_bumper, gamepad1.right_bumper);
             sistemaLinear.setMode(gamepad1.back);
 
             inverterMotorElevador = gamepad1.back;
 
-            //BANDEJA TESTE
-            if(gamepad2.a && !bandejaBlock) {
-                braco.bandeja.travarBandeja(); //Destravar
+            //BANDEJA
+            if (gamepad2.a && !bandejaBlock) {
+                braco.bandeja.bandejaControl();
             }
-            if(coletor.getMotorCollector().getPower() > .4) {
+            if (coletor.getMotorCollector().getPower() > .4) {
                 braco.bandeja.getServoTravaBandeja().setPosition(.6);
 
-            } else if(coletor.getMotorCollector().getPower() <= .4) {
+            } else if (coletor.getMotorCollector().getPower() <= .4) {
                 braco.bandeja.getServoTravaBandeja().setPosition(.3);
 
             } else {
@@ -105,11 +105,10 @@ public class TeleopM04 extends LinearOpMode {
 
             }
             braco.bandeja.pitchControl(gamepad1.a, gamepad1.x);
-            braco.bandeja.travaAutonomo();
 
             bandejaBlock = gamepad2.a;
 
-            //Tração
+            //TRACAO
             driveMecanum.driveControl(Math.floor(gamepad1.left_stick_x * 10) / 10,
                                       Math.floor(gamepad1.left_stick_y * 10) / 10,
                                     Math.floor(gamepad1.right_stick_x * 10) / 10,

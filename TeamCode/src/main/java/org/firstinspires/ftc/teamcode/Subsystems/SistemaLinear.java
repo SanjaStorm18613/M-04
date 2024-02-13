@@ -32,20 +32,12 @@ public class SistemaLinear {
         } else {
             armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
-    }
-
-    public void retrairSistemaTotal(double power, int target){
-        if (armMotor.getCurrentPosition() > 100){
-            armMotor.setTargetPosition(target);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(.6);
-        }
     }*/
     public void movimentarSistema(boolean Up, boolean Down) {
         if (inverterDirecao) {
             if (Up || Down) {
                 lastPos = armMotor.getCurrentPosition();
-                pos = lastPos + (Up ? 10000 : (Down ? -10000 : 0));
+                pos = lastPos + (Up ? 3000 : (Down ? -3000 : 0));
             } else {
                 pos = lastPos;
             }
@@ -59,10 +51,6 @@ public class SistemaLinear {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             armMotor.setPower(Up ? 1 : (Down ? -1 : 0));
         }
-
-        //opMode.telemetry.addData("power elevador", armMotor.getPower());
-        //opMode.telemetry.update();
-
     }
     public void setMode(boolean inverterModo) {
         if (inverterModo && !travaInverter) {
@@ -76,7 +64,6 @@ public class SistemaLinear {
 
         travaInverter = inverterModo;
     }
-
     public DcMotor getArmMotor() {
         return armMotor;
     }

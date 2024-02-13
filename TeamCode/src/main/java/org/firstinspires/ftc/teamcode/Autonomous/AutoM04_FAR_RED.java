@@ -112,15 +112,17 @@ public class AutoM04_FAR_RED extends LinearOpMode {
         timer.reset();
         telemetry.update();
         while(!isStarted() && !isStopRequested()){
-            telemetry.addData("camera", loc);
-            telemetry.update();
             if (pipelineVermelho.getLocation() != ElementLoc.NOT_FOUND) {
                 loc = pipelineVermelho.getLocation();
                 visionPortal.setProcessorEnabled(pipelineVermelho,false);
+            } else if(pipelineVermelho.getLocation() == ElementLoc.NOT_FOUND){
+                loc = ElementLoc.CENTER;
+                visionPortal.setProcessorEnabled(pipelineVermelho,false);
             }
+            telemetry.addData("camera", loc);
+            telemetry.update();
         }
         while (opModeIsActive()) {
-
             switch(loc){
                 case CENTER:
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1000);
@@ -210,9 +212,6 @@ public class AutoM04_FAR_RED extends LinearOpMode {
                 default:
                     break;
             }
-            telemetry.addData("step", step);
-            telemetry.update();
-
         }
     }
     public void resetEnc_step(){

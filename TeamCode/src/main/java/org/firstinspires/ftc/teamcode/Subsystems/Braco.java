@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Braco {
 
     private DcMotor motorBraco;
-    private LinearOpMode opMode;;
+    private LinearOpMode opMode;
     public int pos, encoder;
     private ElapsedTime timer;
     public Bandeja bandeja;
@@ -41,18 +41,15 @@ public class Braco {
     public DcMotor getMotorBraco(){
         return this.motorBraco;
     }
-    public void pitch(int up, int down){
-
+    public void armControl(int up, int down){
         pos += up/100. * 20;
         pos -= down/100. * 10;
         pos  = Math.max(pos, 0);
 
         motorBraco.setTargetPosition(pos);
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBraco.setPower(1);
 
-        opMode.telemetry.addData("encoder", Math.toDegrees(Math.abs(motorBraco.getCurrentPosition()/1000)));
-        //opMode.telemetry.update();
+        motorBraco.setPower(1);
     }
 
     public void pitchAuto(double power, int target){
