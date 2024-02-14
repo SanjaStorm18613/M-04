@@ -28,7 +28,7 @@ public class Bandeja {
         servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
 
         travaAutonomo = opMode.hardwareMap.get(Servo.class, "travaAutonomo");
-        travaAutonomo.setDirection(Servo.Direction.REVERSE);
+        travaAutonomo.setDirection(Servo.Direction.FORWARD);
 
         motorPitch = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
         motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
