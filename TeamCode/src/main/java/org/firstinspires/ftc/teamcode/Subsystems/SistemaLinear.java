@@ -33,7 +33,7 @@ public class SistemaLinear {
             armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }*/
-    public void movimentarSistema(boolean Up, boolean Down) {
+    public void elevatorControl(boolean Up, boolean Down) {
         if (inverterDirecao) {
             if (Up || Down) {
                 lastPos = armMotor.getCurrentPosition();
@@ -61,7 +61,6 @@ public class SistemaLinear {
             }
             inverterDirecao = !inverterDirecao;
         }
-
         travaInverter = inverterModo;
     }
     public DcMotor getArmMotor() {

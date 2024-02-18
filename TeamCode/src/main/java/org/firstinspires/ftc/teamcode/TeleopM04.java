@@ -85,25 +85,24 @@ public class TeleopM04 extends LinearOpMode {
             inverterMotorBraco = gamepad2.back;
 
             //SISTEMA LINEAR
-            sistemaLinear.movimentarSistema(gamepad1.left_bumper, gamepad1.right_bumper);
+            sistemaLinear.elevatorControl(gamepad1.left_bumper, gamepad1.right_bumper);
             sistemaLinear.setMode(gamepad1.back);
 
             inverterMotorElevador = gamepad1.back;
 
             //BANDEJA
-            if (gamepad2.a && !bandejaBlock) {
+            if (gamepad2.a&& !bandejaBlock) {
                 braco.bandeja.bandejaControl();
+
             }
-            if (coletor.getMotorCollector().getPower() > .4) {
-                braco.bandeja.getServoTravaBandeja().setPosition(.6);
+            if (coletor.getMotorCollector().getPower() > .3 || coletor.getMotorCollector().getPower() < - 0.8) {
+                braco.bandeja.getServoTravaBandeja().setPosition(.53);
 
-            } else if (coletor.getMotorCollector().getPower() <= .4) {
-                braco.bandeja.getServoTravaBandeja().setPosition(.3);
-
-            } else {
+            } else if (coletor.getMotorCollector().getPower() <= .3 && coletor.getMotorCollector().getPower() >= -0.7) {
                 braco.bandeja.getServoTravaBandeja().setPosition(.3);
 
             }
+
             braco.bandeja.pitchControl(gamepad1.a, gamepad1.x);
 
             bandejaBlock = gamepad2.a;

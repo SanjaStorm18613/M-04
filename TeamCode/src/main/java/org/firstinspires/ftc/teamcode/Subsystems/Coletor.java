@@ -13,7 +13,7 @@ public class Coletor{
     public Coletor(LinearOpMode opMode){
         this.opMode = opMode;
         motorCollector = opMode.hardwareMap.get(DcMotor.class, "ColetorMotor");
-        motorCollector.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorCollector.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     public void collectorControl(double powerC, double powerR){
         motorCollector.setPower(powerC + powerR);

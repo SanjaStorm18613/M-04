@@ -11,7 +11,6 @@ public class Bandeja {
 
     private Servo servoTravaBandeja, travaAutonomo;
     private LinearOpMode opMode;
-    private RevBlinkinLedDriver led;
     private int pos = 0;
     private DcMotor motorPitch;
     private int encoder, setPoint = 0, lastError = 0, error;
@@ -36,8 +35,6 @@ public class Bandeja {
         motorPitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorPitch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        led = opMode.hardwareMap.get(RevBlinkinLedDriver.class, "led");
-
         time = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         time.reset();
 
@@ -51,11 +48,9 @@ public class Bandeja {
 
     public void bandejaControl(){
         if (controle) {
-            servoTravaBandeja.setPosition(.6);
-            led.setPattern(RevBlinkinLedDriver.BlinkinPattern.FIRE_LARGE);
-        } else if (servoTravaBandeja.getPosition() >= .6 && !controle) {
+            servoTravaBandeja.setPosition(.5);
+        } else if (servoTravaBandeja.getPosition() >= .5 && !controle) {
             servoTravaBandeja.setPosition(.3);
-            if(servoTravaBandeja.getPosition() >= .3) led.close();
         }
         controle = !controle;
     }
