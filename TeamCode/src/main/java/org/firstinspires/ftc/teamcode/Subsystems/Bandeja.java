@@ -16,12 +16,14 @@ public class Bandeja {
     private int encoder, setPoint = 0, lastError = 0, error;
     private double errorRate = 0, errorSum = 0, lastTime = 0, kP, kD, kI, outputPower, dt;
     private ElapsedTime time, timerToGo;
-
+    public Coletor coletor;
     private boolean controle = false;
 
     public Bandeja(LinearOpMode opMode){
 
         this.opMode = opMode;
+
+        coletor = new Coletor(this.opMode);
 
         servoTravaBandeja = opMode.hardwareMap.get(Servo.class, "servoTravaBandeja");
         servoTravaBandeja.setDirection(Servo.Direction.FORWARD);
@@ -53,6 +55,15 @@ public class Bandeja {
             servoTravaBandeja.setPosition(.3);
         }
         controle = !controle;
+    }
+
+    public void bandejaColetorControl(){
+        if (coletor.getMotorCollector().getPower() > .3 || coletor.getMotorCollector().getPower() < - 0.8) {
+            servoTravaBandeja.setPosition(.5);
+
+        } else if (coletor.getMotorCollector().getPower() <= .3 && coletor.getMotorCollector().getPower() >= -0.7) {
+            servoTravaBandeja.setPosition(.3);
+        }
     }
 
     public void travarBandejaTotal() {
@@ -99,7 +110,7 @@ public class Bandeja {
         }
 
         else if(x && encoder != 0){
-            setPoint = 0;
+            setPoint = -5;
 
             encoder = motorPitch.getCurrentPosition();
 
