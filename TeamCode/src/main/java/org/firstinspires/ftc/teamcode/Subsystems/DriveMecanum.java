@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.teamcode.Constants.Constants;
 import org.openftc.apriltag.AprilTagPose;
 
@@ -138,14 +137,10 @@ public class DriveMecanum {
 
     }
     public void setPowerZero() {
-
-        FR.setPower(0);
-        BL.setPower(0);
-        FL.setPower(0);
-        BR.setPower(0);
-
+        for(DcMotor m : motors){
+            m.setPower(0);
+        }
     }
-
     public void right(double power, int target) {
 
         BL.setTargetPosition(-target);

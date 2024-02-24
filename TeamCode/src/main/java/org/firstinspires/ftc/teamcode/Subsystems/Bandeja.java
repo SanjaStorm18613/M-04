@@ -17,7 +17,7 @@ public class Bandeja {
     private double errorRate = 0, errorSum = 0, lastTime = 0, kP, kD, kI, outputPower, dt;
     private ElapsedTime time, timerToGo;
     public Coletor coletor;
-    private boolean controle = false;
+    private boolean isLocked = false, unlocked = false;
 
     public Bandeja(LinearOpMode opMode){
 
@@ -49,30 +49,27 @@ public class Bandeja {
     }
 
     public void bandejaControl(){
-        if (controle) {
+        if (isLocked) {
             servoTravaBandeja.setPosition(.5);
-        } else if (servoTravaBandeja.getPosition() >= .5 && !controle) {
+        } else {
             servoTravaBandeja.setPosition(.3);
         }
-        controle = !controle;
+
+        isLocked = !isLocked;
     }
 
     public void bandejaColetorControl(){
+
         if (coletor.getMotorCollector().getPower() > .3 || coletor.getMotorCollector().getPower() < - 0.8) {
             servoTravaBandeja.setPosition(.5);
+            unlocked = true;
 
-        } else if (coletor.getMotorCollector().getPower() <= .3 && coletor.getMotorCollector().getPower() >= -0.7) {
+        } else if (unlocked){
             servoTravaBandeja.setPosition(.3);
+            unlocked = false;
+
         }
-    }
 
-    public void travarBandejaTotal() {
-        servoTravaBandeja.setPosition(0);
-        //lampada.setPosition(0);
-    }
-
-    public void destravarBandeja() {
-        servoTravaBandeja.setPosition(1);
     }
     public Servo getServoTravaBandeja(){
         return servoTravaBandeja;

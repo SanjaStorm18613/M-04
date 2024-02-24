@@ -53,11 +53,11 @@ public class TeleopM04 extends LinearOpMode {
             if (gamepad2.a && !bandejaBlock) {
                 braco.bandeja.bandejaControl();
             }
+
             braco.bandeja.bandejaColetorControl();
 
-            braco.bandeja.pitchControl(gamepad1.a, gamepad1.x);
-
             bandejaBlock = gamepad2.a;
+            braco.bandeja.pitchControl(gamepad1.a, gamepad1.x);
 
             //TRACAO
             driveMecanum.driveControl(Math.floor(gamepad1.left_stick_x * 10) / 10,
