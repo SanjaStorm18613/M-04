@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Braco;
 import org.firstinspires.ftc.teamcode.Subsystems.Coletor;
@@ -18,7 +19,6 @@ public class TeleopM04 extends LinearOpMode {
     SistemaLinear sistemaLinear;
     Lancador lancador;
     Braco braco;
-
     private boolean bandejaBlock = false, inverterMotorElevador = false;
 
     @Override
@@ -34,8 +34,8 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive() && !isStopRequested()) {
 
             //LANCADOR
-            lancador.lancarDrone(gamepad1.y);
-            lancador.droneSetZero(gamepad1.dpad_up);
+            lancador.lancarDrone(gamepad2.y);
+            lancador.droneSetZero(gamepad2.dpad_up);
 
             //COLETOR
             braco.bandeja.coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
@@ -68,6 +68,8 @@ public class TeleopM04 extends LinearOpMode {
             telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
             telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
             telemetry.update();
+
+            if(gamepad2.dpad_down) braco.bandeja.travaAutonomo();
         }
     }
 }

@@ -101,8 +101,6 @@ public class AutoM04_FAR_RED extends LinearOpMode {
 
         lancaDrone = new Lancador(this);
 
-        coletor = new Coletor(this);
-
         braco = new Braco(this);
 
         timer = new ElapsedTime();
@@ -125,19 +123,20 @@ public class AutoM04_FAR_RED extends LinearOpMode {
         while (opModeIsActive()) {
             switch(loc){
                 case CENTER:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1000);
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1250);
 
-                    if(driveMecanum.getBL().getCurrentPosition() >= 990 && step == 0) {
+                    if(driveMecanum.getBL().getCurrentPosition() >= 1240 && step == 0) {
                         resetEnc_step();
                     }
 
-                    if(step == 1) driveMecanum.turn(0.5, -1700);
-
-                    if(driveMecanum.getBL().getCurrentPosition() < -1690 && step == 1) {
-                        resetEnc_step();
+                    if(step == 1) {
+                        braco.bandeja.travaAutonomo();
+                        driveMecanum.setPowerZero();
                     }
 
-                    if(step == 2) {
+
+
+                    /*if(step == 2) {
                         timer = new ElapsedTime();
                         timer.reset();
                         timer.startTime();
@@ -208,7 +207,7 @@ public class AutoM04_FAR_RED extends LinearOpMode {
                     if(step == 4){
                         driveMecanum.setPowerZero();
                     }
-                    break;
+                    break;*/
                 default:
                     break;
             }

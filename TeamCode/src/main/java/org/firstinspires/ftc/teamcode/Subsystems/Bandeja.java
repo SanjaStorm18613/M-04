@@ -17,7 +17,7 @@ public class Bandeja {
     private double errorRate = 0, errorSum = 0, lastTime = 0, kP, kD, kI, outputPower, dt;
     private ElapsedTime time, timerToGo;
     public Coletor coletor;
-    private boolean isLocked = false, unlocked = false;
+    private boolean isLocked = false, isUnlocked = false;
 
     public Bandeja(LinearOpMode opMode){
 
@@ -62,14 +62,12 @@ public class Bandeja {
 
         if (coletor.getMotorCollector().getPower() > .3 || coletor.getMotorCollector().getPower() < - 0.8) {
             servoTravaBandeja.setPosition(.5);
-            unlocked = true;
-
-        } else if (unlocked){
+            isUnlocked = true;
+        } else if (isUnlocked) {
             servoTravaBandeja.setPosition(.3);
-            unlocked = false;
-
+            isUnlocked = false;
         }
-
+        
     }
     public Servo getServoTravaBandeja(){
         return servoTravaBandeja;
@@ -81,7 +79,7 @@ public class Bandeja {
 
         if(a && encoder > -10) {
 
-            setPoint = 150;
+            setPoint = 180;
             encoder = motorPitch.getCurrentPosition();
 
             error = setPoint - encoder;
@@ -101,14 +99,14 @@ public class Bandeja {
 
             motorPitch.setPower(outputPower);
 
-            if (encoder >= 149 && encoder <= 151) {
+            if (encoder >= 179 && encoder <= 181) {
                 motorPitch.setPower(0);
             }
         }
 
         else if(x && encoder != 0){
-            setPoint = -5;
 
+            setPoint = -5;
             encoder = motorPitch.getCurrentPosition();
 
             error = setPoint - encoder;
@@ -130,6 +128,7 @@ public class Bandeja {
             if (encoder >= -4 && encoder <= 2) {
                 motorPitch.setPower(0);
             }
+
         } else {
             motorPitch.setPower(0);
         }
@@ -144,7 +143,11 @@ public class Bandeja {
     }
 
     public void travaAutonomo(){
-        travaAutonomo.setPosition(1);
+        travaAutonomo.setPosition(.4);
+    }
+
+    public Servo getTravaAuto(){
+        return travaAutonomo;
     }
 
 }

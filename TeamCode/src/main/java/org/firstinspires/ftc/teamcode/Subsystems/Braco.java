@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Braco {
-
     private DcMotor motorBraco;
     private LinearOpMode opMode;
     public int pos, encoder;
@@ -43,7 +42,7 @@ public class Braco {
     }
     public void armControl(int up, int down){
         pos += up/100. * 20;
-        pos -= down/100. * 10;
+        pos -= down/100. * 15;
         pos  = Math.max(pos, 0);
 
         motorBraco.setTargetPosition(pos);

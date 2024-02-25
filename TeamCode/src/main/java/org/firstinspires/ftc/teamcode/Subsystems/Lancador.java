@@ -16,7 +16,7 @@ public class Lancador {
     public void lancarDrone(boolean lancar){
         if(lancar) servoDrone.setPosition(1);
     }
-    public void droneSetZero(boolean dpad_up){
-        if(dpad_up) servoDrone.setPosition(.2);
+    public void droneSetZero(boolean adjust){
+        if(adjust) servoDrone.setPosition(.2);
     }
 }
