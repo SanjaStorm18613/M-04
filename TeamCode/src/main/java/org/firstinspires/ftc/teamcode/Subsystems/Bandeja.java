@@ -32,7 +32,7 @@ public class Bandeja {
         travaAutonomo.setDirection(Servo.Direction.FORWARD);
 
         motorPitch = opMode.hardwareMap.get(DcMotor.class, "motorPitch");
-        motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
         motorPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorPitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorPitch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -77,6 +77,7 @@ public class Bandeja {
     }
     public void pitchControl(boolean a, boolean x) {
 
+        //motorPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         if(a && encoder > -10) {
 
             setPoint = 180;
@@ -124,7 +125,7 @@ public class Bandeja {
 
             outputPower = error * kP + kI * errorSum + kD * errorRate;
 
-            motorPitch.setPower(outputPower * .5);
+            motorPitch.setPower(outputPower);
             if (encoder >= -4 && encoder <= 2) {
                 motorPitch.setPower(0);
             }
@@ -140,6 +141,16 @@ public class Bandeja {
         opMode.telemetry.addData("motorPitch", motorPitch.getCurrentPosition());
         opMode.telemetry.addData("pos", pos);
         //opMode.telemetry.addData("lampada", lampada.getPosition());
+    }
+
+    public void pitchAutoCtrl(double power, int target){
+        motorPitch.setTargetPosition(target);
+        motorPitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorPitch.setPower(power);
+    }
+
+    public void destravarBandejaAuto(double pos){
+        servoTravaBandeja.setPosition(pos);
     }
 
     public void travaAutonomo(){

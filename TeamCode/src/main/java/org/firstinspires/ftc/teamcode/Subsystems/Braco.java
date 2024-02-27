@@ -49,6 +49,9 @@ public class Braco {
         motorBraco.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motorBraco.setPower(1);
+
+        opMode.telemetry.addData("braco", motorBraco.getCurrentPosition());
+
     }
 
     public void pitchAuto(double power, int target){
