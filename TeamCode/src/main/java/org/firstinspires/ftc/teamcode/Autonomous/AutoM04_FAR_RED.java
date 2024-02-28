@@ -110,7 +110,7 @@ public class AutoM04_FAR_RED extends LinearOpMode {
 
         timer.reset();
         telemetry.update();
-
+//
         while(!isStarted() && !isStopRequested()){
             if (pipelineVermelho.getLocation() != ElementLoc.NOT_FOUND) {
                 loc = pipelineVermelho.getLocation();
