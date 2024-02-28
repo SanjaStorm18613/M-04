@@ -161,7 +161,6 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
                         driveMecanum.setPowerZero();
                         resetEnc_step();
                     }
-
                     if(step == 5 && timer.seconds() > 5){
                         coletor.collectorControl(0.6, -0.6);
                         resetEnc_step();

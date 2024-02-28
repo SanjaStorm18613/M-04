@@ -95,10 +95,6 @@ public class AutoM04_FAR_BLUE extends LinearOpMode {
 
         sistemaLinear = new SistemaLinear(this);
 
-        lancaDrone = new Lancador(this);
-
-        coletor = new Coletor(this);
-
         braco = new Braco(this);
 
         timer = new ElapsedTime();
@@ -121,88 +117,78 @@ public class AutoM04_FAR_BLUE extends LinearOpMode {
         while (opModeIsActive()) {
             switch(loc){
                 case CENTER:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1300);
 
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
+                    if(driveMecanum.getBL().getCurrentPosition() >= 1290 && step == 0) {
                         resetEnc_step();
                     }
 
-                    if(step == 1) driveMecanum.turn(0.5, -1700);
-
-                    if(driveMecanum.getBL().getCurrentPosition() < -1690 && step == 1) {
-                        resetEnc_step();
-                    }
-
-                    if(step == 2) {
-                        timer = new ElapsedTime();
+                    if(step == 1) {
+                        braco.bandeja.travaAutonomo();
+                        driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
-                        coletor.collectorControl(0, -0.4);
-                        driveMecanum.setPowerZero();
-                        resetEnc_step();
                     }
-                    if(step == 3 && timer.seconds() > 4){
-                        coletor.collectorControl(0.4, -0.4);
+
+                    if(braco.bandeja.getTravaAuto().getPosition() >= .4 && step == 1) {
                         resetEnc_step();
-                    }
-                    if(step == 4){
                         driveMecanum.setPowerZero();
                     }
-                    //odom = 11900;
                     break;
                 case LEFT:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1250);
 
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
+                    if(driveMecanum.getBL().getCurrentPosition() >= 1240 && step == 0) {
                         resetEnc_step();
                     }
-                    if(step == 1) driveMecanum.turn(.6, -950);
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -12500 && step == 1){
+                    if(step == 1) driveMecanum.turn(.6, 900);
+
+                    if(driveMecanum.getBL().getCurrentPosition() >= 890 && step == 1){
                         resetEnc_step();
                     }
-                    if(step == 2) {
-                        timer = new ElapsedTime();
+
+                    if(step == 2){
+                        braco.bandeja.travaAutonomo();
+                        driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
-                        coletor.collectorControl(0, -0.4);
-                        driveMecanum.setPowerZero();
-                        resetEnc_step();
                     }
-                    if(timer.seconds() > 4 && step == 3){
-                        coletor.collectorControl(.4, -0.4);
+                    if(braco.bandeja.getTravaAuto().getPosition() >= .4 && step == 2) {
                         resetEnc_step();
-                    }
-                    if(step == 4) {
                         driveMecanum.setPowerZero();
                     }
+
                     break;
                 case RIGHT:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1250);
 
-                    if(driveMecanum.getOdomY().getCurrentPosition() <= -50000 && step == 0) {
+                    if(driveMecanum.getBL().getCurrentPosition() > 1240 && step == 0) {
                         resetEnc_step();
                     }
 
-                    if(step == 1) driveMecanum.turn(.6, 950);
+                    if(step == 1) driveMecanum.turn(.6, -950);
 
-                    if(driveMecanum.getBL().getCurrentPosition() >= 940 && step == 1){
+                    if(driveMecanum.getBL().getCurrentPosition() < -940 && step == 1){
                         resetEnc_step();
                     }
 
-                    if(step == 2) {
-                        timer = new ElapsedTime();
+                    if (step == 2){
+                        driveMecanum.moveForwardAuto(.4, 50);
+                    }
+                    if(driveMecanum.getBL().getCurrentPosition() > 45 && step == 2){
+                        resetEnc_step();
+                    }
+                    if(step == 3){
+                        braco.bandeja.travaAutonomo();
+                        driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
-                        coletor.collectorControl(0, -0.4);                        driveMecanum.setPowerZero();
-                        resetEnc_step();
                     }
-                    if(step == 3 && timer.seconds() > 4){
-                        coletor.collectorControl(.4, -0.4);
+                    if(braco.bandeja.getTravaAuto().getPosition() >= .4 && step == 3) {
                         resetEnc_step();
-                    }
-                    if(step == 4) {
                         driveMecanum.setPowerZero();
                     }
+
                     break;
                 default:
                     break;
