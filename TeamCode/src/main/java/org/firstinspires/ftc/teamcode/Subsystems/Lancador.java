@@ -14,7 +14,7 @@ public class Lancador {
         servoDrone.setDirection(Servo.Direction.FORWARD);
     }
     public void lancarDrone(boolean lancar){
-        if(lancar) servoDrone.setPosition(1);
+        if(lancar) servoDrone.setPosition(.4);
     }
     public void droneSetZero(boolean adjust){
         if(adjust) servoDrone.setPosition(.2);

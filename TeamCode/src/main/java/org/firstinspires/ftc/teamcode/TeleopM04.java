@@ -34,8 +34,8 @@ public class TeleopM04 extends LinearOpMode {
         while(opModeIsActive() && !isStopRequested()) {
 
             //LANCADOR
-            lancador.lancarDrone(gamepad2.y);
-            lancador.droneSetZero(gamepad2.dpad_up);
+            lancador.lancarDrone(gamepad2.dpad_up);
+            lancador.droneSetZero(gamepad2.y);
 
             //COLETOR
             braco.bandeja.coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);

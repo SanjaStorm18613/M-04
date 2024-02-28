@@ -100,19 +100,18 @@ public class AutoM04_FAR_BLUE extends LinearOpMode {
         timer = new ElapsedTime();
 
         timer.reset();
-
+        telemetry.update();
         initCamera();
 
         while(!isStarted() && !isStopRequested()){
             if (pipelineAzul.getLocation() != ElementLoc.NOT_FOUND) {
                 loc = pipelineAzul.getLocation();
                 visionPortal.setProcessorEnabled(pipelineAzul,false);
-            } else if(pipelineAzul.getLocation() == ElementLoc.NOT_FOUND){
-                loc = ElementLoc.CENTER;
-                visionPortal.setProcessorEnabled(pipelineAzul,false);
+
+                telemetry.addData("camera", loc);
+                telemetry.update();
             }
-            telemetry.addData("camera", loc);
-            telemetry.update();
+
         }
         while (opModeIsActive()) {
             switch(loc){

@@ -112,12 +112,9 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
             if (pipelineAzul.getLocation() != ElementLoc.NOT_FOUND) {
                 loc = pipelineAzul.getLocation();
                 visionPortal.setProcessorEnabled(pipelineAzul,false);
-            } else if(pipelineAzul.getLocation() == ElementLoc.NOT_FOUND){
-                loc = ElementLoc.CENTER;
-                visionPortal.setProcessorEnabled(pipelineAzul,false);
+                telemetry.addData("camera", loc);
+                telemetry.update();
             }
-            telemetry.addData("camera", loc);
-            telemetry.update();
         }
         while (opModeIsActive()) {
 
