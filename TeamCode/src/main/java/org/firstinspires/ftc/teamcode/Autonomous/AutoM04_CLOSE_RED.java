@@ -109,18 +109,13 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
         timer.reset();
         telemetry.update();
         while(!isStarted() && !isStopRequested()){
-            if (pipelineVermelho.getLocation() != ElementLoc.NOT_FOUND) {
+
                 loc = pipelineVermelho.getLocation();
-                visionPortal.setProcessorEnabled(pipelineVermelho,false);
                 telemetry.addData("camera", loc);
                 telemetry.update();
-            } /*else if(pipelineVermelho.getLocation() == ElementLoc.NOT_FOUND){
-                loc = ElementLoc.CENTER;
-                visionPortal.setProcessorEnabled(pipelineVermelho,false);
-            }*/
-
         }
         while (opModeIsActive()) {
+            visionPortal.setProcessorEnabled(pipelineVermelho, false);
 
             switch(loc){
                 case CENTER:

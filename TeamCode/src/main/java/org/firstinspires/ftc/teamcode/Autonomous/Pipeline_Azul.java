@@ -51,6 +51,7 @@ public class Pipeline_Azul implements VisionProcessor {
         } else {
             customElementLocation = ElementLoc.NOT_FOUND;
         }
+
     }
 
     public ElementLoc getLocation() {
@@ -59,8 +60,8 @@ public class Pipeline_Azul implements VisionProcessor {
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
-        lower = new Scalar (0, 70, 70);
-        upper = new Scalar (30, 100, 200);
+        lower = new Scalar (0, 50, 60);
+        upper = new Scalar (30, 150, 200);
     }
 
     @Override

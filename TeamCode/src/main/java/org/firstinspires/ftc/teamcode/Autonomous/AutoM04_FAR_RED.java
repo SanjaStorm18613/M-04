@@ -112,20 +112,18 @@ public class AutoM04_FAR_RED extends LinearOpMode {
         telemetry.update();
 //
         while(!isStarted() && !isStopRequested()){
-            if (pipelineVermelho.getLocation() != ElementLoc.NOT_FOUND) {
-                loc = pipelineVermelho.getLocation();
-                visionPortal.setProcessorEnabled(pipelineVermelho,false);
-
-                telemetry.addData("camera", loc);
-                telemetry.update();
-            }
+            loc = pipelineVermelho.getLocation();
+            telemetry.addData("camera", loc);
+            telemetry.update();
         }
         while (opModeIsActive()) {
+
+            visionPortal.setProcessorEnabled(pipelineVermelho, false);
             switch(loc){
                 case CENTER:
-                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1300);
+                    if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1200);
 
-                    if(driveMecanum.getBL().getCurrentPosition() >= 1290 && step == 0) {
+                    if(driveMecanum.getBL().getCurrentPosition() >= 1190 && step == 0) {
                         resetEnc_step();
                     }
 

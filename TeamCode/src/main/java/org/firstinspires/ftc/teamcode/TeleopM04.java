@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Braco;
 import org.firstinspires.ftc.teamcode.Subsystems.Coletor;
@@ -21,6 +22,8 @@ public class TeleopM04 extends LinearOpMode {
     Braco braco;
     private boolean bandejaBlock = false, inverterMotorElevador = false;
 
+    private ElapsedTime riggingTime;
+
     @Override
     public void runOpMode() {
 
@@ -29,47 +32,58 @@ public class TeleopM04 extends LinearOpMode {
         lancador      = new Lancador     (this);
         braco         = new Braco        (this);
 
-        waitForStart();
+        riggingTime   = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        riggingTime.reset();
 
+        waitForStart();
         while(opModeIsActive() && !isStopRequested()) {
 
-            //LANCADOR
-            lancador.lancarDrone(gamepad2.dpad_up);
-            lancador.droneSetZero(gamepad2.y);
+            riggingTime.startTime();
 
-            //COLETOR
-            braco.bandeja.coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
+            if(riggingTime.seconds() < 125) {
 
-            //BRACO
-            braco.armControl((int)gamepad2.left_trigger * 100, (int)gamepad2.right_trigger * 100);
+                //LANCADOR
+                lancador.droneSetZero(gamepad2.dpad_up);
+                lancador.launchDrone(gamepad2.y);
 
-            //SISTEMA LINEAR
-            sistemaLinear.elevatorControl(gamepad1.left_bumper, gamepad1.right_bumper);
-            sistemaLinear.setMode(gamepad1.back);
+                //COLETOR
+                braco.bandeja.coletor.collectorControl(gamepad1.left_trigger, -gamepad1.right_trigger);
 
-            inverterMotorElevador = gamepad1.back;
+                //BRACO
+                braco.armControl((int) gamepad2.left_trigger * 100, (int) gamepad2.right_trigger * 100);
 
-            //BANDEJA
-            if (gamepad2.a && !bandejaBlock) {
-                braco.bandeja.bandejaControl();
+                //SISTEMA LINEAR
+                sistemaLinear.elevatorControl(gamepad1.left_bumper, gamepad1.right_bumper);
+                sistemaLinear.setMode(gamepad1.back);
+
+                inverterMotorElevador = gamepad1.back;
+
+                //BANDEJA
+                if (gamepad2.a && !bandejaBlock) {
+                    braco.bandeja.bandejaControl();
+                }
+
+                braco.bandeja.bandejaColetorControl();
+
+                bandejaBlock = gamepad2.a;
+                braco.bandeja.pitchControl(gamepad1.a, gamepad1.x);
+
+                //TRACAO
+                driveMecanum.driveControl(Math.floor(gamepad1.left_stick_x * 10) / 10,
+                                          Math.floor(gamepad1.left_stick_y * 10) / 10,
+                                        Math.floor(gamepad1.right_stick_x * 10) / 10,
+                                                        gamepad1.b);
+
+                telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
+                telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
+                telemetry.update();
+
+                if (gamepad2.dpad_down) braco.bandeja.travaAutonomo();
+
+            } else {
+                braco.getMotorBraco().setPower(0);
             }
 
-            braco.bandeja.bandejaColetorControl();
-
-            bandejaBlock = gamepad2.a;
-            braco.bandeja.pitchControl(gamepad1.a, gamepad1.x);
-
-            //TRACAO
-            driveMecanum.driveControl(Math.floor(gamepad1.left_stick_x * 10) / 10,
-                                      Math.floor(gamepad1.left_stick_y * 10) / 10,
-                                    Math.floor(gamepad1.right_stick_x * 10) / 10,
-                                                    gamepad1.b);
-
-            telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
-            telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
-            telemetry.update();
-
-            if(gamepad2.dpad_down) braco.bandeja.travaAutonomo();
         }
     }
 }

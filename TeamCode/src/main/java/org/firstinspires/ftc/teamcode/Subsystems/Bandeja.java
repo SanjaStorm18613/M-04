@@ -18,6 +18,7 @@ public class Bandeja {
     private ElapsedTime time, timerToGo;
     public Coletor coletor;
     private boolean isLocked = false, isUnlocked = false;
+    private boolean inverterDirecao = true, travaInverter = false;
 
     public Bandeja(LinearOpMode opMode){
 
@@ -78,7 +79,7 @@ public class Bandeja {
     public void pitchControl(boolean a, boolean x) {
 
         //motorPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        if(a && encoder > -10) {
+        if(a && encoder > -25) {
 
             setPoint = 180;
             encoder = motorPitch.getCurrentPosition();
@@ -100,14 +101,14 @@ public class Bandeja {
 
             motorPitch.setPower(outputPower);
 
-            if (encoder >= 179 && encoder <= 181) {
+            /*if (encoder >= 179 && encoder <= 181) {
                 motorPitch.setPower(0);
-            }
+            }*/
         }
 
         else if(x && encoder != 0){
 
-            setPoint = -5;
+            setPoint = -20;
             encoder = motorPitch.getCurrentPosition();
 
             error = setPoint - encoder;
@@ -126,9 +127,9 @@ public class Bandeja {
             outputPower = error * kP + kI * errorSum + kD * errorRate;
 
             motorPitch.setPower(outputPower);
-            if (encoder >= -4 && encoder <= 2) {
+            /*if (encoder >= -4 && encoder <= 2) {
                 motorPitch.setPower(0);
-            }
+            }*/
 
         } else {
             motorPitch.setPower(0);
@@ -140,7 +141,7 @@ public class Bandeja {
         opMode.telemetry.addData("trava", servoTravaBandeja.getPosition());
         opMode.telemetry.addData("motorPitch", motorPitch.getCurrentPosition());
         opMode.telemetry.addData("pos", pos);
-        //opMode.telemetry.addData("lampada", lampada.getPosition());
+
     }
 
     public void pitchAutoCtrl(double power, int target){
@@ -159,6 +160,24 @@ public class Bandeja {
 
     public Servo getTravaAuto(){
         return travaAutonomo;
+    }
+
+    /*public void setModePitch(boolean inverterModo) {
+        if (inverterModo && !travaInverter) {
+            if (!inverterDirecao) {
+                armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                pos = 0;
+            }
+            inverterDirecao = !inverterDirecao;
+        }
+        travaInverter = inverterModo;
+    }*/
+
+    public void inverterPitchForward(boolean forward, boolean reverse){
+        if(forward && !reverse) motorPitch.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        if(reverse && !forward) motorPitch.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
 }
