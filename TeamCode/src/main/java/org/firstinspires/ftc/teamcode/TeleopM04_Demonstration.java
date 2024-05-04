@@ -13,15 +13,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveMecanum;
 import org.firstinspires.ftc.teamcode.Subsystems.Lancador;
 import org.firstinspires.ftc.teamcode.Subsystems.SistemaLinear;
 
-@TeleOp(name = "TeleopM04", group = "Linear OpMode")
+@TeleOp(name = "TeleopM04_Demo", group = "Linear OpMode")
 
-public class TeleopM04 extends LinearOpMode {
+public class TeleopM04_Demonstration extends LinearOpMode {
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
     Lancador lancador;
     Braco braco;
     private boolean bandejaBlock = false, inverterMotorElevador = false;
-
     private ElapsedTime riggingTime;
 
     @Override
@@ -37,10 +36,6 @@ public class TeleopM04 extends LinearOpMode {
 
         waitForStart();
         while(opModeIsActive() && !isStopRequested()) {
-
-            riggingTime.startTime();
-
-            if(riggingTime.seconds() < 125) {
 
                 //LANCADOR
                 lancador.droneSetZero(gamepad2.dpad_up);
@@ -59,9 +54,7 @@ public class TeleopM04 extends LinearOpMode {
                 inverterMotorElevador = gamepad1.back;
 
                 //BANDEJA
-                if (gamepad2.a && !bandejaBlock) {
-                    braco.bandeja.bandejaControl();
-                }
+                if (gamepad2.a && !bandejaBlock) braco.bandeja.bandejaControl();
 
                 braco.bandeja.bandejaColetorControl();
 
@@ -70,9 +63,9 @@ public class TeleopM04 extends LinearOpMode {
 
                 //TRACAO
                 driveMecanum.driveControl(Math.floor(gamepad1.left_stick_x * 10) / 10,
-                                          Math.floor(gamepad1.left_stick_y * 10) / 10,
-                                        Math.floor(gamepad1.right_stick_x * 10) / 10,
-                                                        gamepad1.b);
+                        Math.floor(gamepad1.left_stick_y * 10) / 10,
+                        Math.floor(gamepad1.right_stick_x * 10) / 10,
+                        gamepad1.b);
 
                 telemetry.addData("bl", driveMecanum.getBL().getCurrentPosition());
                 telemetry.addData("motorBraco", braco.getMotorBraco().getCurrentPosition());
@@ -80,9 +73,6 @@ public class TeleopM04 extends LinearOpMode {
 
                 if (gamepad2.dpad_down) braco.bandeja.travaAutonomo();
                 if (gamepad2.dpad_right) braco.bandeja.setAutoZero();
-            } else {
-                braco.getMotorBraco().setPower(0);
-            }
 
         }
     }

@@ -61,7 +61,7 @@ public class Pipeline_Azul implements VisionProcessor {
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
         lower = new Scalar (0, 50, 60);
-        upper = new Scalar (30, 150, 200);
+        upper = new Scalar (30, 150, 180);
     }
 
     @Override

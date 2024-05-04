@@ -126,20 +126,20 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
                     }
 
                     if(step == 1) {
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
                     }
 
-                    if(braco.bandeja.getTravaAuto().getPosition() >= .4 && step == 1) {
+                    if(braco.bandeja.getTravaAuto().getPosition() >= 0 && step == 1) {
                         resetEnc_step();
                     }
 
                     if(step == 2 && timer.milliseconds() > 400){
-                        driveMecanum.moveForwardAuto(.7, -600);
+                        driveMecanum.moveForwardAuto(.7, -900);
                     }
-                    if(driveMecanum.getBL().getCurrentPosition() <= -590 && step == 2){
+                    if(driveMecanum.getBL().getCurrentPosition() <= -890 && step == 2){
                         resetEnc_step();
                     }
                     if(step == 3){
@@ -173,23 +173,23 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
                         resetEnc_step();
                     }
 
-                    if(step == 2){
-                        braco.bandeja.travaAutonomo();
+                    if (step == 2){
+                        driveMecanum.moveForwardAuto(.4, 70);
+                    }
+                    if(driveMecanum.getBL().getCurrentPosition() > 65 && step == 2){
+                        resetEnc_step();
+                    }
+                    if(step == 3){
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
                     }
-                    if(braco.bandeja.getTravaAuto().getPosition() >= .4 && step == 2) {
+                    if(braco.bandeja.getTravaAuto().getPosition() >= .4 && step == 3) {
                         resetEnc_step();
                     }
-                    if(timer.milliseconds() > 400 && step == 3){
-                        driveMecanum.moveForwardAuto(.7, -1650);
-                        //driveMecanum.turn(.7, 950);
-                        timer.reset();
-                    }
-                    if(driveMecanum.getBL().getCurrentPosition() < - 1640 && step == 3){
-                        resetEnc_step();
-                    }
+
+                    /*
                     if(step == 4){
                         driveMecanum.turn(.7, 1900);
                     }
@@ -236,34 +236,7 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
                         resetEnc_step();
                         driveMecanum.setPowerZero();
                     }
-                    /*
-                    if(driveMecanum.getBL().getCurrentPosition() <= -490 && step == 3){
-                        resetEnc_step();
-                    }
-                    if(step == 4){
-                        driveMecanum.right(.7, -1200);
-                    }
-                    if(driveMecanum.getBL().getCurrentPosition() > 1190 && step == 4){
-                        resetEnc_step();
-                    }
-                    if(step == 5){
-                        driveMecanum.moveForwardAuto(.7, -1500);
-                    }
-                    if(driveMecanum.getBL().getCurrentPosition() < -1490 && step == 5){
-                        resetEnc_step();
-                    }
-                    if(step == 6) {
-                        timer = new ElapsedTime();
-                        timer.reset();
-                        timer.startTime();
-                        coletor.collectorControl(0, -0.6);
-                        driveMecanum.setPowerZero();
-                        resetEnc_step();
-                    }
-                    if(timer.seconds() > 4 && step == 7){
-                        coletor.collectorControl(.6, -0.6);
-                        resetEnc_step();
-                    }*/
+                    */
                     break;
                 case RIGHT:
                     if(step == 0) driveMecanum.moveForwardAuto(-0.7, 1250);
@@ -285,7 +258,7 @@ public class AutoM04_CLOSE_RED extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 3){
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();

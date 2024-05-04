@@ -33,14 +33,6 @@ public class DriveMecanum {
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //odomY.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        /*imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.mode = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);*/
-
         motors = new DcMotor[]{FL, FR, BR, BL};
 
         resetEnc();
@@ -104,10 +96,24 @@ public class DriveMecanum {
             
         }
     }
+
+    public void moveRight(double power, int target){
+        FR.setTargetPosition(-target);
+        BR.setTargetPosition(target);
+        FL.setTargetPosition(target);
+        BL.setTargetPosition(-target);
+
+        runToPosition();
+
+        FR.setPower(-power);
+        BL.setPower(-power);
+        FL.setPower(power);
+        BR.setPower(power);
+    }
     public void moveBackwardAuto(double power, int target) {
         //power = PIDControl(referenceAngle, imu.getAngularOrientation().firstAngle);
         for (DcMotor m : motors) {
-            m.setTargetPosition(target);
+            m.setTargetPosition(-target);
             m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             m.setPower(-power);
         }

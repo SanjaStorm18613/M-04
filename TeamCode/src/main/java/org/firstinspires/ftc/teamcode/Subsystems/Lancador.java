@@ -21,4 +21,8 @@ public class Lancador {
     public void launchDrone(boolean adjust){
         if(adjust) servoDrone.setPosition(.2);
     }
+
+    public void autoLaunch(){
+        servoDrone.setPosition(.4);
+    }
 }

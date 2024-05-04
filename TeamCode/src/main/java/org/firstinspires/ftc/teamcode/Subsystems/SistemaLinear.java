@@ -6,13 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class SistemaLinear {
     private DcMotor armMotor;
-
     private LinearOpMode opMode;
-
-    //private TouchSensor limit;
-
     private int pos = 0, lastPos = 0;
-
     private boolean inverterDirecao = true, travaInverter = false;
 
     public SistemaLinear(LinearOpMode opMode) {
@@ -26,13 +21,6 @@ public class SistemaLinear {
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-    /*public void resetEnc(){
-        if (!limit.isPressed()){
-            armMotor.setPower(0.2);
-        } else {
-            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-    }*/
     public void elevatorControl(boolean Up, boolean Down) {
         if (inverterDirecao) {
             if (Up || Down) {

@@ -128,7 +128,7 @@ public class AutoM04_FAR_RED extends LinearOpMode {
                     }
 
                     if(step == 1) {
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
@@ -152,7 +152,7 @@ public class AutoM04_FAR_RED extends LinearOpMode {
                     }
 
                     if(step == 2){
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
@@ -183,7 +183,7 @@ public class AutoM04_FAR_RED extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 3){
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();

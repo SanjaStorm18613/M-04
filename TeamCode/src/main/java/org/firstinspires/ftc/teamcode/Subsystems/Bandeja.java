@@ -157,6 +157,9 @@ public class Bandeja {
     public void travaAutonomo(){
         travaAutonomo.setPosition(.4);
     }
+    public void setAutoZero(){
+        travaAutonomo.setPosition(0);
+    }
 
     public Servo getTravaAuto(){
         return travaAutonomo;

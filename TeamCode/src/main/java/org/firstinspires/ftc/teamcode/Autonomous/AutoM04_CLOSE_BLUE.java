@@ -77,7 +77,6 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
 
     DriveMecanum driveMecanum;
     SistemaLinear sistemaLinear;
-    Lancador lancaDrone;
     Coletor coletor;
     Braco braco;
     ElapsedTime timer;
@@ -95,8 +94,6 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
         driveMecanum = new DriveMecanum(this);
 
         sistemaLinear = new SistemaLinear(this);
-
-        lancaDrone = new Lancador(this);
 
         coletor = new Coletor(this);
 
@@ -127,7 +124,7 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
                     }
 
                     if(step == 1) {
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
@@ -176,7 +173,7 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
                     }
 
                     if(step == 2){
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
@@ -287,7 +284,7 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
                         resetEnc_step();
                     }
                     if(step == 3){
-                        braco.bandeja.travaAutonomo();
+                        braco.bandeja.setAutoZero();
                         driveMecanum.setPowerZero();
                         timer.reset();
                         timer.startTime();
@@ -351,21 +348,18 @@ public class AutoM04_CLOSE_BLUE extends LinearOpMode {
     private void initCamera() {
 
         // Create the AprilTag processor.
-        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
 
         pipelineAzul = new Pipeline_Azul();
 
         // Create the vision portal by using a builder.
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .setCameraResolution(new Size(1280, 720))
-                .addProcessor(aprilTag)
+                .setCameraResolution(new Size(640, 480))
                 .addProcessor(pipelineAzul)
                 .build();
 
         // Disable or re-enable the aprilTag processor at any time.
         visionPortal.setProcessorEnabled(pipelineAzul, true);
-        visionPortal.setProcessorEnabled(aprilTag,false);
 
     }
 }
