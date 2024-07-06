@@ -41,7 +41,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveMecanum;
 import org.firstinspires.ftc.teamcode.Subsystems.SistemaLinear;
 
 @Autonomous(name="AutoM04test", group="Robot")
-@Disabled
+//@Disabled
 
 public class AutoM04test extends LinearOpMode {
     DriveMecanum driveMecanum;
